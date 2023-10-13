@@ -1,0 +1,10 @@
+swe:
+  lsm:
+    auth:
+      api:
+        cookie_token: LMS_TOKEN
+        cookie_user: LMS_USER
+        cookie_role: BA_ROLE
+token:
+  key: swede
+  issuer: sweproject

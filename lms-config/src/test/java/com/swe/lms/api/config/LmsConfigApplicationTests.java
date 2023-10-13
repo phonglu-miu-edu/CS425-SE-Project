@@ -1,10 +1,10 @@
-package com.swe.auth;
+package com.swe.lms.api.config;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class LmsAuthApplicationTests {
+class LmsConfigApplicationTests {
 
 	@Test
 	void contextLoads() {

@@ -22,3 +22,8 @@
 /lms-student/.idea
 !/lms-student/wrapper/maven-wrapper.jar
 
+/lms-config/target
+/lms-config/.idea/
+!/lms-config/wrapper/maven-wrapper.jar
+
+
