@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: lms-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: authModule
+          uri: http://localhost:8082/
+          predicates:
+            - Path=/auth/**
+        - id: adminModule
+          uri: http://localhost:8083/
+          predicates:
+            - Path=/admin/**
+        - id: bookModule
+          uri: http://localhost:8084/
+          predicates:
+            - Path=/book/**
+        - id: studentModule
+          uri: http://localhost:8085/
+          predicates:
+            - Path=/std/**
+server:
+  port: 8080
