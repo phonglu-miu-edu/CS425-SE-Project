@@ -27,3 +27,5 @@
 !/lms-config/wrapper/maven-wrapper.jar
 
 
+.idea
+node_modules
