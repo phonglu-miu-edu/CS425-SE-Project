@@ -10,7 +10,7 @@ public interface IBookService {
 
     ResponseEntity<?> updateBook(BookDTO bookDTO);
 
-    ResponseEntity<?> deleteBook(int bookId);
+    ResponseEntity<?> deleteBook(long bookId);
 
     ResponseEntity<?> getBook(int bookId);
 

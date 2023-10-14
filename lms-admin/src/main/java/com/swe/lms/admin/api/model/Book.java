@@ -1,5 +1,9 @@
-package com.swe.lms.book.model;
+package com.swe.lms.admin.api.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 import javax.persistence.Entity;
@@ -8,8 +12,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 
-@EntityScan
 @Entity
+@EntityScan
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,11 +27,7 @@ public class Book {
     @NotBlank
     public String isbn;
 
-    public Book() {
-    }
-
-    public Book(Integer id, String title, String ISBN) {
-        this.id = id;
+    public Book(String title, String ISBN) {
         this.title = title;
         this.isbn = ISBN;
     }

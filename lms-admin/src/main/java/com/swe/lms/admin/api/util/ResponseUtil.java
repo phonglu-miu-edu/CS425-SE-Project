@@ -51,4 +51,11 @@ public class ResponseUtil {
         map.put(HTTPConst.STATUS_CODE, HttpStatus.INTERNAL_SERVER_ERROR.value());
         return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+    public static ResponseEntity<?> deleteOK(String message) {
+        Map<String, Object> map = new HashMap<>();
+        map.put(HTTPConst.MESSAGE, message);
+        map.put(HTTPConst.STATUS_CODE, HttpStatus.OK.value());
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
+
 }

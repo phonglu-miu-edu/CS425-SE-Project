@@ -1,6 +1,7 @@
 package com.swe.lms.admin.api.repository;
 
-import com.swe.lms.book.model.Book;
+
+import com.swe.lms.admin.api.model.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

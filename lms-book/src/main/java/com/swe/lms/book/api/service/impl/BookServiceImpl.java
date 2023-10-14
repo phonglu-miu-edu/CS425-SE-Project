@@ -11,7 +11,7 @@ import java.util.Map;
 @Service("BookService")
 public class BookServiceImpl implements IBookService {
     @Override
-    public ResponseEntity<?> searchBooks(Map<String, Object> mapParams) {
+    public ResponseEntity<?> searchBooks(String mapParams) {
         return null;
     }
 
