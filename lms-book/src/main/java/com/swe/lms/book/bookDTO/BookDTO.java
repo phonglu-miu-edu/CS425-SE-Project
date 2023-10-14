@@ -5,27 +5,21 @@ public class BookDTO {
     public String title;
     public String ISBN;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
+    public BookDTO(Integer id, String title, String ISBN) {
         this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getISBN() {
-        return ISBN;
-    }
-
-    public void setISBN(String ISBN) {
         this.ISBN = ISBN;
+    }
+
+    public BookDTO() {
+    }
+
+    @Override
+    public String toString() {
+        return "BookDTO{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", ISBN='" + ISBN + '\'' +
+                '}';
     }
 }
