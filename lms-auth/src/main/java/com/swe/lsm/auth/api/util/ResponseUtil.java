@@ -37,4 +37,11 @@ public class ResponseUtil {
         map.put(HTTPConst.STATUS_CODE, HttpStatus.BAD_REQUEST.value());
         return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
     }
+
+    public static ResponseEntity<?> createInternalServerError(String message) {
+        Map<String, Object> map = new HashMap<>();
+        map.put(HTTPConst.MESSAGE, message);
+        map.put(HTTPConst.STATUS_CODE, HttpStatus.INTERNAL_SERVER_ERROR.value());
+        return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }
