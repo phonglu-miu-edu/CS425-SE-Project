@@ -29,9 +29,9 @@ import java.util.Map;
 public class LoginAspect {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
-    private AppConfig appConfig;
+    private final AppConfig appConfig;
 
-    @Resource(name = "UserService")
+    @Resource(name = "AuthService")
     private IAuthService authService;
 
     @Autowired
@@ -69,20 +69,20 @@ public class LoginAspect {
                     }
                 }
             }
-            if (StringUtils.isBlank(token) && !LmsConst.AUTH_METHOD.equals(methodName)) {
+            if (StringUtils.isBlank(token)) {
                 log.error("ERROR. UNAUTHORIZE ACCESS - METHOD NAME [{}]", methodName);
                 return ResponseUtil.createUnauthorize("ERROR. UNAUTHORIZE ACCESS !");
             } else {
                 String serverName = httpRequest.getServerName();
                 ResponseEntity<Map<String, Object>> valResult = (ResponseEntity<Map<String, Object>>) authService.verify(serverName, token);
                 if (valResult.getStatusCodeValue() != HttpStatus.OK.value()) {
-                    return valResult;
-                } else {
-                    if (LmsConst.AUTH_VERIFY_METHOD.equals(methodName)) {
-                        return valResult;
-                    }
+                    //return valResult;
+                    return ResponseUtil.createUnauthorize("ERROR. UNAUTHORIZE ACCESS !");
                 }
                 /*
+                else {
+                    return valResult;
+                }
                 CommonTokenDTO tokenDTO = (CommonTokenDTO) valResult.getBody().get(HTTPConst.DATA);
                 for(int i=0; i < params.length; i++) {
                     if ((params[i].getAnnotation(UserID.class) == null) && (params[i].getAnnotation(RoleCd.class) == null)) {

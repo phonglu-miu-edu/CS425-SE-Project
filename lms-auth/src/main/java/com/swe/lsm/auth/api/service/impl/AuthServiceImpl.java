@@ -30,18 +30,18 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
-@Service("UserService")
+@Service("AuthService")
 public class AuthServiceImpl implements IAuthService {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private JWTVerifier tokenVerifier = null;
+    private JWTVerifier tokenVerifier;
 
-    private Algorithm tokenAlgo = null;
+    private Algorithm tokenAlgo;
 
-    private TokenConfig tokenConfig;
+    private final TokenConfig tokenConfig;
 
-    private AppConfig appConfig;
+    private final AppConfig appConfig;
 
     @Autowired
     private UserRepository userRepository;
@@ -139,8 +139,8 @@ public class AuthServiceImpl implements IAuthService {
         return ResponseUtil.createOK("The user has logged out successfully.");
     }
 
-    private CommonTokenDTO decodeToken(String token) throws Exception {
-        DecodedJWT jwt = null;
+    private CommonTokenDTO decodeToken(String token) {
+        DecodedJWT jwt;
         try {
             jwt = this.tokenVerifier.verify(token);
         } catch (Exception ex) {
