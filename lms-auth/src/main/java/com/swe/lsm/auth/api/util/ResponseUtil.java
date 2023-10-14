@@ -23,6 +23,14 @@ public class ResponseUtil {
         map.put(HTTPConst.DATA, objData);
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
+
+    public static ResponseEntity<?> createOK(Object objData) {
+        Map<String, Object> map = new HashMap<>();
+        map.put(HTTPConst.STATUS_CODE, HttpStatus.OK.value());
+        map.put(HTTPConst.DATA, objData);
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
+
     public static ResponseEntity<?> createBadRequest(String message) {
         Map<String, Object> map = new HashMap<>();
         map.put(HTTPConst.MESSAGE, message);
