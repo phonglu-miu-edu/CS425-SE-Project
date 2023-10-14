@@ -17,7 +17,7 @@ public class Book {
     @NotBlank
     public String title;
     @NotBlank
-    public String ISBN;
+    public String isbn;
 
     public Book() {
     }
@@ -25,7 +25,7 @@ public class Book {
     public Book(Integer id, String title, String ISBN) {
         this.id = id;
         this.title = title;
-        this.ISBN = ISBN;
+        this.isbn = ISBN;
     }
 
     public Integer getId() {
@@ -45,10 +45,10 @@ public class Book {
     }
 
     public String getISBN() {
-        return ISBN;
+        return isbn;
     }
 
     public void setISBN(String ISBN) {
-        this.ISBN = ISBN;
+        this.isbn = ISBN;
     }
 }

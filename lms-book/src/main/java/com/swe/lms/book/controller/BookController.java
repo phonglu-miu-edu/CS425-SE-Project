@@ -23,7 +23,7 @@ public class BookController {
     @PostMapping("/add")
     public ResponseEntity<?> addBook(@RequestBody BookDTO bookDTO) {
         try {
-            Book book = repository.save(new Book(bookDTO.id, bookDTO.title, bookDTO.ISBN));
+            Book book = repository.save(new Book(bookDTO.id, bookDTO.title, bookDTO.isbn));
 
             Map<String, Object> map = new HashMap<>();
             map.put(HTTPConst.STATUS_CODE, HttpStatus.OK.value());
@@ -73,7 +73,7 @@ public class BookController {
         if (result.isPresent()) {
             Book _book = result.get();
             _book.setTitle(bookDTO.title);
-            _book.setISBN(bookDTO.ISBN);
+            _book.setISBN(bookDTO.isbn);
             return new ResponseEntity<>(repository.save(_book), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -98,6 +98,30 @@ public class BookController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/checkout")
+    public ResponseEntity<?> checkoutBook(@RequestBody BookDTO bookDTO) {
+        try {
+            List<Book> books = new ArrayList<Book>();
+            repository.findByTitleContaining(bookDTO.title).forEach(books::add);
+
+            if (books.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            Book result = books.get(0);
+            result.setTitle(result.getTitle() + " checked out on " + new Date());
+
+            Book book = repository.save(result);
+
+            Map<String, Object> map = new HashMap<>();
+            map.put(HTTPConst.STATUS_CODE, HttpStatus.OK.value());
+            map.put(HTTPConst.MESSAGE, "Book Checked out");
+            map.put(HTTPConst.DATA, book);
+            return new ResponseEntity<>(map, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

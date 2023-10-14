@@ -3,12 +3,12 @@ package com.swe.lms.book.dto;
 public class BookDTO {
     public Integer id;
     public String title;
-    public String ISBN;
+    public String isbn;
 
     public BookDTO(Integer id, String title, String ISBN) {
         this.id = id;
         this.title = title;
-        this.ISBN = ISBN;
+        this.isbn = ISBN;
     }
 
     public BookDTO() {
@@ -19,7 +19,7 @@ public class BookDTO {
         return "BookDTO{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", ISBN='" + ISBN + '\'' +
+                ", ISBN='" + isbn + '\'' +
                 '}';
     }
 }
