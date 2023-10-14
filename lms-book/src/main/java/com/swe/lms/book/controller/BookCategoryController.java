@@ -1,7 +1,10 @@
 package com.swe.lms.book.controller;
 
+import com.swe.lms.book.dto.BookCategoryDTO;
 import com.swe.lms.book.dto.BookDTO;
 import com.swe.lms.book.model.Book;
+import com.swe.lms.book.model.BookCategory;
+import com.swe.lms.book.repository.BookCategoryRepository;
 import com.swe.lms.book.repository.BookRepository;
 import com.swe.lsm.auth.api.constant.HTTPConst;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,52 +15,51 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-
 @RestController
 @RefreshScope
-@RequestMapping("/lms/book")
-public class BookController {
+@RequestMapping("/lms/bookCategory")
+public class BookCategoryController {
     @Autowired
-    BookRepository repository;
+    BookCategoryRepository repository;
 
     @PostMapping("/add")
-    public ResponseEntity<?> addBook(@RequestBody BookDTO bookDTO) {
+    public ResponseEntity<?> addBookCategory(@RequestBody BookCategoryDTO bookCategoryDTO) {
         try {
-            Book book = repository.save(new Book(bookDTO.id, bookDTO.title, bookDTO.ISBN));
+            BookCategory bookCategory = repository.save(new BookCategory(bookCategoryDTO.categoryName, bookCategoryDTO.description));
 
             Map<String, Object> map = new HashMap<>();
             map.put(HTTPConst.STATUS_CODE, HttpStatus.OK.value());
-            map.put(HTTPConst.MESSAGE, "Book created");
-            map.put(HTTPConst.DATA, book);
+            map.put(HTTPConst.MESSAGE, "Book category created");
+            map.put(HTTPConst.DATA, bookCategory);
             return new ResponseEntity<>(map, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @GetMapping("/books")
-    public ResponseEntity<List<Book>> getAllBooks(@RequestParam(required = false) String title) {
+    @GetMapping("/categories")
+    public ResponseEntity<List<BookCategory>> getAllBooks(@RequestParam(required = false) String categoryName) {
         try {
-            List<Book> books = new ArrayList<Book>();
+            List<BookCategory> bookCategories = new ArrayList<BookCategory>();
 
-            if (title == null)
-                repository.findAll().forEach(books::add);
+            if (categoryName == null)
+                repository.findAll().forEach(bookCategories::add);
             else
-                repository.findByTitleContaining(title).forEach(books::add);
+                repository.findByCategoryNameContaining(categoryName).forEach(bookCategories::add);
 
-            if (books.isEmpty()) {
+            if (bookCategories.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
 
-            return new ResponseEntity<>(books, HttpStatus.OK);
+            return new ResponseEntity<>(bookCategories, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Book> getBookById(@PathVariable("id") Integer id) {
-        Optional<Book> result = repository.findById(id);
+    public ResponseEntity<BookCategory> getBookCategoryById(@PathVariable("id") Integer id) {
+        Optional<BookCategory> result = repository.findById(id);
 
         if (result.isPresent()) {
             return new ResponseEntity<>(result.get(), HttpStatus.OK);
@@ -67,14 +69,14 @@ public class BookController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Book> updateBook(@PathVariable("id") Integer id, @RequestBody BookDTO bookDTO) {
-        Optional<Book> result = repository.findById(id);
+    public ResponseEntity<BookCategory> updateBookCategory(@PathVariable("id") Integer id, @RequestBody BookCategoryDTO bookCategoryDTO) {
+        Optional<BookCategory> result = repository.findById(id);
 
         if (result.isPresent()) {
-            Book _book = result.get();
-            _book.setTitle(bookDTO.title);
-            _book.setISBN(bookDTO.ISBN);
-            return new ResponseEntity<>(repository.save(_book), HttpStatus.OK);
+            BookCategory _bookCategory = result.get();
+            _bookCategory.setCategoryName(bookCategoryDTO.categoryName);
+
+            return new ResponseEntity<>(repository.save(_bookCategory), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -82,7 +84,7 @@ public class BookController {
 
 //not working
 //    @DeleteMapping("/delete/{id}")
-//    public ResponseEntity<HttpStatus> deleteBook(@PathVariable("id") long id) {
+//    public ResponseEntity<HttpStatus> deleteBookCategory(@PathVariable("id") long id) {
 //        try {
 //            repository.deleteById(id);
 //            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -92,7 +94,7 @@ public class BookController {
 //    }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<HttpStatus> deleteAllBooks() {
+    public ResponseEntity<HttpStatus> deleteAllBookCategories() {
         try {
             repository.deleteAll();
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

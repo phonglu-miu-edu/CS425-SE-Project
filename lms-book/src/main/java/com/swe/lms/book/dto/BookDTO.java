@@ -1,4 +1,4 @@
-package com.swe.lms.book.bookDTO;
+package com.swe.lms.book.dto;
 
 public class BookDTO {
     public Integer id;
