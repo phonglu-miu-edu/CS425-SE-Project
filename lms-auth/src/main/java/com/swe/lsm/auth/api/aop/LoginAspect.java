@@ -1,10 +1,8 @@
 package com.swe.lsm.auth.api.aop;
 
 import com.swe.lsm.auth.api.config.AppConfig;
-import com.swe.lsm.auth.api.constant.HTTPConst;
 import com.swe.lsm.auth.api.constant.LmsConst;
-import com.swe.lsm.auth.api.dto.CommonTokenDTO;
-import com.swe.lsm.auth.api.service.IUserService;
+import com.swe.lsm.auth.api.service.IAuthService;
 import com.swe.lsm.auth.api.util.ResponseUtil;
 import org.apache.commons.lang.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -34,7 +32,7 @@ public class LoginAspect {
     private AppConfig appConfig;
 
     @Resource(name = "UserService")
-    private IUserService userService;
+    private IAuthService authService;
 
     @Autowired
     public LoginAspect(final AppConfig appConfig)
@@ -59,9 +57,9 @@ public class LoginAspect {
         String methodName = ((MethodSignature) pjp.getSignature()).getMethod().getName();
         Object[] paramValues = pjp.getArgs();
 
-        String token = httpRequest.getHeader("access-token");
+        String token = "";
 
-        if ((null == token) || (token.isEmpty()) || ("null".equals(token))) {
+        if (!LmsConst.AUTH_METHOD.equals(methodName) && !LmsConst.AUTH_VERIFY_METHOD.equals(methodName)) {
             Cookie[] cookies = httpRequest.getCookies();
             if ((null != cookies) && (cookies.length > 0)) {
                 for (Cookie cookie: cookies) {
@@ -71,35 +69,34 @@ public class LoginAspect {
                     }
                 }
             }
-        }
-        if (StringUtils.isBlank(token) && !LmsConst.AUTH_METHOD.equals(methodName)) {
+            if (StringUtils.isBlank(token) && !LmsConst.AUTH_METHOD.equals(methodName)) {
                 log.error("ERROR. UNAUTHORIZE ACCESS - METHOD NAME [{}]", methodName);
                 return ResponseUtil.createUnauthorize("ERROR. UNAUTHORIZE ACCESS !");
-        } else {
-            String serverName = httpRequest.getServerName();
-            ResponseEntity<Map<String, Object>> valResult = (ResponseEntity<Map<String, Object>>) userService.verify(serverName, token);
-            if (valResult.getStatusCodeValue() != HttpStatus.OK.value()) {
-                return valResult;
             } else {
-                if (LmsConst.AUTH_VERIFY_METHOD.equals(methodName)) {
+                String serverName = httpRequest.getServerName();
+                ResponseEntity<Map<String, Object>> valResult = (ResponseEntity<Map<String, Object>>) authService.verify(serverName, token);
+                if (valResult.getStatusCodeValue() != HttpStatus.OK.value()) {
                     return valResult;
+                } else {
+                    if (LmsConst.AUTH_VERIFY_METHOD.equals(methodName)) {
+                        return valResult;
+                    }
                 }
-            }
+                /*
+                CommonTokenDTO tokenDTO = (CommonTokenDTO) valResult.getBody().get(HTTPConst.DATA);
+                for(int i=0; i < params.length; i++) {
+                    if ((params[i].getAnnotation(UserID.class) == null) && (params[i].getAnnotation(RoleCd.class) == null)) {
+                        continue;
+                    }
+                    if ((params[i].getAnnotation(UserID.class) != null))
+                        paramValues[i] = tokenDTO.getUser_id();
 
-            CommonTokenDTO tokenDTO = (CommonTokenDTO) valResult.getBody().get(HTTPConst.DATA);
-            for(int i=0; i < params.length; i++) {
-                if ((params[i].getAnnotation(UserID.class) == null) && (params[i].getAnnotation(RoleCd.class) == null)) {
-                    continue;
-                }
-                if ((params[i].getAnnotation(UserID.class) != null))
-                    paramValues[i] = tokenDTO.getUser_id();
-
-                if ((params[i].getAnnotation(RoleCd.class) != null)) {
-                    paramValues[i] = tokenDTO.getRole_cd();
-                }
+                    if ((params[i].getAnnotation(RoleCd.class) != null)) {
+                        paramValues[i] = tokenDTO.getRole_cd();
+                    }
+                }*/
             }
         }
-
         return pjp.proceed(paramValues);
     }
 }

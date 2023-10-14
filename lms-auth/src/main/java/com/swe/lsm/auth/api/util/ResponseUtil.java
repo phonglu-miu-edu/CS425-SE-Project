@@ -31,6 +31,13 @@ public class ResponseUtil {
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
+    public static ResponseEntity<?> createNotFound(String message) {
+        Map<String, Object> map = new HashMap<>();
+        map.put(HTTPConst.STATUS_CODE, HttpStatus.NOT_FOUND.value());
+        map.put(HTTPConst.MESSAGE, message);
+        return new ResponseEntity<>(map, HttpStatus.NOT_FOUND);
+    }
+
     public static ResponseEntity<?> createBadRequest(String message) {
         Map<String, Object> map = new HashMap<>();
         map.put(HTTPConst.MESSAGE, message);

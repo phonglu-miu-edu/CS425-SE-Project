@@ -1,15 +1,20 @@
 package com.swe.lsm.auth.api.service.impl;
 
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
+import com.swe.lsm.auth.api.adapter.UserAdapter;
 import com.swe.lsm.auth.api.config.AppConfig;
 import com.swe.lsm.auth.api.config.TokenConfig;
 import com.swe.lsm.auth.api.constant.DTOConst;
 import com.swe.lsm.auth.api.constant.LmsConst;
 import com.swe.lsm.auth.api.dto.CommonTokenDTO;
-import com.swe.lsm.auth.api.service.IUserService;
+import com.swe.lsm.auth.api.dto.UserDTO;
+import com.swe.lsm.auth.api.model.User;
+import com.swe.lsm.auth.api.repository.UserRepository;
+import com.swe.lsm.auth.api.service.IAuthService;
 import com.swe.lsm.auth.api.util.ExceptionUtil;
 import com.swe.lsm.auth.api.util.ResponseUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -23,9 +28,10 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Optional;
 
 @Service("UserService")
-public class UserServiceImpl implements IUserService {
+public class AuthServiceImpl implements IAuthService {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -38,7 +44,10 @@ public class UserServiceImpl implements IUserService {
     private AppConfig appConfig;
 
     @Autowired
-    public UserServiceImpl(final AppConfig appConfig, final TokenConfig tokenConfig) {
+    private UserRepository userRepository;
+
+    @Autowired
+    public AuthServiceImpl(final AppConfig appConfig, final TokenConfig tokenConfig) {
         this.appConfig = appConfig;
         this.tokenConfig = tokenConfig;
         log.info(tokenConfig.getKey());
@@ -96,9 +105,40 @@ public class UserServiceImpl implements IUserService {
             String errMessage = ExceptionUtil.getStackTrace(ex);
             log.error(errMessage);
             log.error("verify - error token value [{}]", token);
-            return ResponseUtil.createUnauthorize("DECODE THE TOKEN FAILED");
+            return ResponseUtil.createBadRequest("DECODE THE TOKEN FAILED");
         }
     }
+
+    private String getToken(String userId, String roleCd) {
+        JWTCreator.Builder tkBuilder = JWT.create().withIssuer(tokenConfig.getIssuer());
+        tkBuilder = tkBuilder.withClaim(DTOConst.ID, userId);
+        tkBuilder = tkBuilder.withClaim(DTOConst.ROLE_CD, roleCd);
+        tkBuilder = tkBuilder.withClaim(DTOConst.CRE_DT, System.currentTimeMillis());
+        return tkBuilder.sign(this.tokenAlgo);
+    }
+    @Override
+    public ResponseEntity<?> login(String domain, UserDTO userDTO) {
+        String userName = userDTO.getUserName();
+        String password = userDTO.getPassword();
+        if (StringUtils.isBlank(userName) || StringUtils.isBlank(password)) {
+            return ResponseUtil.createBadRequest("The user must enter both user name and password.");
+        }
+        Optional<User> optUser = userRepository.findByUserNameAndPassword(userName, password);
+        if (optUser.isPresent()) {
+            User user = optUser.get();
+            String token = getToken(user.getUserName(), user.getRoleCd());
+            setCookies(domain, user.getUserName(), user.getRoleCd(), token, 600);
+            return ResponseUtil.createOK(UserAdapter.convertToUserDTO(user));
+        }
+        return ResponseUtil.createUnauthorize("Either user name or password is incorrect. Please try again.");
+    }
+
+    @Override
+    public ResponseEntity<?> logout(String domain, UserDTO userDTO) {
+        setCookies(domain, userDTO.getUserName(), userDTO.getRoleCd(), "", 0);
+        return ResponseUtil.createOK("The user has logged out successfully.");
+    }
+
     private CommonTokenDTO decodeToken(String token) throws Exception {
         DecodedJWT jwt = null;
         try {
