@@ -1,4 +1,4 @@
-package com.swe.lms.book.repository;
+package com.swe.lms.admin.api.repository;
 
 import com.swe.lms.book.model.BookCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
