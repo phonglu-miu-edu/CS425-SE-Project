@@ -15,6 +15,7 @@
  - 400: Bad request
  - 401: Unauthorized access
  - 404: Not Found
+ - 500: Internal Server Error
 
 ## REST APIs Specification
  - ### Authentication Service (/lms/auth)
