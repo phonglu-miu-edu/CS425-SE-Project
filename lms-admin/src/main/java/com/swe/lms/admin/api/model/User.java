@@ -34,4 +34,13 @@ public class User {
 
     @NotNull
     private String lastName;
+
+    @NotNull
+    private String email;
+
+    @NotNull
+    private String phoneNumber;
+
+    @NotNull
+    private String address;
 }
