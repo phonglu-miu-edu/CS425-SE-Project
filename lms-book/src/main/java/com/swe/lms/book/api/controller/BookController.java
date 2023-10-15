@@ -29,9 +29,9 @@ public class BookController {
         return bookService.checkout(books);
     }
 
-    @GetMapping("/books/{bookId}")
-    public ResponseEntity<?> searchBooks(@RequestParam(name="q") String strQuery) {
-        Map<String, Object> mapParams = new HashMap<>(StringUtil.parseQueryParam(strQuery, LmsConst.PARAM_DELIM));
-        return bookService.searchBooks(mapParams);
+    @GetMapping("/books")
+    public ResponseEntity<?> searchBooks(@RequestParam String strQuery) {
+        //Map<String, Object> mapParams = new HashMap<>(StringUtil.parseQueryParam(strQuery, LmsConst.PARAM_DELIM));
+        return bookService.searchBooks(strQuery);
     }
 }
