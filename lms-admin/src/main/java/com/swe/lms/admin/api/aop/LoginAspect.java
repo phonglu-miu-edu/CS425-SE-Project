@@ -1,6 +1,10 @@
 package com.swe.lms.admin.api.aop;
 
 import com.swe.lms.admin.api.config.AppConfig;
+import com.swe.lms.admin.api.constant.DTOConst;
+import com.swe.lms.admin.api.constant.HTTPConst;
+import com.swe.lms.admin.api.constant.LmsConst;
+import com.swe.lms.admin.api.constant.RoleEnum;
 import com.swe.lms.admin.api.feign.IAuthFeignClient;
 import com.swe.lms.admin.api.util.ResponseUtil;
 import org.apache.commons.lang.StringUtils;
@@ -19,6 +23,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 @Aspect
 @Component("LoginAspect")
@@ -56,11 +61,18 @@ public class LoginAspect {
         }
         if (StringUtils.isBlank(token)) {
             log.error("ERROR. UNAUTHORIZE ACCESS - METHOD NAME [{}]", methodName);
-            return ResponseUtil.createUnauthorize("ERROR. UNAUTHORIZE ACCESS !");
+            return ResponseUtil.createUnauthorize("Error - Unauthorize access.");
         } else {
-            ResponseEntity<?> authVerifyResponse = authFeignClient.verify(token);
+            ResponseEntity<Map<String, Object>> authVerifyResponse = authFeignClient.verify(token);
             if (authVerifyResponse.getStatusCodeValue() != HttpStatus.OK.value()) {
-                return ResponseUtil.createUnauthorize("ERROR. UNAUTHORIZE ACCESS !");
+                return ResponseUtil.createUnauthorize("Error - Unauthorize access.");
+            }
+            if (!LmsConst.AUTH_METHOD.equals(methodName)) {
+                Map<String, Object> mapValue = (Map<String, Object>) authVerifyResponse.getBody().get(HTTPConst.DATA);
+                String roleCd = mapValue.get(DTOConst.ROLE_CD).toString();
+                if (!RoleEnum.ADMIN.getValue().equals(roleCd)) {
+                    return ResponseUtil.createUnauthorize("Error - Unauthorize access. The expected role is Admin");
+                }
             }
         }
         return pjp.proceed(paramValues);

@@ -4,49 +4,23 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.swe.lms.auth.api.constant.LmsConst;
 import com.swe.lms.auth.api.util.DateTimeUtil;
+import lombok.Data;
 
-public class CommonTokenDTO 
+@Data
+public class CommonTokenDTO
 {
-	protected String user_id;
+	protected String userName;
 	
-	protected String role_cd;
+	protected String roleCd;
 
 	@JsonIgnore
-	protected long cre_dt;
+	protected long creDt;
 
-	@JsonProperty("cre_dt")
+	@JsonProperty("creDt")
 	protected String strCreDt;
 	
-	public String getUser_id() {
-		return user_id;
-	}
-
-	public void setUser_id(String user_id) {
-		this.user_id = user_id;
-	}
-
-	public long getCre_dt() {
-		return cre_dt;
-	}
-
-	public void setCre_dt(long cre_dt) {
-		this.cre_dt = cre_dt;
+	public void setCreDt(long cre_dt) {
+		this.creDt = cre_dt;
 		this.strCreDt = DateTimeUtil.formatDateTime(LmsConst.DATE_TIME_UI, cre_dt);
-	}
-
-	public String getStrCreDt() {
-		return strCreDt;
-	}
-
-	public void setStrCreDt(String strCreDt) {
-		this.strCreDt = strCreDt;
-	}
-
-	public String getRole_cd() {
-		return role_cd;
-	}
-
-	public void setRole_cd(String role_cd) {
-		this.role_cd = role_cd;
 	}
 }
