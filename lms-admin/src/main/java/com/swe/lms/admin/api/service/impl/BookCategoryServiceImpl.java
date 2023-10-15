@@ -11,9 +11,12 @@ import com.swe.lms.admin.api.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service("BookCategoryService")
 public class BookCategoryServiceImpl implements IBookCategoryService {
@@ -59,11 +62,21 @@ public class BookCategoryServiceImpl implements IBookCategoryService {
 
     @Override
     public ResponseEntity<?> getBookCategory(int bookCategoryId) {
-        return null;
+        Optional<BookCategory> optBookCategory = bookCategoryRepository.findById(bookCategoryId);
+        if (optBookCategory.isPresent()) {
+            return ResponseUtil.createOK(BookCategoryAdapter.convertToBookCategoryDTO(optBookCategory.get()));
+        }
+        return ResponseUtil.createNotFound(String.format("Book Category ID [%d] is not found", bookCategoryId));
     }
 
     @Override
     public ResponseEntity<?> searchBookCategories(Map<String, Object> mapParams) {
-        return null;
+        List<BookCategory> bookCategories = bookCategoryRepository.findAll();
+        List<BookCategoryDTO> bookCategoryDTOs = new ArrayList<>();
+        if (null != bookCategories && bookCategories.size() > 0) {
+            bookCategoryDTOs = bookCategories.stream().map(bookCategory -> BookCategoryAdapter.convertToBookCategoryDTO(bookCategory)).collect(Collectors.toList());
+            return ResponseUtil.createOK(bookCategoryDTOs);
+        }
+        return ResponseUtil.createOK(bookCategoryDTOs);
     }
 }

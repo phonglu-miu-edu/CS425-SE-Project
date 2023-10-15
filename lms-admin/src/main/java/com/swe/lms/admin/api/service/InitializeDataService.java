@@ -81,8 +81,8 @@ public class InitializeDataService {
         Config config3 = Config.builder().itemName("Maximum number of books can borrow").itemValue("3").build();
         Config config4 = Config.builder().itemName("Number of overdues to be suspended").itemValue("3").build();
         Config config5 = Config.builder().itemName("Number of overdues to be locked").itemValue("5").build();
-        Config config6 = Config.builder().itemName("").itemValue("").build();
-        Config config7 = Config.builder().itemName("").itemValue("").build();
+        Config config6 = Config.builder().itemName("Number of suspended days").itemValue("15").build();
+        Config config7 = Config.builder().itemName("Number of days to be reminded").itemValue("5").build();
 
         configRepository.save(config1);
         configRepository.save(config2);

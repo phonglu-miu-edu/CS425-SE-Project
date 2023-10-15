@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service("BookService")
 public class BookServiceImpl implements IBookService {
@@ -65,9 +66,12 @@ public class BookServiceImpl implements IBookService {
 
     @Override
     public ResponseEntity<?> searchBooks(Map<String, Object> mapParams) {
-        String title = (String) mapParams.get("title");
-
-        List<Book> books = bookRepository.findByTitleContaining(title);
-        return (ResponseEntity<?>) books;
+        List<Book> books = bookRepository.findAll();
+        List<BookDTO> bookDTOs = new ArrayList<>();
+        if (null != books && books.size() > 0) {
+            bookDTOs = books.stream().map(book -> BookAdapter.convertToBookDTO(book)).collect(Collectors.toList());
+            return ResponseUtil.createOK(bookDTOs);
+        }
+        return ResponseUtil.createOK(bookDTOs);
     }
 }

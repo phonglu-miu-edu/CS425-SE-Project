@@ -441,12 +441,12 @@
          {
             "id": 6,
             "itemName": "Number of suspended days",
-            "itemValue": "30"
+            "itemValue": "15"
          },
          {
             "id": 7,
             "itemName": "Number of days to be reminded",
-            "itemValue": "30"
+            "itemValue": "5"
          }
       ]
    }
@@ -485,12 +485,12 @@
      {
         "id": 6,
         "itemName": "Number of suspended days",
-        "itemValue": "30"
+        "itemValue": "15"
      },
      {
         "id": 7,
         "itemName": "Number of days to be reminded",
-        "itemValue": "30"
+        "itemValue": "5"
      }
    ]
    ```
