@@ -10,7 +10,6 @@ public class UserAdapter {
                 .userName(user.getUserName())
                 .roleCd(user.getRoleCd())
                 .firstName(user.getFirstName())
-                .password(user.getPassword())
                 .lastName(user.getLastName())
                 .email(user.getEmail())
                 .phoneNumber(user.getPhoneNumber())
