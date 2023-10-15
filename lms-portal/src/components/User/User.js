@@ -1,13 +1,4 @@
-import {
-    Button,
-    Card,
-    FormControl,
-    FormLabel,
-    InputLabel,
-    MenuItem,
-    Select,
-    TextField
-} from '@mui/material';
+import { Button, Card, FormControl, FormLabel, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import { debounce } from 'lodash';
 import Grid from '@mui/material/Unstable_Grid2';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -26,6 +17,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import { SnackbarCustom } from 'components/SnackbarCustom/SnackbarCustom';
 
 const Profile = () => {
+    const [isEdit, setIsEdit] = useState(false);
     const [list, setList] = useState([]);
     const [searchText, setSearchText] = useState('');
     const [id, setId] = useState('');
@@ -60,7 +52,7 @@ const Profile = () => {
 
     const search = searchText => {
         getSearchResults(searchText);
-    }
+    };
 
     const onSearchTextChange = e => setSearchText(e.target.value);
 
@@ -82,8 +74,7 @@ const Profile = () => {
 
     const onSubmit = e => {
         if (username) {
-            const user = {
-                id,
+            const obj = {
                 userName: username,
                 roleCd: role,
                 firstName,
@@ -94,10 +85,10 @@ const Profile = () => {
                 status
             };
 
-            dispatch(id ? editUser({id, user}) : createUser(user))
+            dispatch(id ? editUser({id, user: obj}) : createUser(obj))
                 .then(res => {
                     if (res.payload && res.payload.status_code == 200) {
-                        setAlertContent(res.payload.message);
+                        setAlertContent('Save successfully');
                         setOpenAlert(true);
                         resetForm();
                         search(searchText);
@@ -113,6 +104,7 @@ const Profile = () => {
                     const user = res.payload.data;
 
                     if (user) {
+                        setIsEdit(true);
                         setId(user.id);
                         setUsername(user.userName);
                         setRole(user.roleCd);
@@ -139,9 +131,10 @@ const Profile = () => {
                     }
                 });
         }
-    }
+    };
 
     const resetForm = () => {
+        setIsEdit(false);
         setId(null);
         setUsername('');
         setRole('User');
@@ -153,8 +146,6 @@ const Profile = () => {
         setStatus('Active');
         setNumOfOverdues(0);
     };
-
-    const isEdit = id != null && id != undefined;
 
     return <div className="container">
         <h3>Profile Management</h3>
@@ -258,10 +249,12 @@ const Profile = () => {
                         <div className="row">
                             <div className="col-md-12">
                                 <Grid container justifyContent="center">
-                                    {!isEdit && <Button variant="contained" color="primary" onClick={onSubmit}>Add</Button>}
+                                    {!isEdit &&
+                                        <Button variant="contained" color="primary" onClick={onSubmit}>Add</Button>}
                                     {isEdit && (
                                         <>
-                                            <Button variant="contained" color="primary" onClick={onSubmit} style={{marginRight: '10px'}}>Update</Button>
+                                            <Button variant="contained" color="primary" onClick={onSubmit}
+                                                    style={{marginRight: '10px'}}>Update</Button>
                                             <Button onClick={resetForm}>Cancel</Button>
                                         </>
                                     )}
