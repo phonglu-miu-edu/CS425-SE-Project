@@ -501,4 +501,41 @@
       "data": "Configuration items are updated successfully."
    }
    ```
-
+     - #### 2.18 Add Book Copy
+         - Method: POST
+         - URL: /lms/admin/book_copies
+         - Body:
+   ```
+   {
+      "id": 1,
+      "numOfCopies": 3
+   }
+   ```
+         - Reseponse
+   ```
+   {
+      "status_code": 200,
+      "data": "Added 3 copies for Book Id[1]"
+   }
+   ```
+     - #### 2.19 Update Book Copy
+         - Method: PUT
+         - URL: /lms/admin/book_copies
+         - Body:
+   ```
+   {
+      copyId: {
+        "bookId": 1,
+        "seq": 3
+      },
+      "status": "Suspended",
+      "statusDetail": "Exceed 5 times overdue."
+   }
+   ```
+         - Reseponse
+   ```
+   {
+      "status_code": 200,
+      "data": "BookCopy information is updated successfully."
+   }
+   ```

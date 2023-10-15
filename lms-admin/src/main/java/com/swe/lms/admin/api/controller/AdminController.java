@@ -2,14 +2,8 @@ package com.swe.lms.admin.api.controller;
 
 import com.swe.lms.admin.api.aop.NoToken;
 import com.swe.lms.admin.api.constant.LmsConst;
-import com.swe.lms.admin.api.dto.BookCategoryDTO;
-import com.swe.lms.admin.api.dto.BookDTO;
-import com.swe.lms.admin.api.dto.ConfigDTO;
-import com.swe.lms.admin.api.dto.UserDTO;
-import com.swe.lms.admin.api.service.IBookCategoryService;
-import com.swe.lms.admin.api.service.IBookService;
-import com.swe.lms.admin.api.service.IConfigService;
-import com.swe.lms.admin.api.service.IUserService;
+import com.swe.lms.admin.api.dto.*;
+import com.swe.lms.admin.api.service.*;
 import com.swe.lms.admin.api.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -36,6 +30,9 @@ public class AdminController {
 
     @Autowired
     private IConfigService configService;
+
+    @Autowired
+    private IBookCopyService bookCopyService;
 
     //-------------- Users ----------------------
 
@@ -130,12 +127,26 @@ public class AdminController {
         return bookCategoryService.searchBookCategories(mapParams);
     }
 
+    //-------------- Configuration ----------------------
     @GetMapping("/configs")
     public ResponseEntity<?> getConfigs() {
         return configService.getConfigs();
     }
+
     @PutMapping("/configs")
     public ResponseEntity<?> updateConfigs(@RequestBody List<ConfigDTO> configDTOs) {
         return configService.updateConfigs(configDTOs);
+    }
+
+    //-------------- Book Copy ----------------------
+
+    @PostMapping("/book_copies")
+    public ResponseEntity<?> addBookCopies(@RequestBody BookDTO bookDTO) {
+        return bookCopyService.addBookCopies(bookDTO);
+    }
+
+    @PutMapping("/book_copies")
+    public ResponseEntity<?> updateBookCopies(@RequestBody BookCopyDTO bookCopyDTO) {
+        return bookCopyService.updateBookCopy(bookCopyDTO);
     }
 }

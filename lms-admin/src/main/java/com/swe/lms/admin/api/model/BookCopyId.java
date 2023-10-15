@@ -1,18 +1,17 @@
 package com.swe.lms.admin.api.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Embeddable;
+import java.io.Serializable;
 
 @Embeddable
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BookCopyId {
+@ToString
+public class BookCopyId implements Serializable {
 
     private Integer bookId;
 

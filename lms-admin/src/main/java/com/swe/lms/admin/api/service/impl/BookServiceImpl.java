@@ -2,21 +2,14 @@ package com.swe.lms.admin.api.service.impl;
 
 import com.swe.lms.admin.api.adapter.BookAdapter;
 import com.swe.lms.admin.api.constant.HTTPConst;
-import com.swe.lms.admin.api.constant.LmsConst;
 import com.swe.lms.admin.api.dto.BookDTO;
-import com.swe.lms.admin.api.dto.UserDTO;
 import com.swe.lms.admin.api.model.Book;
 import com.swe.lms.admin.api.repository.BookRepository;
 import com.swe.lms.admin.api.service.IBookService;
 import com.swe.lms.admin.api.util.ResponseUtil;
-import com.swe.lms.admin.api.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
-
-import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.stream.Collectors;
 
