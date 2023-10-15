@@ -36,7 +36,9 @@
            "id": 1,
            "userName": "bao",
            "password": null,
-           "roleCd": "Admin"
+           "roleCd": "Admin",
+           "firstName": "Bao Quoc",
+           "lastName": "Nguyen"
         }
      }
      ```
