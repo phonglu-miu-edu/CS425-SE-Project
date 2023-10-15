@@ -30,7 +30,7 @@ public class BookController {
     }
 
     @GetMapping("/books")
-    public ResponseEntity<?> searchBooks(@RequestParam String strQuery) {
+    public ResponseEntity<?> searchBooks(@RequestParam(required = false) String strQuery) {
         //Map<String, Object> mapParams = new HashMap<>(StringUtil.parseQueryParam(strQuery, LmsConst.PARAM_DELIM));
         return bookService.searchBooks(strQuery);
     }

@@ -125,8 +125,8 @@ public class AdminController {
     }
 
     @GetMapping("/book_categories/search")
-    public ResponseEntity<?> searchBookCategories(@RequestParam(name="q") String strQuery) {
-        Map<String, Object> mapParams = new HashMap<>(StringUtil.parseQueryParam(strQuery, LmsConst.PARAM_DELIM));
+    public ResponseEntity<?> searchBookCategories(@RequestParam(name="q") String categoryName) {
+        Map<String, Object> mapParams = new HashMap<>(StringUtil.parseQueryParam(categoryName, LmsConst.PARAM_DELIM));
         return bookCategoryService.searchBookCategories(mapParams);
     }
 
