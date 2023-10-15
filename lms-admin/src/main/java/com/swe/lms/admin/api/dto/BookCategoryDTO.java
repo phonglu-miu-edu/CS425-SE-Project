@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class BookCategoryDTO {
 
+    private Integer id;
+
     private String categoryName;
 
     private String description;

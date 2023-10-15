@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.Map;
 
 public interface IBookService {
+
     ResponseEntity<?> insertBook(BookDTO bookDTO);
 
     ResponseEntity<?> updateBook(BookDTO bookDTO);

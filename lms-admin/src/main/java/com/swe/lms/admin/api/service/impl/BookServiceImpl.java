@@ -13,38 +13,41 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.annotation.PostConstruct;
 import java.util.*;
 
 @Service("BookService")
 public class BookServiceImpl implements IBookService {
     @Autowired
     private BookRepository bookRepository;
+
     @Override
     public ResponseEntity<?> insertBook(BookDTO bookDTO) {
-        bookRepository.save(new Book(bookDTO.title, bookDTO.isbn));
-        return ResponseUtil.createOK(bookDTO);
+        //bookRepository.save(new Book(bookDTO.title, book.isbn));
+        return ResponseUtil.createOK(null);
     }
 
     @Override
     public ResponseEntity<?> updateBook(BookDTO bookDTO) {
-        bookRepository.save(new Book(bookDTO.title, bookDTO.isbn));
+        //bookRepository.save(new Book(bookDTO.title, bookDTO.isbn));
         return ResponseUtil.createOK(bookDTO);
     }
 
     @Override
     public ResponseEntity<?> deleteBook(long bookId) {
-        bookRepository.deleteById(bookId);
+        //bookRepository.deleteById(bookId);
         return ResponseUtil.deleteOK(HTTPConst.MESSAGE);
     }
 
     @Override
     public ResponseEntity<?> getBook(int bookId) {
-        Optional<Book> result = bookRepository.findById(bookId);
-        if (result.isPresent()) {
-            return ResponseUtil.createOK(result, HTTPConst.STATUS_CODE);
+        Optional<Book> optBook = bookRepository.findById(bookId);
+        if (optBook.isPresent()) {
+            return ResponseUtil.createOK(optBook.get(), HTTPConst.STATUS_CODE);
         } else {
-            return ResponseUtil.createNotFound(HTTPConst.STATUS_CODE);
+            return ResponseUtil.createNotFound(String.format("Book ID[%d] is NOT FOUND"));
         }
     }
 

@@ -12,5 +12,4 @@ public class LmsAdminApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(LmsAdminApplication.class, args);
 	}
-
 }

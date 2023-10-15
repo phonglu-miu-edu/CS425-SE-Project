@@ -11,8 +11,13 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class BookDTO {
-    public Integer id;
-    public String title;
-    public String isbn;
+public class BookDTO
+{
+    private Integer id;
+
+    private String title;
+
+    private String isbn;
+
+    private String authors;
 }

@@ -17,7 +17,8 @@ public class BookCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    public String categoryName;
 
-    public String description;
+    private String categoryName;
+
+    private String description;
 }

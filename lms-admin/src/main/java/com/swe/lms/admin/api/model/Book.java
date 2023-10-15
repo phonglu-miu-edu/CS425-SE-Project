@@ -17,11 +17,14 @@ import javax.validation.constraints.NotBlank;
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public Integer id;
+    private Integer id;
 
     @NotBlank
-    public String title;
+    private String title;
 
     @NotBlank
-    public String isbn;
+    private String isbn;
+
+    @NotBlank
+    private String authors;
 }

@@ -13,4 +13,14 @@ public class UserAdapter {
                 .lastName(user.getLastName())
                 .build();
     }
+
+    public static User convertToUser(UserDTO userDTO) {
+        return User.builder()
+                .id(userDTO.getId())
+                .userName(userDTO.getUserName())
+                .roleCd(userDTO.getRoleCd())
+                .firstName(userDTO.getFirstName())
+                .lastName(userDTO.getLastName())
+                .build();
+    }
 }
