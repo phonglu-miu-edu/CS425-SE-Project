@@ -149,7 +149,6 @@
          "email": "baonguyen@miu.edu",
          "phoneNumber": "6418197777",
          "address": "13120 Chellen Dr, Dallas, TX 12345, US"
-
       },
       "message": "Updated user information successfully."
    }
@@ -184,7 +183,6 @@
          "email": "baonguyen@miu.edu"
          "phoneNumber": "6418196666",
          "address": "13120 Chellen Dr, Dallas, TX 12345, US"
-
       }
    }
    ```
@@ -269,9 +267,9 @@
    ```
      - #### 2.9 Get Book Category
        - Method: GET
-       - URL: /lms/admin/users/{userId}
+       - URL: /lms/admin/book_categories/{bookCategoryId}
        - Parameter(s):
-         - userId: user ID
+         - bookCategoryId: book Category ID
        - Response:
    ```
    {
@@ -285,7 +283,7 @@
    ```
      - #### 2.10 Search Book Categories
        - Method: GET
-       - URL: /lms/admin/users/search
+       - URL: /lms/admin/book_categories/search
        - Query Parameter(s):
          - q: query String
        - Response:
@@ -299,6 +297,208 @@
            "description": "Java related books"
          }
       ]
+   }
+   ```
+     - #### 2.11 Add Book
+         - Method: POST
+         - URL: /lms/admin/books
+         - Body:
+   ```
+   {
+      "title": "Core Java",
+      "isbn": "1000",
+      "authors": "Effective Java",
+      "numOfCopies": 5,
+      "bookCategoryId": 1
+   }
+   ```
+       - Response:
+   ```
+   {
+      "status_code": 200,
+      "data": {
+         "id": 1,
+         "title": "Core Java",
+         "isbn": "1000",
+         "authors": "Effective Java",
+         "numOfCopies": 5,
+         "bookCategoryId": 1
+      }
+   }
+   ```
+     - #### 2.12 Update Book
+       - Method: PUT
+       - URL: /lms/admin/books/{bookId}
+       - Parameter(s):
+           - bookId: book ID
+       - Body:
+   ```
+   {
+      "title": "Core Java",
+      "isbn": "1000",
+      "authors": "Effective Java",
+      "numOfCopies": 5,
+      "bookCategoryId": 1
+   }
+   ```
+       - Response:
+   ```
+   {
+      "status_code": 200,
+      "data": {
+         "id": 1,
+         "title": "Core Java",
+         "isbn": "1000",
+         "authors": "Effective Java",
+         "numOfCopies": 5,
+         "bookCategoryId": 1
+      },
+      "message": "Updated book information successfully."
+   }
+   ```
+     - #### 2.13 Delete Book
+       - Method: DELETE
+       - URL: /lms/admin/books/{bookId}
+       - Parameter(s):
+           - bookId: book ID
+       - Response:
+   ```
+   {
+      "status_code": 200,
+      "data": "Deleted book successfully."
+   }
+   ```
+     - #### 2.14 Get Book
+       - Method: GET
+       - URL: /lms/admin/books/{bookId}
+       - Parameter(s):
+           - userId: book ID
+       - Response:
+   ```
+   {
+      "status_code": 200,
+      "data": {
+         "id": 1,
+         "categoryName": "Java",
+         "description": "Java related books"
+      }
+   }
+   ```
+     - #### 2.15 Search Book
+       - Method: GET
+       - URL: /lms/admin/books/search
+       - Query Parameter(s):
+             - q: query String
+       - Response:
+   ```
+   {
+      "status_code": 200,
+      "data": [ 
+         {
+            "id": 1,
+            "title": "Core Java",
+            "isbn": "1000",
+            "authors": "Effective Java",
+            "numOfCopies": 5,
+            "bookCategoryId": 1
+         }
+      ]
+   }
+   ```
+     - #### 2.16 Get all configuration items
+       - Method: GET
+       - URL: /lms/admin/confis
+       - Response:
+   ```
+   {
+      "status_code": 200,
+      "data": [ 
+         {
+            "id": 1,
+            "itemName": "Number of days is free to borrow",
+            "itemValue": "30"
+         },
+         {
+            "id": 2,
+            "itemName": "Fine for overdue (per day)",
+            "itemValue": "5"
+         },
+         {
+            "id": 3,
+            "itemName": "Maximum number of books can borrow",
+            "itemValue": "3"
+         },
+         {
+            "id": 4,
+            "itemName": "Number of overdues to be suspended",
+            "itemValue": "3"
+         },
+         {
+            "id": 5,
+            "itemName": "Number of overdues to be locked",
+            "itemValue": "5"
+         },
+         {
+            "id": 6,
+            "itemName": "Number of suspended days",
+            "itemValue": "30"
+         },
+         {
+            "id": 7,
+            "itemName": "Number of days to be reminded",
+            "itemValue": "30"
+         }
+      ]
+   }
+   ```
+     - #### 2.17 Update Configuration
+       - Method: PUT
+       - URL: /lms/admin/configs
+       - Body:
+   ```
+   [
+     {
+        "id": 1,
+        "itemName": "Number of days is free to borrow",
+        "itemValue": "30"
+     },
+     {
+        "id": 2,
+        "itemName": "Fine for overdue (per day)",
+        "itemValue": "5"
+     },
+     {
+        "id": 3,
+        "itemName": "Maximum number of books can borrow",
+        "itemValue": "3"
+     },
+     {
+        "id": 4,
+        "itemName": "Number of overdues to be suspended",
+        "itemValue": "3"
+     },
+     {
+        "id": 5,
+        "itemName": "Number of overdues to be locked",
+        "itemValue": "5"
+     },
+     {
+        "id": 6,
+        "itemName": "Number of suspended days",
+        "itemValue": "30"
+     },
+     {
+        "id": 7,
+        "itemName": "Number of days to be reminded",
+        "itemValue": "30"
+     }
+   ]
+   ```
+       - Response:
+   ```
+   {
+      "status_code": 200,
+      "data": "Configuration items are updated successfully."
    }
    ```
 

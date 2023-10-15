@@ -28,4 +28,8 @@ public class UserDTO {
     private String phoneNumber;
 
     private String address;
+
+    private String status;
+
+    private Integer numOfOverdues;
 }

@@ -43,4 +43,10 @@ public class User {
 
     @NotNull
     private String address;
+
+    @NotNull
+    private String status;
+
+    @NotNull
+    private Integer numOfOverdues;
 }

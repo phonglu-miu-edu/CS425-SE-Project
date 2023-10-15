@@ -15,6 +15,8 @@ public class UserAdapter {
                 .email(user.getEmail())
                 .phoneNumber(user.getPhoneNumber())
                 .address(user.getAddress())
+                .status(user.getStatus())
+                .numOfOverdues(user.getNumOfOverdues())
                 .build();
     }
 
@@ -29,6 +31,8 @@ public class UserAdapter {
                 .address(userDTO.getAddress())
                 .phoneNumber(userDTO.getPhoneNumber())
                 .email(userDTO.getEmail())
+                .status(userDTO.getStatus())
+                .numOfOverdues(userDTO.getNumOfOverdues())
                 .build();
     }
 }

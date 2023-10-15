@@ -1,6 +1,7 @@
 package com.swe.lms.admin.api.service.impl;
 
 import com.swe.lms.admin.api.adapter.UserAdapter;
+import com.swe.lms.admin.api.constant.UserStatus;
 import com.swe.lms.admin.api.dto.UserDTO;
 import com.swe.lms.admin.api.model.User;
 import com.swe.lms.admin.api.repository.UserRepository;
@@ -35,6 +36,8 @@ public class UserServiceImpl implements IUserService  {
                 return ResponseUtil.createBadRequest(String.format("Username [%s] is already existed", userName));
             }
             User user = UserAdapter.convertToUser(userDTO);
+            user.setStatus(UserStatus.ACTIVE.getValue());
+            user.setNumOfOverdues(0);
             user = userRepository.save(user);
             return ResponseUtil.createOK(UserAdapter.convertToUserDTO(user), "User is created successfully.");
         } catch (Exception ex) {
