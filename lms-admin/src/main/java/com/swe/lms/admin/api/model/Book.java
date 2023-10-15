@@ -30,5 +30,8 @@ public class Book {
     private String authors;
 
     @NotNull
+    private Integer numOfCopies;
+
+    @NotNull
     private Integer bookCategoryId;
 }

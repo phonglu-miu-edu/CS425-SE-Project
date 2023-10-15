@@ -21,5 +21,7 @@ public class BookDTO
 
     private String authors;
 
+    private Integer numOfCopies;
+
     private Integer bookCategoryId;
 }

@@ -15,10 +15,10 @@ const Home = () => {
         <div className="container-fluid home">
             <Slider {...settings}>
                 <div>
-                    <img className="pic" src="/slider-1.jpeg" alt="slider-1" />
+                    <img className="pic" src="/slider-1.jpg" alt="slider-1" />
                 </div>
                 <div>
-                    <img className="pic" src="/slider-2.jpg" alt="slider-1" />
+                    <img className="pic" src="/slider-2.jpg" alt="slider-2" />
                 </div>
             </Slider>
             <div className="widget">

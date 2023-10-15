@@ -11,6 +11,11 @@ public class UserAdapter {
                 .roleCd(user.getRoleCd())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
+                .email(user.getEmail())
+                .phoneNumber(user.getPhoneNumber())
+                .address(user.getAddress())
+                .status(user.getStatus())
+                .numOfOverdues(user.getNumOfOverdues())
                 .build();
     }
 
@@ -22,6 +27,11 @@ public class UserAdapter {
                 .roleCd(userDTO.getRoleCd())
                 .firstName(userDTO.getFirstName())
                 .lastName(userDTO.getLastName())
+                .address(userDTO.getAddress())
+                .phoneNumber(userDTO.getPhoneNumber())
+                .email(userDTO.getEmail())
+                .status(userDTO.getStatus())
+                .numOfOverdues(userDTO.getNumOfOverdues())
                 .build();
     }
 }

@@ -1,13 +1,11 @@
 package com.swe.lms.admin.api.adapter;
 
 import com.swe.lms.admin.api.dto.BookCategoryDTO;
-import com.swe.lms.admin.api.dto.BookDTO;
-import com.swe.lms.admin.api.model.Book;
 import com.swe.lms.admin.api.model.BookCategory;
 
 public class BookCategoryAdapter {
 
-    public static BookCategoryDTO convertToBookDTO(BookCategory bookCategory) {
+    public static BookCategoryDTO convertToBookCategoryDTO(BookCategory bookCategory) {
         return BookCategoryDTO.builder()
                 .id(bookCategory.getId())
                 .categoryName(bookCategory.getCategoryName())

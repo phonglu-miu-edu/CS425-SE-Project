@@ -1,0 +1,7 @@
+POST {{authenticationService}}/lms/auth/login
+Content-Type: application/json;
+
+{
+    "userName": "phong",
+    "password": "123"
+}

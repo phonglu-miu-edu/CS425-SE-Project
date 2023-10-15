@@ -8,9 +8,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface BookRepository extends JpaRepository<Book, Long> {
+public interface BookRepository extends JpaRepository<Book, Integer> {
     List<Book> findByTitleContaining(String title);
 
-    Optional<Book> findById(Integer id);
-
+    List<Book> findByBookCategoryId(Integer bookCategoryId);
 }
