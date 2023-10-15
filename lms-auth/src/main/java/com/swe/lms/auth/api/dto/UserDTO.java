@@ -1,4 +1,4 @@
-package com.swe.lms.admin.api.dto;
+package com.swe.lms.auth.api.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,8 +18,4 @@ public class UserDTO {
     private String password;
 
     private String roleCd;
-
-    private String firstName;
-
-    private String lastName;
 }

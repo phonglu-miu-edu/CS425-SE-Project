@@ -1,12 +1,13 @@
 server:
   port: 8083
-
+spring:
+  cloud:
+    bootstrap:
+      enabled: true
+  application:
+    name: AdminService
 eureka:
   client:
     service-url:
       defaultZone:
         http://localhost:8761/eureka
-
-spring:
-  application:
-    name: AdminService

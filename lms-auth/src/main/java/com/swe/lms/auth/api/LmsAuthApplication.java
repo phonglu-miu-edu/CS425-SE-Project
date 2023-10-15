@@ -1,4 +1,4 @@
-package com.swe.lms.admin.api;
+package com.swe.lms.auth.api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,9 +8,10 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients
-public class LmsAdminApplication {
+public class LmsAuthApplication {
+
 	public static void main(String[] args) {
-		SpringApplication.run(LmsAdminApplication.class, args);
+		SpringApplication.run(LmsAuthApplication.class, args);
 	}
 
 }

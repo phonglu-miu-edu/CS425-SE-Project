@@ -7,21 +7,31 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name="Book")
+@Table(name="Users")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Book {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public Integer id;
+    private Integer id;
 
-    @NotBlank
-    public String title;
+    @NotNull
+    private String userName;
 
-    @NotBlank
-    public String isbn;
+    @NotNull
+    private String password;
+
+    @NotNull
+    private String roleCd;
+
+    @NotNull
+    private String firstName;
+
+    @NotNull
+    private String lastName;
 }

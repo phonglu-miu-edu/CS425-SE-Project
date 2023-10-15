@@ -1,14 +1,18 @@
-package com.swe.lms.book.model;
+package com.swe.lms.admin.api.model;
 
-import org.springframework.boot.autoconfigure.domain.EntityScan;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-@EntityScan
 @Entity
+@Table(name="BookCategory")
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class BookCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -16,32 +20,4 @@ public class BookCategory {
     public String categoryName;
 
     public String description;
-
-    public BookCategory(String categoryName, String description) {
-        this.categoryName = categoryName;
-        this.description = description;
-    }
-
-    public BookCategory() {
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 }

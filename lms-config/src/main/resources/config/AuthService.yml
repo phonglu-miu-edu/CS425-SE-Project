@@ -1,5 +1,5 @@
 swe:
-  lsm:
+  lms:
     auth:
       api:
         cookie_token: LMS_TOKEN
@@ -9,24 +9,6 @@ token:
   key: swede
   issuer: sweproject
 
-spring:
-  datasource:
-    url: jdbc:h2:file:../database/lmsdb
-    driverClassName: org.h2.Driver
-    username: sa
-    password: password
-  jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
-    hibernate:
-      ddl-auto: create
-    show-sql: true
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.HSQLDialect
-  h2:
-    console:
-      enabled: true
-      path: /h2-ui
 logging:
   level:
     root: ERROR
