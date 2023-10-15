@@ -18,6 +18,7 @@ public class UserAdapter {
         return User.builder()
                 .id(userDTO.getId())
                 .userName(userDTO.getUserName())
+                .password(userDTO.getPassword())
                 .roleCd(userDTO.getRoleCd())
                 .firstName(userDTO.getFirstName())
                 .lastName(userDTO.getLastName())
