@@ -100,7 +100,7 @@ public class AuthServiceImpl implements IAuthService {
                 return ResponseUtil.createBadRequest("Verify token failed. Token can't be NULL or EMPTY.");
             }
             CommonTokenDTO tokenDTO = decodeToken(token);
-            setCookies(domain, tokenDTO.getUser_id(), tokenDTO.getRole_cd(), token, 600);
+            setCookies(domain, tokenDTO.getUserName(), tokenDTO.getRoleCd(), token, 600);
             return ResponseUtil.createOK(tokenDTO, "TOKEN IS VERIFIED SUCCESSFULLY");
         } catch (Exception ex) {
             String errMessage = ExceptionUtil.getStackTrace(ex);
@@ -124,16 +124,20 @@ public class AuthServiceImpl implements IAuthService {
         if (StringUtils.isBlank(userName) || StringUtils.isBlank(password)) {
             return ResponseUtil.createBadRequest("The user must enter both user name and password.");
         }
-        ResponseEntity<Map<String, Object>> loginUserResponse = userFeignClient.getLoginUser(userDTO);
-        if (loginUserResponse.getStatusCodeValue() != HttpStatus.OK.value()) {
+        try {
+            ResponseEntity<Map<String, Object>> loginUserResponse = userFeignClient.getLoginUser(userDTO);
+            if (loginUserResponse.getStatusCodeValue() != HttpStatus.OK.value()) {
+                return ResponseUtil.createUnauthorize("Either user name or password is incorrect. Please try again.");
+            }
+            Map<String, Object> mapValue = (Map<String, Object>) loginUserResponse.getBody().get(HTTPConst.DATA);
+            String roleCd = mapValue.get(DTOConst.ROLE_CD).toString();
+            String token = getToken(userDTO.getUserName(), roleCd);
+            setCookies(domain, userDTO.getUserName(), roleCd, token, 600);
+
+            return ResponseUtil.createOK(loginUserResponse.getBody().get(HTTPConst.DATA));
+        } catch (Exception ex) {
             return ResponseUtil.createUnauthorize("Either user name or password is incorrect. Please try again.");
         }
-        Map<String, Object> mapValue = (Map<String, Object>) loginUserResponse.getBody().get(HTTPConst.DATA);
-        String roleCd = mapValue.get(DTOConst.FIELD_ROLE_CD).toString();
-        String token = getToken(userDTO.getUserName(), roleCd);
-        setCookies(domain, userDTO.getUserName(), roleCd, token, 600);
-
-        return ResponseUtil.createOK(loginUserResponse.getBody().get(HTTPConst.DATA));
     }
 
     @Override
@@ -153,9 +157,9 @@ public class AuthServiceImpl implements IAuthService {
 
         CommonTokenDTO tokenDTO = new CommonTokenDTO();
 
-        tokenDTO.setUser_id(jwt.getClaim(DTOConst.ID).asString());
-        tokenDTO.setRole_cd(jwt.getClaim(DTOConst.ROLE_CD).asString());
-        tokenDTO.setCre_dt(jwt.getClaim(DTOConst.CRE_DT).asLong());
+        tokenDTO.setUserName(jwt.getClaim(DTOConst.ID).asString());
+        tokenDTO.setRoleCd(jwt.getClaim(DTOConst.ROLE_CD).asString());
+        tokenDTO.setCreDt(jwt.getClaim(DTOConst.CRE_DT).asLong());
 
         return tokenDTO;
     }

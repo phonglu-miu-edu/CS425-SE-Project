@@ -55,7 +55,7 @@
      ```
      {
         "status_code": 200,
-       "data": "The user has logged out successfully."
+        "data": "The user has logged out successfully."
       }
      ```
    - #### Verify
@@ -69,9 +69,9 @@
      {
         "status_code": 200,
         "data": {
-            "user_id": "bao",
-            "role_cd": "Admin",
-            "cre_dt": "2023-10-13 23:38:48"
+            "userName": "bao",
+            "roleCd": "Admin",
+            "creDt": "2023-10-13 23:38:48"
         },
         "message": "TOKEN IS VERIFIED SUCCESSFULLY"
      }
