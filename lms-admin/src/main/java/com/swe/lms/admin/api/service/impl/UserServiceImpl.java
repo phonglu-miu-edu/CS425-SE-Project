@@ -46,12 +46,12 @@ public class UserServiceImpl implements IUserService  {
     @Override
     public ResponseEntity<?> updateUser(UserDTO userDTO) {
         Optional<User> optUser = userRepository.findById(userDTO.getId());
-        if (!optUser.isPresent()) {
-            return ResponseUtil.createNotFound(String.format("User ID [%d] is not found.", userDTO.getId()));
+        if (optUser.isPresent()) {
+            User user = UserAdapter.convertToUser(userDTO);
+            userRepository.save(user);
+            return ResponseUtil.createOK(userDTO, "Updated user information successfully.");
         }
-        User user = UserAdapter.convertToUser(userDTO);
-        userRepository.save(user);
-        return ResponseUtil.createOK(userDTO, "Updated user information successfully.");
+        return ResponseUtil.createNotFound(String.format("User ID [%d] is not found.", userDTO.getId()));
     }
 
     @Override

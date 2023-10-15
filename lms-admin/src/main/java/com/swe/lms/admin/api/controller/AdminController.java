@@ -75,6 +75,7 @@ public class AdminController {
 
     @PutMapping("/books/{bookId}")
     public ResponseEntity<?> updateBook(@PathVariable(name="bookId") int bookId, @RequestBody BookDTO bookDTO) {
+        bookDTO.setId(bookId);
         return bookService.updateBook(bookDTO);
     }
 
@@ -102,7 +103,8 @@ public class AdminController {
     }
 
     @PutMapping("/book_categories/{bookCategoryId}")
-    public ResponseEntity<?> updateBook(@PathVariable(name="bookCategoryId") int bookId, @RequestBody BookCategoryDTO bookCategoryDTO) {
+    public ResponseEntity<?> updateBook(@PathVariable(name="bookCategoryId") int bookCategoryId, @RequestBody BookCategoryDTO bookCategoryDTO) {
+        bookCategoryDTO.setId(bookCategoryId);
         return bookCategoryService.updateBookCategory(bookCategoryDTO);
     }
 
@@ -121,5 +123,4 @@ public class AdminController {
         Map<String, Object> mapParams = new HashMap<>(StringUtil.parseQueryParam(strQuery, LmsConst.PARAM_DELIM));
         return bookCategoryService.searchBookCategories(mapParams);
     }
-
 }

@@ -4,4 +4,6 @@ public class DTOConst {
     public final static String ID    			= "id";
     public final static String ROLE_CD     		= "role_cd";
     public final static String CRE_DT        	= "cre_dt";
+
+    public final static String FIELD_ROLE_CD    = "roleCd";
 }

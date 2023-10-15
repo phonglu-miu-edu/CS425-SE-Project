@@ -5,6 +5,7 @@ import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swe.lms.auth.api.config.AppConfig;
 import com.swe.lms.auth.api.config.TokenConfig;
 import com.swe.lms.auth.api.constant.DTOConst;
@@ -128,15 +129,11 @@ public class AuthServiceImpl implements IAuthService {
             return ResponseUtil.createUnauthorize("Either user name or password is incorrect. Please try again.");
         }
         Map<String, Object> mapValue = (Map<String, Object>) loginUserResponse.getBody().get(HTTPConst.DATA);
-        return ResponseUtil.createOK(loginUserResponse.getBody().get(HTTPConst.DATA));
-//        Optional<User> optUser = userRepository.findByUserNameAndPassword(userName, password);
-//        if (optUser.isPresent()) {
-//            User user = optUser.get();
-//            String token = getToken(user.getUserName(), user.getRoleCd());
-//            setCookies(domain, user.getUserName(), user.getRoleCd(), token, 600);
-//            return ResponseUtil.createOK(UserAdapter.convertToUserDTO(user));
-//        }
+        String roleCd = mapValue.get(DTOConst.FIELD_ROLE_CD).toString();
+        String token = getToken(userDTO.getUserName(), roleCd);
+        setCookies(domain, userDTO.getUserName(), roleCd, token, 600);
 
+        return ResponseUtil.createOK(loginUserResponse.getBody().get(HTTPConst.DATA));
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.swe.lms.admin.api.service.impl;
 
+import com.swe.lms.admin.api.adapter.BookAdapter;
 import com.swe.lms.admin.api.constant.HTTPConst;
 import com.swe.lms.admin.api.constant.LmsConst;
 import com.swe.lms.admin.api.dto.BookDTO;
@@ -25,20 +26,31 @@ public class BookServiceImpl implements IBookService {
 
     @Override
     public ResponseEntity<?> insertBook(BookDTO bookDTO) {
-        //bookRepository.save(new Book(bookDTO.title, book.isbn));
-        return ResponseUtil.createOK(null);
-    }
-
-    @Override
-    public ResponseEntity<?> updateBook(BookDTO bookDTO) {
-        //bookRepository.save(new Book(bookDTO.title, bookDTO.isbn));
+        Book book = BookAdapter.convertToBook(bookDTO);
+        book = bookRepository.save(book);
+        bookDTO.setId(book.getId());
         return ResponseUtil.createOK(bookDTO);
     }
 
     @Override
-    public ResponseEntity<?> deleteBook(long bookId) {
-        //bookRepository.deleteById(bookId);
-        return ResponseUtil.deleteOK(HTTPConst.MESSAGE);
+    public ResponseEntity<?> updateBook(BookDTO bookDTO) {
+        Optional<Book> optBook = bookRepository.findById(bookDTO.getId());
+        if (optBook.isPresent()) {
+            Book book = BookAdapter.convertToBook(bookDTO);
+            bookRepository.save(book);
+            return ResponseUtil.createOK(bookDTO, String.format("Book [%d] is updated", bookDTO.getId()));
+        }
+        return ResponseUtil.createNotFound(String.format("Book ID [%d] is not found.", bookDTO.getId()));
+    }
+
+    @Override
+    public ResponseEntity<?> deleteBook(int bookId) {
+        Optional<Book> optBook = bookRepository.findById(bookId);
+        if (optBook.isPresent()) {
+            bookRepository.deleteById(bookId);
+            return ResponseUtil.createOK(optBook.get(), String.format("Book [%d] is deleted successfully", bookId));
+        }
+        return ResponseUtil.createNotFound(String.format("Book ID [%d] is not found.", bookId));
     }
 
     @Override
@@ -47,7 +59,7 @@ public class BookServiceImpl implements IBookService {
         if (optBook.isPresent()) {
             return ResponseUtil.createOK(optBook.get(), HTTPConst.STATUS_CODE);
         } else {
-            return ResponseUtil.createNotFound(String.format("Book ID[%d] is NOT FOUND"));
+            return ResponseUtil.createNotFound(String.format("Book ID[%d] is not found."));
         }
     }
 
