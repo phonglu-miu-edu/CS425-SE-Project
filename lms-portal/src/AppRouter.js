@@ -1,4 +1,3 @@
-import Dashboard from 'components/Dashboard/Dashboard';
 import Home from 'components/Home/Home';
 import PageNotFound from 'components/PageNotFound/PageNotFound';
 import { PrivateRoute } from 'components/PrivateRoute';
@@ -10,6 +9,7 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import './App.css';
 import PropertySearchList from './components/PropertyList/PropertySearchList';
 import FavoriteProperty from "./components/FavoriteProperty/FavoriteProperty";
+import Login from "./components/Login/Login";
 
 function AppRouter() {
     let location = useLocation();
@@ -19,11 +19,11 @@ function AppRouter() {
         <div>
             <Routes location={background || location}>
                 <Route exact path="/" element={<Home />} />
-                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/login" element={<Login />} />
                 <Route path="/property-list" element={<PropertySearchList />} />
                 <Route path="/property-detail/:id" element={<PropertyDetail open={true} />} />
                 <Route path="/property" element={<Property />} />
-                <Route path="/favorites" element={<FavoriteProperty/>} />
+                <Route path="/favorites" element={<FavoriteProperty />} />
                 <Route path="/secured" element={
                     <PrivateRoute>
                         <SecuredPage />

@@ -1,9 +1,7 @@
-import { useKeycloak } from "@react-keycloak/web";
+import { useCookies } from 'react-cookie';
 
 export const PrivateRoute = ({ children }) => {
-    const { keycloak } = useKeycloak();
+    const [cookie, setCookie, removeCookie] = useCookies(['LMS_TOKEN']);
 
-    const isLoggedIn = keycloak.authenticated;
-
-    return isLoggedIn ? children : null;
+    return cookie ? children : null;
 }

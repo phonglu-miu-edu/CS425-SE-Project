@@ -2,19 +2,19 @@ import { getToken } from 'Utils';
 import axios from 'axios';
 import Constants from 'Constants';
 
-const axiosInstance = axios.create({
-  baseURL: Constants.BASE_URL
+const authService = axios.create({
+    baseURL: Constants.AUTH_URL
 });
 
-axiosInstance.interceptors.request.use(
+authService.interceptors.request.use(
     (config) => {
-        const { origin } = new URL(config.url, Constants.BASE_URL);
-        const allowedOrigin = [Constants.BASE_URL];
-        const token = getToken();
-
-        if (token && allowedOrigin.includes(origin)) {
-            config.headers = { Authorization: `Bearer ${token}` };
-        }
+        // const {origin} = new URL(config.url, Constants.AUTH_URL);
+        // const allowedOrigin = [Constants.AUTH_URL];
+        // const token = getToken();
+        //
+        // if (token && allowedOrigin.includes(origin)) {
+        //     config.headers = {Authorization: `Bearer ${token}`};
+        // }
 
         return config;
     },
@@ -22,5 +22,9 @@ axiosInstance.interceptors.request.use(
         return Promise.reject(error);
     }
 );
+
+const axiosInstance = {
+    authService
+};
 
 export default axiosInstance;

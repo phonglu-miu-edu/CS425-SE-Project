@@ -232,27 +232,34 @@ header {
         border: 1px solid #fff;
       }
     }
-  }
 
-  @media (max-width: 991px) {
-    .responsive-menu {
+    .header-empty {
       display: block;
-
-      .slicknav_menu {
-        .slicknav_btn {
-          margin-top: 2px;
-        }
-      }
+      text-transform: capitalize;
+      padding: 9px 10px;
+      font-weight: 600;
+      width: 150px;
     }
+}
 
-    .mainmenu,
-    .header-action {
-      display: none;
-    }
+@media (max-width: 991px) {
+.responsive-menu {
+  display: block;
 
-
-    .header-main-area:before {
-      content: none;
+  .slicknav_menu {
+    .slicknav_btn {
+      margin-top: 2px;
     }
   }
+}
+
+.mainmenu,
+.header-action {
+  display: none;
+}
+
+.header-main-area:before {
+  content: none;
+}
+}
 }
