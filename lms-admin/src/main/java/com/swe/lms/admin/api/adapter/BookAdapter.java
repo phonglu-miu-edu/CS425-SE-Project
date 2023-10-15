@@ -10,6 +10,7 @@ public class BookAdapter {
                 .title(book.getTitle())
                 .authors(book.getAuthors())
                 .isbn(book.getIsbn())
+                .numOfCopies(book.getNumOfCopies())
                 .bookCategoryId(book.getBookCategoryId())
                 .build();
     }
@@ -19,6 +20,7 @@ public class BookAdapter {
                 .title(bookDTO.getTitle())
                 .authors(bookDTO.getAuthors())
                 .isbn(bookDTO.getIsbn())
+                .numOfCopies(bookDTO.getNumOfCopies())
                 .bookCategoryId(bookDTO.getBookCategoryId())
                 .build();
     }
