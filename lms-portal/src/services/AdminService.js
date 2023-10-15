@@ -15,6 +15,20 @@ export const getAllCategories = createAsyncThunk(
         return result.data;
     });
 
+export const deleteUser = createAsyncThunk(
+    'users/delete',
+    async (id) => {
+        const result = await axiosInstance.adminService.delete('/lms/admin/users/' + id, {withCredentials: true});
+        return result.data;
+    });
+
+export const createUser = createAsyncThunk(
+    'users/edit',
+    async (user) => {
+        const result = await axiosInstance.adminService.post('/lms/admin/users', user, {withCredentials: true});
+        return result.data;
+    });
+
 export const editUser = createAsyncThunk(
     'users/edit',
     async ({id, user}) => {
@@ -30,7 +44,7 @@ export const getAllUsers = createAsyncThunk(
     });
 
 export const getUser = createAsyncThunk(
-    'users/getById',
+    'users/get',
     async (id) => {
         const result = await axiosInstance.adminService.get('/lms/admin/users/' + id, {withCredentials: true});
         return result.data;

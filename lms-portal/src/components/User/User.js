@@ -1,10 +1,7 @@
 import {
     Button,
     Card,
-    Checkbox,
     FormControl,
-    FormControlLabel,
-    FormGroup,
     FormLabel,
     InputLabel,
     MenuItem,
@@ -15,7 +12,7 @@ import { debounce } from 'lodash';
 import Grid from '@mui/material/Unstable_Grid2';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { editUser, getAllUsers, getUser } from 'services/AdminService';
+import { createUser, deleteUser, editUser, getAllUsers, getUser } from 'services/AdminService';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -81,30 +78,32 @@ const Profile = () => {
 
     const onAddressChange = e => setAddress(e.target.value);
 
-    const onStatusChange = e => setRole(e.target.value);
+    const onStatusChange = e => setStatus(e.target.value);
 
     const onSubmit = e => {
-        const user = {
-            id,
-            userName: username,
-            roleCd: role,
-            firstName,
-            lastName,
-            email,
-            phoneNumber,
-            address,
-            status
-        };
+        if (username) {
+            const user = {
+                id,
+                userName: username,
+                roleCd: role,
+                firstName,
+                lastName,
+                email,
+                phoneNumber,
+                address,
+                status
+            };
 
-        dispatch(editUser({id, user}))
-            .then(res => {
-                if (res.payload && res.payload.status_code == 200) {
-                    setAlertContent(res.payload.message);
-                    setOpenAlert(true);
-                    resetForm();
-                    search(searchText);
-                }
-            });
+            dispatch(id ? editUser({id, user}) : createUser(user))
+                .then(res => {
+                    if (res.payload && res.payload.status_code == 200) {
+                        setAlertContent(res.payload.message);
+                        setOpenAlert(true);
+                        resetForm();
+                        search(searchText);
+                    }
+                });
+        }
     };
 
     const onEditClick = id =>
@@ -128,7 +127,19 @@ const Profile = () => {
                 }
             });
 
-    const onDeleteClick = id => console.log(id);
+    const onDeleteClick = (user) => {
+        if (window.confirm(`Do you want to delete user ${user.userName}?`)) {
+            dispatch(deleteUser(user.id))
+                .then(res => {
+                    if (res.payload && res.payload.status_code == 200) {
+                        setAlertContent(`User ${user.userName} is deleted`);
+                        setOpenAlert(true);
+                        resetForm();
+                        search(searchText);
+                    }
+                });
+        }
+    }
 
     const resetForm = () => {
         setId(null);
@@ -247,7 +258,13 @@ const Profile = () => {
                         <div className="row">
                             <div className="col-md-12">
                                 <Grid container justifyContent="center">
-                                    <Button variant="contained" color="primary" onClick={onSubmit}>Save</Button>
+                                    {!isEdit && <Button variant="contained" color="primary" onClick={onSubmit}>Add</Button>}
+                                    {isEdit && (
+                                        <>
+                                            <Button variant="contained" color="primary" onClick={onSubmit} style={{marginRight: '10px'}}>Update</Button>
+                                            <Button onClick={resetForm}>Cancel</Button>
+                                        </>
+                                    )}
                                 </Grid>
                             </div>
                         </div>
@@ -260,7 +277,7 @@ const Profile = () => {
                     <TextField fullWidth value={searchText} onChange={onSearchTextChange} />
                 </div>
                 <TableContainer component={Paper}>
-                    <Table sx={{minWidth: 650}} aria-label="simple table">
+                    <Table stickyHeader sx={{minWidth: 650}} aria-label="simple table">
                         <TableHead>
                             <TableRow>
                                 <TableCell>Username</TableCell>
@@ -268,6 +285,7 @@ const Profile = () => {
                                 <TableCell>Last name</TableCell>
                                 <TableCell>Role</TableCell>
                                 <TableCell>Overdue amount</TableCell>
+                                <TableCell>Status</TableCell>
                                 <TableCell>&nbsp;</TableCell>
                             </TableRow>
                         </TableHead>
@@ -283,9 +301,10 @@ const Profile = () => {
                                 <TableCell>{row.lastName}</TableCell>
                                 <TableCell>{row.roleCd}</TableCell>
                                 <TableCell>{row.numOfOverdues || 0}</TableCell>
+                                <TableCell>{row.status}</TableCell>
                                 <TableCell>
                                     <ActionIcon icon={<EditIcon onClick={() => onEditClick(row.id)} />} />
-                                    <ActionIcon icon={<CancelIcon onClick={() => onDeleteClick(row.id)} />} />
+                                    <ActionIcon icon={<CancelIcon onClick={() => onDeleteClick(row)} />} />
                                 </TableCell>
                             </TableRow>)}
                         </TableBody>
