@@ -20,4 +20,6 @@ public class BookDTO
     private String isbn;
 
     private String authors;
+
+    private Integer bookCategoryId;
 }
