@@ -1,7 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "./AxiosService";
 
-
 export const getAllProperties = createAsyncThunk(
   'properties/fetchAll',
   async () => {

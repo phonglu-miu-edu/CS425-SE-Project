@@ -69,10 +69,16 @@ const Header = () => {
                                         {role === "Admin" && (
                                             <>
                                                 <li>
-                                                    <Link to="/category">Category</Link>
+                                                    <Link to="/user">Users</Link>
                                                 </li>
                                                 <li>
-                                                    <Link to="/book">Book</Link>
+                                                    <Link to="/category">Categories</Link>
+                                                </li>
+                                                <li>
+                                                    <Link to="/book">Books</Link>
+                                                </li>
+                                                <li>
+                                                    <Link to="/config">Configuration</Link>
                                                 </li>
                                             </>
                                         )}
@@ -86,10 +92,12 @@ const Header = () => {
                                                 </li>
                                             </>
                                         )}
-                                        {role === "User" && (
-                                            <li>
-                                                <Link to="/return">Return</Link>
-                                            </li>
+                                        {role === "Profile" && (
+                                            <>
+                                                <li>
+                                                    <Link to="/my_book">My books</Link>
+                                                </li>
+                                            </>
                                         )}
                                     </ul>
                                 </nav>
@@ -97,7 +105,7 @@ const Header = () => {
                         </div>
                         <div className="col-lg-2">
                             <div className="header-action">
-                                <span className="header-empty">&nbsp;</span>
+                                <Link to="/profile">My Profile</Link>
                             </div>
                         </div>
                     </div>
