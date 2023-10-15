@@ -5,65 +5,52 @@ import { useNavigate } from 'react-router';
 
 const SearchWidget = () => {
     const nav = useNavigate();
-    const [street, setStreet] = useState('');
-    const [city, setCity] = useState('');
-    const [zipCode, setZipCode] = useState('');
+    const [name, setName] = useState('');
 
-    // location: street, city, zipcode
-    const locationChanged = (e) => {
+    const textChange = (e) => {
         let txt = e.target.value;
-        let arr = txt.split(',');
-        if (arr.length > 0) {
-            setStreet(arr[0].trim());
-        }
-        if (arr.length > 1) {
-            setCity(arr[1].trim());
-        }
-        if (arr.length > 2) {
-            setZipCode(arr[2].trim());
+        if (txt) {
+            setName(txt.trim());
         }
     };
 
-    const locationKeyDowned = (e) => {
+    const keyDown = (e) => {
         if (e.keyCode === 13) {
-            searchClicked(e);
+            searchClick(e);
         }
     };
 
-    const searchClicked = (e) => {
+    const searchClick = (e) => {
         e.preventDefault();
+
         const searchParams = new URLSearchParams();
-        if (street !== '') {
-            searchParams.append('street', street);
+
+        if (name !== '') {
+            searchParams.append('name', name);
         }
-        if (city !== '') {
-            searchParams.append('city', city);
-        }
-        if (zipCode !== '') {
-            searchParams.append('zipCode', zipCode);
-        }
-        let url = '/property-list?' + searchParams.toString();
+
+        let url = '/search?' + searchParams.toString();
         nav(url);
     };
 
     return (
         <div className="searchWidget">
             <div className="property-search-header">
-                <h3>Find Your Future Home</h3>
+                <h3>Find your knowledge</h3>
             </div>
             <Grid container padding={2}>
                 <Grid item xs={12} sx={{mb: 2}}>
                     <TextField
                         fullWidth
-                        placeholder="Address, City, Zipcode"
-                        id="locationInput"
+                        placeholder="Any text"
+                        id="bookInput"
                         variant="outlined"
-                        onChange={locationChanged}
-                        onKeyDown={locationKeyDowned}>
+                        onChange={textChange}
+                        onKeyDown={keyDown}>
                     </TextField>
                 </Grid>
                 <Grid item xs={12} sx={{textAlign: 'center'}}>
-                    <Button variant="contained" onClick={searchClicked}>Search</Button>
+                    <Button variant="contained" onClick={searchClick}>Search</Button>
                 </Grid>
             </Grid>
         </div>

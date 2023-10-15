@@ -1,21 +1,25 @@
 import './Header.scss';
 import React from "react";
-import {useKeycloak} from "@react-keycloak/web";
 import { Link, useNavigate } from "react-router-dom";
-import { clearToken } from 'Utils';
+import { useCookies } from 'react-cookie';
+import { logout } from "services/AuthService";
+import { useDispatch } from "react-redux";
+import Constants from "Constants";
 
 const Header = () => {
-    const { keycloak } = useKeycloak();
     const nav = useNavigate();
+    const dispatch = useDispatch();
+    const [cookies] = useCookies([Constants.COOKIE.LMS_TOKEN, Constants.COOKIE.LMS_ROLE, Constants.COOKIE.LMS_USER]);
 
-    const onLogin = () => {
-        keycloak.login();
-        nav("/property");
-    }
+    const isAuth = cookies[Constants.COOKIE.LMS_TOKEN];
+    const role = cookies[Constants.COOKIE.LMS_ROLE];
+    const username = cookies[Constants.COOKIE.LMS_USER];
+
     const onLogout = () => {
-        keycloak.logout();
-        clearToken();
-        nav("");
+        dispatch(logout({username, role}))
+            .then(async (response) => {
+                nav('/');
+            });
     }
 
     return (
@@ -26,26 +30,22 @@ const Header = () => {
                         <div className="col-md-8">
                             <div className="header-top-left">
                                 <p><i className="fa fa-phone-square"></i> 1 (800) 555 5555</p>
-                                <p><i className="fa fa-envelope"></i> miu.property.portal@gmail.com</p>
+                                <p><i className="fa fa-envelope"></i> contact@lms.com</p>
                             </div>
                         </div>
                         <div className="col-md-4">
                             <div className="header-top-right">
-
-                                {!keycloak.authenticated && (
+                                {!isAuth && (
                                     <p>
-                                        <Link to="#" onClick={onLogin}><i className="fa fa-sign-in"></i>Login</Link>
+                                        <Link to="/login"><i className="fa fa-sign-in"></i>Go to Login</Link>
                                     </p>
                                 )}
-
-                                {!!keycloak.authenticated && (
+                                {!!isAuth && (
                                     <p>
-                                        Welcome, <strong>{keycloak.tokenParsed.preferred_username}!</strong> &nbsp;
+                                        Welcome, <strong>{username}</strong> &nbsp;
                                         <Link to="#" onClick={onLogout}><i className="fa fa-sign-out"></i>Logout</Link>
                                     </p>
-
                                 )}
-
                             </div>
                         </div>
                     </div>
@@ -55,7 +55,7 @@ const Header = () => {
                         <div className="col-lg-3 col-sm-12">
                             <div className="site-logo">
                                 <Link to="/">
-                                    <img src="/logo.png" alt="site logo" />
+                                    <img src="/logo.png" alt="LMS" />
                                 </Link>
                             </div>
                         </div>
@@ -63,25 +63,49 @@ const Header = () => {
                             <div className="mainmenu">
                                 <nav>
                                     <ul id="navigation">
-                                        <li>
-                                            <Link to="/favorites">Save Home</Link>
-                                        </li>
                                         <li className="active">
                                             <Link to="/">Home</Link>
                                         </li>
-                                        <li>
-                                            <Link to="/secured">Secure Page</Link>
-                                        </li>
-                                        <li>
-                                            <Link to="/dashboard">Dashboard</Link>
-                                        </li>
+                                        {role === "Admin" && (
+                                            <>
+                                                <li>
+                                                    <Link to="/user">Users</Link>
+                                                </li>
+                                                <li>
+                                                    <Link to="/category">Categories</Link>
+                                                </li>
+                                                <li>
+                                                    <Link to="/book">Books</Link>
+                                                </li>
+                                                <li>
+                                                    <Link to="/config">Configuration</Link>
+                                                </li>
+                                            </>
+                                        )}
+                                        {role === "Librarian" && (
+                                            <>
+                                                <li>
+                                                    <Link to="/checkout">Checkout</Link>
+                                                </li>
+                                                <li>
+                                                    <Link to="/return">Return</Link>
+                                                </li>
+                                            </>
+                                        )}
+                                        {role === "Profile" && (
+                                            <>
+                                                <li>
+                                                    <Link to="/my_book">My books</Link>
+                                                </li>
+                                            </>
+                                        )}
                                     </ul>
                                 </nav>
                             </div>
                         </div>
                         <div className="col-lg-2">
                             <div className="header-action">
-                                <Link to="/property">submit property</Link>
+                                <Link to="/profile">My Profile</Link>
                             </div>
                         </div>
                     </div>

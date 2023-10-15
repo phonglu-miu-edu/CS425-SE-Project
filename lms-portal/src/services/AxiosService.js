@@ -1,26 +1,17 @@
-import { getToken } from 'Utils';
 import axios from 'axios';
 import Constants from 'Constants';
 
-const axiosInstance = axios.create({
-  baseURL: Constants.BASE_URL
+const adminService = axios.create({
+    baseURL: Constants.ADMIN_URL
 });
 
-axiosInstance.interceptors.request.use(
-    (config) => {
-        const { origin } = new URL(config.url, Constants.BASE_URL);
-        const allowedOrigin = [Constants.BASE_URL];
-        const token = getToken();
+const authService = axios.create({
+    baseURL: Constants.AUTH_URL
+});
 
-        if (token && allowedOrigin.includes(origin)) {
-            config.headers = { Authorization: `Bearer ${token}` };
-        }
-
-        return config;
-    },
-    (error) => {
-        return Promise.reject(error);
-    }
-);
+const axiosInstance = {
+    adminService,
+    authService
+};
 
 export default axiosInstance;
