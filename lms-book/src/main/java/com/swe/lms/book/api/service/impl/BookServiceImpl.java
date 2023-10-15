@@ -13,6 +13,11 @@ import java.util.Map;
 public class BookServiceImpl implements IBookService {
     @Override
     public ResponseEntity<?> searchBooks(Map<String, Object> mapParams) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<?> searchBooks(String mapParams) {
         return ResponseUtil.createOK(null);
     }
 
