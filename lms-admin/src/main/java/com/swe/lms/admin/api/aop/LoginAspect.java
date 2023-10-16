@@ -60,20 +60,21 @@ public class LoginAspect {
             }
         }
         if (StringUtils.isBlank(token)) {
-            log.error("ERROR. UNAUTHORIZE ACCESS - METHOD NAME [{}]", methodName);
+            log.error("ERROR. UNAUTHORIZE ACCESS - METHOD NAME [{}] token [{}]", methodName, token);
             return ResponseUtil.createUnauthorize("Error - Unauthorize access.");
         } else {
             ResponseEntity<Map<String, Object>> authVerifyResponse = authFeignClient.verify(token);
             if (authVerifyResponse.getStatusCodeValue() != HttpStatus.OK.value()) {
                 return ResponseUtil.createUnauthorize("Error - Unauthorize access.");
             }
+            /*
             if (!LmsConst.AUTH_METHOD.equals(methodName)) {
                 Map<String, Object> mapValue = (Map<String, Object>) authVerifyResponse.getBody().get(HTTPConst.DATA);
                 String roleCd = mapValue.get(DTOConst.ROLE_CD).toString();
                 if (!RoleEnum.ADMIN.getValue().equals(roleCd)) {
                     return ResponseUtil.createUnauthorize("Error - Unauthorize access. The expected role is Admin");
                 }
-            }
+            }*/
         }
         return pjp.proceed(paramValues);
     }

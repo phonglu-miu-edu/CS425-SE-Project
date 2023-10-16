@@ -20,19 +20,14 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @NotBlank
     private String title;
 
-    @NotBlank
     private String isbn;
 
-    @NotBlank
     private String authors;
 
-    @NotNull
     private Integer numOfCopies;
 
-    @NotNull
     private Integer bookCategoryId;
 
     @NotNull

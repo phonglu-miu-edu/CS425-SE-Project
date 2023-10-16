@@ -67,7 +67,7 @@ public class BookServiceImpl implements IBookService {
         if (StringUtils.isBlank(keyword)) {
             books = bookRepository.findAll();
         } else {
-            books = bookRepository.findByTitleLikeIgnoreCaseOrIsbnLikeOrAuthorsLikeIgnoreCase(keyword, keyword, keyword);
+            books = bookRepository.findByTitleLikeIgnoreCaseOrIsbnLikeIgnoreCaseOrAuthorsLikeIgnoreCase(keyword, keyword, keyword);
         }
         List<BookDTO> bookDTOs = new ArrayList<>();
         if (null != books && books.size() > 0) {

@@ -5,6 +5,7 @@ import com.swe.lms.admin.api.adapter.BookAdapter;
 import com.swe.lms.book.api.dto.BookDTO;
 import com.swe.lms.book.api.model.Book;
 import com.swe.lms.book.api.repository.BookRepository;
+import com.swe.lms.book.api.feign.IAdminFeignClient;
 import com.swe.lms.book.api.service.IBookService;
 import com.swe.lms.book.api.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,22 +14,15 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service("BookService")
 public class BookServiceImpl implements IBookService {
     @Autowired
-    private BookRepository bookRepository;
-    @Override
-    public ResponseEntity<?> searchBooks(Map<String, Object> mapParams) {
-        return ResponseUtil.createOK(bookRepository.findAll());
-    }
+    private IAdminFeignClient adminFeignClient;
 
     @Override
-    public ResponseEntity<?> searchBooks(String mapParams) {
-        return ResponseUtil.createOK(bookRepository.findAll());
+    public ResponseEntity<?> searchBooks(String keyword) {
+        return adminFeignClient.searchBooks(keyword);
     }
 
     @Override
