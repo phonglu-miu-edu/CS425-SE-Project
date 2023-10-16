@@ -9,9 +9,9 @@ import java.util.Map;
 public interface IBookService {
     ResponseEntity<?> searchBooks(String keyword);
 
-    ResponseEntity<?> checkin(List<BookDTO> books);
+    ResponseEntity<?> checkin(List<Integer> bookIds);
 
-    ResponseEntity<?> checkout(List<BookDTO> books);
+    ResponseEntity<?> checkout(List<Integer> bookIds);
 
     ResponseEntity<?> getCheckoutRecords(Integer userId);
 }

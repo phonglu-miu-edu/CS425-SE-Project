@@ -20,13 +20,13 @@ public class BookController {
     private IBookService bookService;
 
     @PostMapping("/checkin")
-    public ResponseEntity<?> checkin(@RequestBody List<BookDTO> books) {
-        return bookService.checkin(books);
+    public ResponseEntity<?> checkin(@RequestBody List<Integer> bookIds) {
+        return bookService.checkin(bookIds);
     }
 
     @PostMapping("/checkout")
-    public ResponseEntity<?> checkout(@RequestBody List<BookDTO> books) {
-        return bookService.checkout(books);
+    public ResponseEntity<?> checkout(@RequestBody List<Integer> bookIds) {
+        return bookService.checkout(bookIds);
     }
 
     @GetMapping("/checkout/records/{userId}")

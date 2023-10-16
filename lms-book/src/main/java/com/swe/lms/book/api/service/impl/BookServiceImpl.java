@@ -21,12 +21,12 @@ public class BookServiceImpl implements IBookService {
     }
 
     @Override
-    public ResponseEntity<?> checkin(List<BookDTO> books) {
+    public ResponseEntity<?> checkin(List<Integer> bookIds) {
         return ResponseUtil.createOK(null, "Checkin successfully !");
     }
 
     @Override
-    public ResponseEntity<?> checkout(List<BookDTO> books) {
+    public ResponseEntity<?> checkout(List<Integer> bookIds) {
         return ResponseUtil.createOK(null, "Checkout successfully !");
     }
 
