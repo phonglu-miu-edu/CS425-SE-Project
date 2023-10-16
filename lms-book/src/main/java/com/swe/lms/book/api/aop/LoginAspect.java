@@ -56,7 +56,7 @@ public class LoginAspect {
             }
         }
         if (StringUtils.isBlank(token)) {
-            log.error("ERROR. UNAUTHORIZE ACCESS - METHOD NAME [{}]", methodName);
+            log.error("ERROR. UNAUTHORIZE ACCESS - METHOD NAME [{}] token [{}]", methodName, token);
             return ResponseUtil.createUnauthorize("Error - Unauthorize access.");
         } else {
             ResponseEntity<Map<String, Object>> authVerifyResponse = authFeignClient.verify(token);
