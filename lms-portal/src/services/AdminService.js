@@ -1,10 +1,38 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "./AxiosService";
 
+export const deleteBook = createAsyncThunk(
+    'books/delete',
+    async (id) => {
+        const result = await axiosInstance.adminService.delete(`/lms/admin/books/${id}`, {withCredentials: true});
+        return result.data;
+    });
+
+export const createBook = createAsyncThunk(
+    'books/edit',
+    async (book) => {
+        const result = await axiosInstance.adminService.post('/lms/admin/books', book, {withCredentials: true});
+        return result.data;
+    });
+
+export const editBook = createAsyncThunk(
+    'books/edit',
+    async ({id, book}) => {
+        const result = await axiosInstance.adminService.put(`/lms/admin/books/${id}`, book, {withCredentials: true});
+        return result.data;
+    });
+
 export const getAllBooks = createAsyncThunk(
     'books/getAll',
-    async () => {
-        const result = await axiosInstance.adminService.get('/lms/admin/books/search?q=', {withCredentials: true});
+    async (searchText) => {
+        const result = await axiosInstance.adminService.get(`/lms/admin/books/search?q=${searchText}`, {withCredentials: true});
+        return result.data;
+    });
+
+export const getBook = createAsyncThunk(
+    'books/get',
+    async (id) => {
+        const result = await axiosInstance.adminService.get(`/lms/admin/books/${id}`, {withCredentials: true});
         return result.data;
     });
 
