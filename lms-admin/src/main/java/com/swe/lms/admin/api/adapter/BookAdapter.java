@@ -17,6 +17,7 @@ public class BookAdapter {
 
     public static Book convertToBook(BookDTO bookDTO) {
         return Book.builder()
+                .id(bookDTO.getId())
                 .title(bookDTO.getTitle())
                 .authors(bookDTO.getAuthors())
                 .isbn(bookDTO.getIsbn())
