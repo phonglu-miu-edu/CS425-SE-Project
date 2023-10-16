@@ -34,4 +34,7 @@ public class Book {
 
     @NotNull
     private Integer bookCategoryId;
+    @NotNull
+    private boolean available;
+
 }

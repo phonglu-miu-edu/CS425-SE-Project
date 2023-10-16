@@ -9,9 +9,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class BookDTO {
+public class BookDTO
+{
     private Integer id;
+
     private String title;
+
     private String isbn;
+
     private String authors;
+
+    private Integer numOfCopies;
+
+    private Integer bookCategoryId;
+    private boolean available;
 }

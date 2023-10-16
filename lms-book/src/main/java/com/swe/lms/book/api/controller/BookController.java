@@ -1,5 +1,6 @@
 package com.swe.lms.book.api.controller;
 
+
 import com.swe.lms.book.api.constant.LmsConst;
 import com.swe.lms.book.api.dto.BookDTO;
 import com.swe.lms.book.api.service.IBookService;
@@ -31,7 +32,7 @@ public class BookController {
 
     @GetMapping("/books")
     public ResponseEntity<?> searchBooks(@RequestParam(required = false) String strQuery) {
-        //Map<String, Object> mapParams = new HashMap<>(StringUtil.parseQueryParam(strQuery, LmsConst.PARAM_DELIM));
+        Map<String, Object> mapParams = new HashMap<>(StringUtil.parseQueryParam(strQuery, LmsConst.PARAM_DELIM));
         return bookService.searchBooks(strQuery);
     }
 }
