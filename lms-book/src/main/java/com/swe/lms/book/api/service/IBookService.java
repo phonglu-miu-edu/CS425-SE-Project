@@ -12,4 +12,6 @@ public interface IBookService {
     ResponseEntity<?> checkin(List<BookDTO> books);
 
     ResponseEntity<?> checkout(List<BookDTO> books);
+
+    ResponseEntity<?> getCheckoutRecords(Integer userId);
 }

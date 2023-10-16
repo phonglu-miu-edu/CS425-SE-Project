@@ -29,6 +29,11 @@ public class BookController {
         return bookService.checkout(books);
     }
 
+    @GetMapping("/checkout/records/{userId}")
+    public ResponseEntity<?> getCheckoutRecords(@PathVariable(name="userId") int userId) {
+        return bookService.getCheckoutRecords(userId);
+    }
+
     @GetMapping("/search")
     public ResponseEntity<?> searchBooks(@RequestParam(name="q") String keyword) {
         return bookService.searchBooks(keyword);

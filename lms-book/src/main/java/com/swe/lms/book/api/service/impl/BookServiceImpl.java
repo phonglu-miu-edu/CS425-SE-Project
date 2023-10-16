@@ -29,4 +29,9 @@ public class BookServiceImpl implements IBookService {
     public ResponseEntity<?> checkout(List<BookDTO> books) {
         return ResponseUtil.createOK(null, "Checkout successfully !");
     }
+
+    @Override
+    public ResponseEntity<?> getCheckoutRecords(Integer userId) {
+        return ResponseUtil.createOK(null, "Checkout successfully !");
+    }
 }
