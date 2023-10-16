@@ -1,6 +1,20 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "./AxiosService";
 
+export const editAllConfigs = createAsyncThunk(
+    'configs/edit',
+    async (configs) => {
+        const result = await axiosInstance.adminService.put(`/lms/admin/configs`, configs, {withCredentials: true});
+        return result.data;
+    });
+
+export const getAllConfigs = createAsyncThunk(
+    'configs/getAll',
+    async () => {
+        const result = await axiosInstance.adminService.get(`/lms/admin/configs`, {withCredentials: true});
+        return result.data;
+    });
+
 export const deleteBook = createAsyncThunk(
     'books/delete',
     async (id) => {

@@ -1,142 +1,212 @@
-import { Button, Card, FormControl, InputLabel, MenuItem, Pagination, Select, TextField } from "@mui/material";
-import Grid from "@mui/material/Unstable_Grid2";
-import { useEffect, useState } from "react";
-import DataPagination from "../DataPagination/DataPagination";
-import { useDispatch } from "react-redux";
-import { getAllUsers } from "services/AdminService";
+import { Box, Button, Card, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import Grid from '@mui/material/Unstable_Grid2';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { createUser, editUser, getUser } from 'services/AdminService';
+import { SnackbarCustom } from 'components/SnackbarCustom/SnackbarCustom';
 
-export default function Profile(props) {
-    let {users, itemPerPage} = props;
-    users = users || [];
-
-    let [page, setPage] = useState(1);
+export default function Profile({currentUser}) {
+    const [id, setId] = useState('');
     const [username, setUsername] = useState('');
-    const [role, setRole] = useState('Profile');
+    const [role, setRole] = useState('User');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
-    const count = Math.ceil(users.length / itemPerPage);
-    const DATA_PAGINATION = DataPagination(users, itemPerPage);
-
+    const [email, setEmail] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [address, setAddress] = useState('');
+    const [status, setStatus] = useState('Active');
     const dispatch = useDispatch();
+    const [alertContent, setAlertContent] = useState('');
+    const [openAlert, setOpenAlert] = useState(false);
 
     useEffect(() => {
-        dispatch(getAllUsers());
+        if (currentUser && currentUser.id) {
+            setId(currentUser.id);
+        }
     }, []);
 
     useEffect(() => {
-        gotoPage(1);
-    }, [users]);
+        if (id) {
+            dispatch(getUser(id))
+                .then(res => {
+                    if (res.payload && res.payload.status_code == 200) {
+                        const user = res.payload.data;
 
-    const onUsernameChange = (e) => {
-        setUsername(e.target.value);
-    }
-
-    const onRoleChange = (e) => {
-        setRole(e.target.value);
-    }
-
-    const onFirstNameChange = (e) => {
-        setFirstName(e.target.value);
-    }
-
-    const onLastNameChange = (e) => {
-        setLastName(e.target.value);
-    }
-
-    const gotoPage = (page) => {
-        setPage(page);
-        DATA_PAGINATION.goTo(page);
-    }
-
-    const pageChanged = (e, page) => {
-        gotoPage(page);
-    }
-
-    const handleDelete = (id) => {
-        if (typeof props.setRefresh === "function") {
-            props.setRefresh(true);
+                        if (user) {
+                            setUsername(user.userName);
+                            setRole(user.roleCd);
+                            setFirstName(user.firstName);
+                            setLastName(user.lastName);
+                            setEmail(user.email);
+                            setPhoneNumber(user.phoneNumber);
+                            setAddress(user.address);
+                            setStatus(user.status);
+                        }
+                    }
+                });
         }
-    }
+    }, [id]);
+
+    const onFirstNameChange = e => setFirstName(e.target.value);
+
+    const onLastNameChange = e => setLastName(e.target.value);
+
+    const onEmailChange = e => setEmail(e.target.value);
+
+    const onPhoneNumberChange = e => setPhoneNumber(e.target.value);
+
+    const onAddressChange = e => setAddress(e.target.value);
+
+    const onSubmit = e => {
+        if (username) {
+            const obj = {
+                userName: username,
+                roleCd: role,
+                firstName,
+                lastName,
+                email,
+                phoneNumber,
+                address,
+                status
+            };
+
+            dispatch(id ? editUser({id, user: obj}) : createUser(obj))
+                .then(res => {
+                    if (res.payload && res.payload.status_code == 200) {
+                        setAlertContent('Save successfully');
+                        setOpenAlert(true);
+                    }
+                });
+        }
+    };
 
     return (
         <div className="container">
-            <h3>Profile Management</h3>
-            <div className="col-md-4">
-                <Card variant="outlined">
-                    <form className="form">
-                        <div className="row">
-                            <div className="col-md-6">
-                                <FormControl fullWidth className="form-control-field">
-                                    <TextField
-                                        label="Username" type="search"
-                                        onChange={onUsernameChange}
-                                        value={username}
-                                        fullWidth />
-                                </FormControl>
+            <h3>My Profile</h3>
+            <Box
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    p: 1,
+                    m: 1,
+                    bgcolor: 'background.paper',
+                    borderRadius: 1
+                }}
+            >
+                <div className="col-12 col-sm-6">
+                    <Card variant="outlined">
+                        <form className="form">
+                            <div className="row">
+                                <div className="col-md-6">
+                                    <FormControl fullWidth className="form-control-field">
+                                        <TextField
+                                            disabled
+                                            label="Username" type="search"
+                                            value={username}
+                                            fullWidth />
+                                    </FormControl>
+                                </div>
+                                <div className="col-md-6">
+                                    <FormControl fullWidth className="form-control-field">
+                                        <InputLabel id="roleLabel">Role</InputLabel>
+                                        <Select
+                                            disabled
+                                            labelId="roleLabel"
+                                            value={role}
+                                            label="Role">
+                                            <MenuItem value="User">Student</MenuItem>
+                                            <MenuItem value="Admin">Admin</MenuItem>
+                                            <MenuItem value="Librarian">Librarian</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </div>
                             </div>
-                            <div className="col-md-6">
-                                <FormControl fullWidth className="form-control-field">
-                                    <InputLabel id="roleLabel">Role</InputLabel>
-                                    <Select
-                                        labelId="roleLabel"
-                                        value={role}
-                                        label="Role"
-                                        onChange={onRoleChange}>
-                                        <MenuItem value="Profile">Student</MenuItem>
-                                        <MenuItem value="Admin">Admin</MenuItem>
-                                        <MenuItem value="Librarian">Librarian</MenuItem>
-                                    </Select>
-                                </FormControl>
+                            <div className="row">
+                                <div className="col-md-6">
+                                    <FormControl fullWidth className="form-control-field">
+                                        <TextField
+                                            label="First name" type="search"
+                                            onChange={onFirstNameChange}
+                                            value={firstName}
+                                            fullWidth />
+                                    </FormControl>
+                                </div>
+                                <div className="col-md-6">
+                                    <FormControl fullWidth className="form-control-field">
+                                        <TextField
+                                            label="Last name" type="search"
+                                            onChange={onLastNameChange}
+                                            value={lastName}
+                                            fullWidth />
+                                    </FormControl>
+                                </div>
                             </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-md-6">
-                                <FormControl fullWidth className="form-control-field">
-                                    <TextField
-                                        label="First name" type="search"
-                                        onChange={onFirstNameChange}
-                                        value={firstName}
-                                        fullWidth />
-                                </FormControl>
+                            <div className="row">
+                                <div className="col-md-6">
+                                    <FormControl fullWidth className="form-control-field">
+                                        <TextField
+                                            label="Email" type="search"
+                                            onChange={onEmailChange}
+                                            value={email}
+                                            fullWidth />
+                                    </FormControl>
+                                </div>
+                                <div className="col-md-6">
+                                    <FormControl fullWidth className="form-control-field">
+                                        <TextField
+                                            label="Phone number" type="search"
+                                            onChange={onPhoneNumberChange}
+                                            value={phoneNumber}
+                                            fullWidth />
+                                    </FormControl>
+                                </div>
                             </div>
-                            <div className="col-md-6">
-                                <FormControl fullWidth className="form-control-field">
-                                    <TextField
-                                        label="Last name" type="search"
-                                        onChange={onLastNameChange}
-                                        value={lastName}
-                                        fullWidth />
-                                </FormControl>
+                            <div className="row">
+                                <div className="col-md-12">
+                                    <FormControl fullWidth className="form-control-field">
+                                        <TextField
+                                            label="Address" type="search"
+                                            onChange={onAddressChange}
+                                            value={address}
+                                            fullWidth />
+                                    </FormControl>
+                                </div>
                             </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-md-12">
-                                <Grid container justifyContent="center">
-                                    <Button variant="contained" color="primary">Save</Button>
-                                </Grid>
+                            <div className="row">
+                                <div className="col-md-12">
+                                    <FormControl fullWidth className="form-control-field">
+                                        <InputLabel id="statusLabel">Status</InputLabel>
+                                        <Select
+                                            disabled
+                                            labelId="statusLabel"
+                                            value={status}
+                                            label="Status">
+                                            <MenuItem value="Active">Active</MenuItem>
+                                            <MenuItem value="Locked">Locked</MenuItem>
+                                            <MenuItem value="Suspended">Suspended</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </div>
                             </div>
-                        </div>
-                    </form>
-                </Card>
-            </div>
-            <Grid container rowSpacing={3} columnSpacing={{xs: 1, sm: 2, md: 3}}>
-                {DATA_PAGINATION.currentData().map(prop =>
-                    <Grid key={prop.id} xs={12} md={6} lg={4} xl={3}>
-                        {/*<PropertyCard {...prop} roles={roles} {...others} deletedFunc={() => handleDelete(prop.id)} />*/}
-                    </Grid>
-                )}
-            </Grid>
-            {count > 0 && (
-                <div className="pagination">
-                    <Pagination
-                        count={count}
-                        size="large"
-                        color="primary"
-                        page={page}
-                        onChange={pageChanged}
-                    />
+                            <div className="row">
+                                <div className="col-md-12">
+                                    <Grid container justifyContent="center">
+                                        <Button variant="contained" color="primary" onClick={onSubmit}>Update</Button>
+                                    </Grid>
+                                </div>
+                            </div>
+                        </form>
+                    </Card>
                 </div>
-            )}
+            </Box>
+            <SnackbarCustom
+                vertical="top"
+                horizontal="right"
+                open={openAlert}
+                autoHideDuration={2000}
+                severity="success"
+                closed={() => setOpenAlert(!openAlert)}
+            >{alertContent}</SnackbarCustom>
         </div>
-    )
+    );
 }

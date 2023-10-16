@@ -2,11 +2,14 @@ import React, { useState } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import "./Login.scss";
-import { useNavigate } from "react-router";
+import './Login.scss';
+import { useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
-import { login } from "services/AuthService";
-import { SnackbarCustom } from "components/SnackbarCustom/SnackbarCustom";
+import { login } from 'services/AuthService';
+import { SnackbarCustom } from 'components/SnackbarCustom/SnackbarCustom';
+import { useCookies } from 'react-cookie';
+import Constants from 'Constants';
+import { Button, FormControl, TextField } from '@mui/material';
 
 export default function Login() {
     let settings = {
@@ -16,6 +19,7 @@ export default function Login() {
         lazyLoad: 'ondemand'
     };
 
+    const [_, setCookie] = useCookies([Constants.COOKIE.LMS_DATA]);
     const nav = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -30,7 +34,7 @@ export default function Login() {
     };
 
     function onUsernameChange(e) {
-        setUsername(e.target.value)
+        setUsername(e.target.value);
     }
 
     function onPasswordChange(e) {
@@ -43,15 +47,27 @@ export default function Login() {
         if (username && password) {
             dispatch(login({username, password}))
                 .then(async (response) => {
-                    nav('/');
-                })
-                .catch((error) => {
-                    setOpenAlert(true);
-                    if (error.message) {
-                        setAlertContent(error.message);
-                    } else {
-                        setAlertContent('You have not permission for this feature!');
+                    if (response && response.payload) {
+                        if (response.payload.status_code === 200) {
+                            setCookie(Constants.COOKIE.LMS_DATA, JSON.stringify(response.payload.data));
+
+                            nav('/');
+                        } else {
+                            const data = response.payload.data;
+
+                            if (data) {
+                                setOpenAlert(true);
+
+                                const message = data.message;
+                                setAlertContent(message ? message : 'You have not permission for this feature!');
+
+                                return;
+                            }
+                        }
                     }
+
+                    setOpenAlert(true);
+                    setAlertContent('There is something wrong with authentication');
                 });
         } else {
             setOpenAlert(true);
@@ -60,7 +76,7 @@ export default function Login() {
     };
 
     return (
-        <div className='container-fluid login'>
+        <div className="container-fluid login">
             <Slider {...settings}>
                 <div>
                     <img className="pic" src="/slider-1.jpg" alt="slider-1" />
@@ -74,35 +90,48 @@ export default function Login() {
                     <h3>Authentication</h3>
                 </div>
                 <div className="property-search-body">
-                    <div className="row">
-                        <div className="col-12">
-                            <p>
-                                <input type="text" placeholder="Username" onChange={onUsernameChange}
-                                       onKeyDown={keyDown} />
-                            </p>
+                    <form className="form">
+                        <div className="row">
+                            <div className="col-12">
+                                <FormControl fullWidth className="form-control-field">
+                                    <TextField
+                                        label="Username" type="search"
+                                        onChange={onUsernameChange}
+                                        onKeyDown={keyDown}
+                                        fullWidth />
+                                </FormControl>
+                            </div>
                         </div>
-                        <div className="col-12">
-                            <p>
-                                <input type="password" placeholder="Password" onChange={onPasswordChange}
-                                       onKeyDown={keyDown} />
-                            </p>
+                        <div className="row">
+                            <div className="col-12">
+                                <FormControl fullWidth className="form-control-field">
+                                    <TextField
+                                        label="Password"
+                                        onChange={onPasswordChange}
+                                        onKeyDown={keyDown}
+                                        fullWidth
+                                        type="password" />
+                                </FormControl>
+                            </div>
                         </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-md-12">
-                            <p>
-                                <button type="button" onClick={onLoginClick}>Login</button>
-                            </p>
+                        <div className="row">
+                            <div className="col-md-6">
+                                <Button variant="contained" color="primary" fullWidth>Register</Button>
+                            </div>
+                            <div className="col-md-6">
+                                <Button variant="contained" color="primary" fullWidth
+                                        onClick={onLoginClick}>Login</Button>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
             <SnackbarCustom
-                vertical='top'
-                horizontal='right'
+                vertical="top"
+                horizontal="right"
                 open={openAlert}
+                severity="error"
                 autoHideDuration={2000}
-                severity="success"
                 closed={() => setOpenAlert(!openAlert)}
             >{alertContent}</SnackbarCustom>
         </div>
