@@ -142,10 +142,16 @@ const Profile = () => {
         setBookCategoryId(firstCategoryId);
     };
 
+    const getBookCategoryName = (categoryId) => {
+        const category = categories.find(c => c.id === categoryId);
+
+        return category ? category.categoryName : '';
+    }
+
     return <div className="container">
         <h3>Book Management</h3>
         <div className="row">
-            <div className="col-md-4">
+            <div className="col-md-3">
                 <Card variant="outlined">
                     <form className="form">
                         <div className="row">
@@ -213,7 +219,7 @@ const Profile = () => {
                     </form>
                 </Card>
             </div>
-            <div className="col-md-8">
+            <div className="col-md-9">
                 <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', paddingBottom: '10px'}}>
                     <FormLabel style={{paddingRight: '10px', minWidth: '80px'}}>Search</FormLabel>
                     <TextField fullWidth value={searchText} onChange={onSearchTextChange} />
@@ -239,7 +245,7 @@ const Profile = () => {
                                 <TableCell>{row.isbn}</TableCell>
                                 <TableCell>{row.authors}</TableCell>
                                 <TableCell>{row.numOfCopies}</TableCell>
-                                <TableCell>{row.bookCategoryId}</TableCell>
+                                <TableCell>{getBookCategoryName(row.bookCategoryId)}</TableCell>
                                 <TableCell>
                                     <ActionIcon icon={<EditIcon onClick={() => onEditClick(row.id)} />} />
                                     <ActionIcon icon={<CancelIcon onClick={() => onDeleteClick(row)} />} />

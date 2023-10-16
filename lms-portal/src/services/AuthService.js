@@ -1,5 +1,5 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import axiosInstance from "./AxiosService";
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import axiosInstance from './AxiosService';
 
 export const login = createAsyncThunk(
     'auth/login',
@@ -8,10 +8,10 @@ export const login = createAsyncThunk(
             const response = await axiosInstance.authService.post('/lms/auth/login', {
                 userName: authCredential.username,
                 password: authCredential.password
-            }, { withCredentials: true });
+            }, {withCredentials: true});
             return response.data;
-        } catch(err) {
-            return err.error;
+        } catch (err) {
+            return err.response;
         }
     });
 
@@ -23,9 +23,9 @@ export const logout = createAsyncThunk(
             const response = await axiosInstance.authService.post('/lms/auth/logout', {
                 userName: authCredential.username,
                 roleCd: authCredential.role
-            }, { withCredentials: true });
+            }, {withCredentials: true});
             return response.data;
-        } catch(err) {
-            return err.error;
+        } catch (err) {
+            return err.response;
         }
     });

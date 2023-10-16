@@ -1,108 +1,96 @@
-import { Button, Card, FormControl, InputLabel, MenuItem, Pagination, Select, TextField } from "@mui/material";
-import Grid from "@mui/material/Unstable_Grid2";
-import { useEffect, useState } from "react";
-import DataPagination from "../DataPagination/DataPagination";
-import { useDispatch } from "react-redux";
-import { getAllCategories } from "services/AdminService";
+import { Box, Button, Card, FormControl, TextField } from '@mui/material';
+import Grid from '@mui/material/Unstable_Grid2';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { editAllConfigs, getAllConfigs } from 'services/AdminService';
+import { SnackbarCustom } from 'components/SnackbarCustom/SnackbarCustom';
 
-export default function Config(props) {
-    let {users, itemPerPage} = props;
-    users = users || [];
-
-    let [page, setPage] = useState(1);
-    const [id, setId] = useState(null);
-    const [name, setName] = useState('');
-    const [description, setDescription] = useState('');
-    const count = Math.ceil(users.length / itemPerPage);
-    const DATA_PAGINATION = DataPagination(users, itemPerPage);
-
+const Config = () => {
+    const [configs, setConfigs] = useState([]);
     const dispatch = useDispatch();
+    const [alertContent, setAlertContent] = useState('');
+    const [openAlert, setOpenAlert] = useState(false);
 
     useEffect(() => {
-        dispatch(getAllCategories());
+        getAll();
     }, []);
 
-    useEffect(() => {
-        gotoPage(1);
-    }, [users]);
+    const getAll = () => {
+        dispatch(getAllConfigs())
+            .then(res => {
+                if (res.payload && res.payload.status_code == 200) {
+                    setConfigs(res.payload.data);
+                }
+            });
+    };
 
-    const onNameChange = (e) => {
-        setName(e.target.value);
-    }
+    const onConfigChange = config => e => {
+        config.itemValue = e.target.value;
 
-    const onDescriptionChange = (e) => {
-        setDescription(e.target.value);
-    }
+        setConfigs([...configs]);
+    };
 
-    const gotoPage = (page) => {
-        setPage(page);
-        DATA_PAGINATION.goTo(page);
-    }
-
-    const pageChanged = (e, page) => {
-        gotoPage(page);
-    }
-
-    const handleDelete = (id) => {
-        if (typeof props.setRefresh === "function") {
-            props.setRefresh(true);
-        }
-    }
+    const onSubmit = () => {
+        dispatch(editAllConfigs(configs))
+            .then(res => {
+                if (res.payload && res.payload.status_code == 200) {
+                    setAlertContent('Save successfully');
+                    setOpenAlert(true);
+                    getAll();
+                }
+            });
+    };
 
     return (
         <div className="container">
             <h3>Configuration</h3>
-            <div className="col-md-4">
-                <Card variant="outlined">
-                    <form className="form">
-                        <div className="row">
-                            <div className="col-md-6">
-                                <FormControl fullWidth className="form-control-field">
-                                    <TextField
-                                        label="First name" type="search"
-                                        onChange={onNameChange}
-                                        value={name}
-                                        fullWidth />
-                                </FormControl>
+            <Box
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    p: 1,
+                    m: 1,
+                    bgcolor: 'background.paper',
+                    borderRadius: 1
+                }}
+            >
+                <div className="col-12 col-md-6">
+                    <Card variant="outlined">
+                        <form className="form">
+                            <div className="row">
+                                <div className="col-md-12">
+                                    {configs.map(config => (
+                                        <FormControl key={config.id} fullWidth className="form-control-field">
+                                            <TextField
+                                                label={config.itemName}
+                                                onChange={onConfigChange(config)}
+                                                value={config.itemValue}
+                                                fullWidth />
+                                        </FormControl>
+                                    ))}
+                                </div>
                             </div>
-                            <div className="col-md-6">
-                                <FormControl fullWidth className="form-control-field">
-                                    <TextField
-                                        label="Last name" type="search"
-                                        onChange={onDescriptionChange}
-                                        value={description}
-                                        fullWidth />
-                                </FormControl>
+                            <div className="row">
+                                <div className="col-md-12">
+                                    <Grid container justifyContent="center">
+                                        <Button variant="contained" color="primary" onClick={onSubmit}>Update</Button>
+                                    </Grid>
+                                </div>
                             </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-md-12">
-                                <Grid container justifyContent="center">
-                                    <Button variant="contained" color="primary">Save</Button>
-                                </Grid>
-                            </div>
-                        </div>
-                    </form>
-                </Card>
-            </div>
-            <Grid container rowSpacing={3} columnSpacing={{xs: 1, sm: 2, md: 3}}>
-                {DATA_PAGINATION.currentData().map(prop =>
-                    <Grid key={prop.id} xs={12} md={6} lg={4} xl={3}>
-                        {/*<PropertyCard {...prop} roles={roles} {...others} deletedFunc={() => handleDelete(prop.id)} />*/}
-                    </Grid>
-                )}
-            </Grid>
-            {count > 0 && (
-                <div className="pagination">
-                    <Pagination
-                        count={count}
-                        size="large"
-                        color="primary"
-                        page={page}
-                        onChange={pageChanged}
-                    />
+                        </form>
+                    </Card>
                 </div>
-            )}
+            </Box>
+            <SnackbarCustom
+                vertical="top"
+                horizontal="right"
+                open={openAlert}
+                autoHideDuration={2000}
+                severity="success"
+                closed={() => setOpenAlert(!openAlert)}
+            >{alertContent}</SnackbarCustom>
         </div>
-    )
-}
+    );
+};
+
+export default Config;

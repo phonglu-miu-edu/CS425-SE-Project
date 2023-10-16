@@ -21,6 +21,7 @@ const Constants = {
     CUSTOMER_ROLE: 'CUSTOMER',
     AUTH_TOKEN: env.REACT_APP_AUTH_TOKEN,
     COOKIE: {
+        LMS_DATA: 'LMS_DATA',
         LMS_TOKEN: 'LMS_TOKEN',
         LMS_ROLE: 'LMS_ROLE',
         LMS_USER: 'LMS_USER'

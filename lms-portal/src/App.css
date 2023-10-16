@@ -3,10 +3,6 @@
     src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.woff2");
 }
 
-.main-area {
-    margin-top: 20px
-}
-
 .main-area h3 {
     font-family: 'Poppins', sans-serif;
     font-size: 20px;
