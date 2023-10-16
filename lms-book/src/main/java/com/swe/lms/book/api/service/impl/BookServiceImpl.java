@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service("BookService")
 public class BookServiceImpl implements IBookService {
@@ -29,10 +28,10 @@ public class BookServiceImpl implements IBookService {
     }
 
     @Override
-    public ResponseEntity<?> checkin(List<BookDTO> books) {
+    public ResponseEntity<?> checkin(List<Integer> bookIds) {
         List<Book> booksCheckin = new ArrayList<Book>();
-        for(BookDTO book : books){
-            Optional<Book> optBook = bookRepository.findById(book.getId());
+        for(Integer id : bookIds){
+            Optional<Book> optBook = bookRepository.findById(id);
             if (optBook.isPresent()) {
                 Book b= optBook.get();
                 b.setAvailable(true);
@@ -44,12 +43,12 @@ public class BookServiceImpl implements IBookService {
     }
 
     @Override
-    public ResponseEntity<?> checkout(List<BookDTO> books) {
+    public ResponseEntity<?> checkout(List<Integer> bookId) {
         List<Book> booksCheckout = new ArrayList<Book>();
-        for(BookDTO book : books){
-            Optional<Book> optBook = bookRepository.findById(book.getId());
+        for (Integer id : bookId) {
+            Optional<Book> optBook = bookRepository.findById(id);
             if (optBook.isPresent() && optBook.get().isAvailable()) {
-                Book b= optBook.get();
+                Book b = optBook.get();
                 b.setAvailable(false);
                 bookRepository.save(b);
                 booksCheckout.add(optBook.get());
@@ -57,9 +56,13 @@ public class BookServiceImpl implements IBookService {
         }
 
         if (!booksCheckout.isEmpty()) {
-            return ResponseUtil.createOK(booksCheckout, String.format("Books are updated", booksCheckout.parallelStream().map(Book::getId).collect(Collectors.toList())));
-        }
-        else
+            return ResponseUtil.createOK(booksCheckout, String.format("Books are updated"));
+        } else
             return ResponseUtil.createNotFound(String.format("Books not found or not available to checkout."));
+    }
+
+    @Override
+    public ResponseEntity<?> getCheckoutRecords(Integer userId) {
+        return null;
     }
 }
