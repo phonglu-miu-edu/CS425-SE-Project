@@ -1,18 +1,14 @@
 package com.swe.lms.admin.api.controller;
 
 import com.swe.lms.admin.api.aop.NoToken;
-import com.swe.lms.admin.api.constant.LmsConst;
 import com.swe.lms.admin.api.dto.*;
 import com.swe.lms.admin.api.service.*;
-import com.swe.lms.admin.api.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RefreshScope
