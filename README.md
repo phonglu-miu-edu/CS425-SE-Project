@@ -539,3 +539,207 @@
       "data": "BookCopy information is updated successfully."
    }
    ```
+     - #### 2.20 Get Book Copy
+         - Method: GET
+         - URL: /lms/admin/book_copies/{bookId}
+         - Path params: bookId
+         - Response:
+ ```
+   {
+    "status_code": 200,
+    "data": [
+        {
+            "copyId": {
+                "bookId": 7,
+                "seq": 1
+            },
+            "status": "Available",
+            "statusDetail": "New"
+        },
+        {
+            "copyId": {
+                "bookId": 7,
+                "seq": 2
+            },
+            "status": "Available",
+            "statusDetail": "New"
+        }
+    ]
+ }
+   ```
+  - ### 3. Book Service
+    - #### 3.1 Checkout
+      - Method: POST
+      - URL: /lms/book/checkout
+      - Body:
+```
+[
+   1,2
+]
+```
+    - Response:
+```
+   {
+    "status_code": 200,
+    "data": [
+        {
+            // To be defined    
+        },
+        {
+            // To be defined
+        }
+    ]
+ }
+```
+   - #### 3.2 Checkin
+     - Method: POST
+     - URL: /lms/book/checkin
+     - Body
+```
+[
+   1,2
+]
+```
+    - Response:
+```
+   {
+    "status_code": 200,
+    "data": [
+        {
+            // To be defined    
+        },
+        {
+            // To be defined
+        }
+    ]
+ }
+```
+   - #### 3.3 Get checkout records
+     - Method: POST
+     - URL: /lms/book/checkout/records/{userId}
+     - Path param: user Id
+     - Response:
+```
+   {
+    "status_code": 200,
+    "data": [
+        {
+            // To be defined    
+        },
+        {
+            // To be defined
+        }
+    ]
+ }
+```
+   - #### 3.4 Search book
+     - Method: GET
+     - URL: /lms/book/search/q=
+     - Request param: q: any string
+     - Response:
+```
+{
+    "status_code": 200,
+    "data": [
+        {
+            "id": 7,
+            "title": "Effective Java",
+            "isbn": "1000",
+            "authors": "Joshua Bloch",
+            "numOfCopies": 5,
+            "bookCategoryId": 5
+        }
+    ]
+}
+```
+  - ### 4. Student Service
+    - #### 4.1 Register
+      - Method: POST
+      - URL: /lms/student/register
+      - Body
+```
+{
+   "abc": ""
+}
+```
+      - Response:
+```
+{
+   "status_code": 200,
+   "data": [
+      {
+         "id": 7,
+         "title": "Effective Java",
+         "isbn": "1000",
+         "authors": "Joshua Bloch",
+         "numOfCopies": 5,
+         "bookCategoryId": 5
+      }
+   ]
+}
+```
+   - #### 4.2 Get student Information
+     - Method: GET
+     - URL: /lms/student/students/{userId}
+     - Request param: user Id
+     - Response:
+```
+{
+    "status_code": 200,
+    "data": [
+        {
+            "id": 7,
+            "title": "Effective Java",
+            "isbn": "1000",
+            "authors": "Joshua Bloch",
+            "numOfCopies": 5,
+            "bookCategoryId": 5
+        }
+    ]
+}
+```
+   - #### 4.3 Update student information
+     - Method: PUT
+     - URL: /lms/student/students/{userId}
+     - Request param: user ID
+     - Body:
+```
+{
+}
+```
+     - Response:
+```
+{
+    "status_code": 200,
+    "data": [
+        {
+            "id": 7,
+            "title": "Effective Java",
+            "isbn": "1000",
+            "authors": "Joshua Bloch",
+            "numOfCopies": 5,
+            "bookCategoryId": 5
+        }
+    ]
+}
+```
+   - #### 4.4 Get checkout records
+     - Method: GET
+     - URL: /lms/student/checkout_records/{userId}
+     - Response:
+```
+{
+    "status_code": 200,
+    "data": [
+        {
+            "bookId": 7,
+            "userId": 2,
+            "seq": 3,
+            "title": "Effective Java",
+            "isbn": "1000",
+            "authors": "Joshua Bloch",
+            "borrowDate": "10/18/2013 09:10:14"
+        }
+    ]
+}
+```
