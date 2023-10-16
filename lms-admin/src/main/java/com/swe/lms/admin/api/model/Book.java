@@ -29,4 +29,8 @@ public class Book {
     private Integer numOfCopies;
 
     private Integer bookCategoryId;
+
+    @NotNull
+    private boolean available;
+
 }

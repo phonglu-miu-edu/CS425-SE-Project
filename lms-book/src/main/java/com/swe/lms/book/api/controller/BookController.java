@@ -1,5 +1,6 @@
 package com.swe.lms.book.api.controller;
 
+
 import com.swe.lms.book.api.constant.LmsConst;
 import com.swe.lms.book.api.dto.BookDTO;
 import com.swe.lms.book.api.service.IBookService;
@@ -35,7 +36,7 @@ public class BookController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<?> searchBooks(@RequestParam(name="q") String keyword) {
+    public ResponseEntity<?> searchBooks(@RequestParam(required = false, name="q") String keyword) {
         return bookService.searchBooks(keyword);
     }
 }

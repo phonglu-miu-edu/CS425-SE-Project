@@ -5,25 +5,37 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
+@Table(name="Book")
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public Integer id;
-    @NotBlank
-    public String title;
-    @NotBlank
-    public String isbn;
+    private Integer id;
 
-    public String authors;
+    @NotBlank
+    private String title;
+
+    @NotBlank
+    private String isbn;
+
+    @NotBlank
+    private String authors;
+
+    @NotNull
+    private Integer numOfCopies;
+
+    @NotNull
+    private Integer bookCategoryId;
+
+    @NotNull
+    private boolean available;
+
 }
