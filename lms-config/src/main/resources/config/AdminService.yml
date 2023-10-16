@@ -5,7 +5,7 @@ swe:
         cookie_token: LMS_TOKEN
         cookie_user: LMS_USER
         cookie_role: LMS_ROLE
-#swe.lms.auth.api.cookie_token
+
 spring:
   datasource:
     url: jdbc:h2:file:../database/lms_admin_db

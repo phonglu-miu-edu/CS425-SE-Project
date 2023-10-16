@@ -1,6 +1,14 @@
+swe:
+  lms:
+    auth:
+      api:
+        cookie_token: LMS_TOKEN
+        cookie_user: LMS_USER
+        cookie_role: LMS_ROLE
+
 spring:
   datasource:
-    url: jdbc:h2:file:../database/lmsdb
+    url: jdbc:h2:file:../database/lms_checkinout_db
     driverClassName: org.h2.Driver
     username: sa
     password: password
