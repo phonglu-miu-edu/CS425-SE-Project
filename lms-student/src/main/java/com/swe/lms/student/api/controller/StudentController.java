@@ -30,7 +30,7 @@ public class StudentController {
         return studentService.updateUser(userDTO);
     }
 
-    @GetMapping("/students/checkout_records/{userId}")
+    @GetMapping("/checkout_records/{userId}")
     public ResponseEntity<?> getCheckoutRecords(@PathVariable(name="userId") int userId) {
         return studentService.getCheckoutRecords(userId);
     }
