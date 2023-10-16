@@ -15,8 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service("BookCopyService")
 public class BookCopyServiceImpl implements IBookCopyService {
@@ -53,5 +55,19 @@ public class BookCopyServiceImpl implements IBookCopyService {
         BookCopy bookCopy = BookCopyAdapter.convertToBookCopy(bookCopyDTO);
         bookCopyRepository.save(bookCopy);
         return ResponseUtil.createOK("BookCopy information is updated successfully.");
+    }
+
+    @Override
+    public ResponseEntity<?> getBookCopies(int bookId) {
+        Optional<Book> optBook = bookRepository.findById(bookId);
+        if (!optBook.isPresent()) {
+            return ResponseUtil.createNotFound(String.format("Book ID [%d] is not found", bookId));
+        }
+        List<BookCopy> bookCopies = bookCopyRepository.findByCopyId_BookId(bookId);
+        List<BookCopyDTO> bookCopyDTOs = new ArrayList<>();
+        if (null != bookCopies && bookCopies.size() > 0) {
+            bookCopyDTOs = bookCopies.stream().map(bookCopy -> BookCopyAdapter.convertToBookCopyDTO(bookCopy)).collect(Collectors.toList());
+        }
+        return ResponseUtil.createOK(bookCopyDTOs);
     }
 }

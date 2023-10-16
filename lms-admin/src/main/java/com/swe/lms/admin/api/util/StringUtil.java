@@ -20,7 +20,6 @@ public class StringUtil {
                 map.put(kv[0], kv[1]);
             }
         }
-
         return map;
     }
 }

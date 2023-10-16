@@ -9,4 +9,6 @@ public interface IBookCopyService {
     ResponseEntity<?> addBookCopies(BookDTO bookDTO);
 
     ResponseEntity<?> updateBookCopy(BookCopyDTO bookCopyDTO);
+
+    ResponseEntity<?> getBookCopies(int bookId);
 }

@@ -16,5 +16,5 @@ public interface IUserService {
 
     ResponseEntity<?> getLoginUser(UserDTO userDTO);
 
-    ResponseEntity<?> searchUsers(Map<String, Object> mapParams);
+    ResponseEntity<?> searchUsers(String keyword);
 }

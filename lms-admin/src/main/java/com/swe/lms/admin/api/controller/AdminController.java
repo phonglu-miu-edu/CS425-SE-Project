@@ -64,9 +64,8 @@ public class AdminController {
     }
 
     @GetMapping("/users/search")
-    public ResponseEntity<?> searchUsers(@RequestParam(name="q") String strQuery) {
-        Map<String, Object> mapParams = new HashMap<>(StringUtil.parseQueryParam(strQuery, LmsConst.PARAM_DELIM));
-        return userService.searchUsers(mapParams);
+    public ResponseEntity<?> searchUsers(@RequestParam(name="q") String keyword) {
+        return userService.searchUsers(keyword);
     }
 
     //-------------- Books ----------------------
@@ -93,9 +92,8 @@ public class AdminController {
     }
 
     @GetMapping("/books/search")
-    public ResponseEntity<?> searchBooks(@RequestParam(name="q") String strQuery) {
-        Map<String, Object> mapParams = new HashMap<>(StringUtil.parseQueryParam(strQuery, LmsConst.PARAM_DELIM));
-        return bookService.searchBooks(mapParams);
+    public ResponseEntity<?> searchBooks(@RequestParam(name="q") String keyword) {
+        return bookService.searchBooks(keyword);
     }
 
     //-------------- Book Categories ----------------------
@@ -122,9 +120,8 @@ public class AdminController {
     }
 
     @GetMapping("/book_categories/search")
-    public ResponseEntity<?> searchBookCategories(@RequestParam(name="q") String categoryName) {
-        Map<String, Object> mapParams = new HashMap<>(StringUtil.parseQueryParam(categoryName, LmsConst.PARAM_DELIM));
-        return bookCategoryService.searchBookCategories(mapParams);
+    public ResponseEntity<?> searchBookCategories(@RequestParam(name="q") String keyword) {
+        return bookCategoryService.searchBookCategories(keyword);
     }
 
     //-------------- Configuration ----------------------
@@ -148,5 +145,10 @@ public class AdminController {
     @PutMapping("/book_copies")
     public ResponseEntity<?> updateBookCopies(@RequestBody BookCopyDTO bookCopyDTO) {
         return bookCopyService.updateBookCopy(bookCopyDTO);
+    }
+
+    @GetMapping("/book_copies/{bookId}")
+    public ResponseEntity<?> getBookCopies(@PathVariable(name="bookId") int bookId) {
+        return bookCopyService.getBookCopies(bookId);
     }
 }

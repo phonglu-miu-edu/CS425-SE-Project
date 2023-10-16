@@ -7,6 +7,7 @@ import com.swe.lms.admin.api.model.Book;
 import com.swe.lms.admin.api.repository.BookRepository;
 import com.swe.lms.admin.api.service.IBookService;
 import com.swe.lms.admin.api.util.ResponseUtil;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -58,8 +59,13 @@ public class BookServiceImpl implements IBookService {
     }
 
     @Override
-    public ResponseEntity<?> searchBooks(Map<String, Object> mapParams) {
-        List<Book> books = bookRepository.findAll();
+    public ResponseEntity<?> searchBooks(String keyword) {
+        List<Book> books;
+        if (StringUtils.isBlank(keyword)) {
+            books = bookRepository.findAll();
+        } else {
+            books = bookRepository.findByTitleLikeIgnoreCaseOrIsbnLikeOrAuthorsLikeIgnoreCase(keyword, keyword, keyword);
+        }
         List<BookDTO> bookDTOs = new ArrayList<>();
         if (null != books && books.size() > 0) {
             bookDTOs = books.stream().map(book -> BookAdapter.convertToBookDTO(book)).collect(Collectors.toList());
