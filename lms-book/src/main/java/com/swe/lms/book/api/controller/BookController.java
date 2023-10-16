@@ -19,19 +19,18 @@ public class BookController {
     @Autowired
     private IBookService bookService;
 
-    @PostMapping("/books/checkin")
+    @PostMapping("/checkin")
     public ResponseEntity<?> checkin(@RequestBody List<BookDTO> books) {
         return bookService.checkin(books);
     }
 
-    @PostMapping("/books/checkout")
+    @PostMapping("/checkout")
     public ResponseEntity<?> checkout(@RequestBody List<BookDTO> books) {
         return bookService.checkout(books);
     }
 
-    @GetMapping("/books")
-    public ResponseEntity<?> searchBooks(@RequestParam(required = false) String strQuery) {
-        //Map<String, Object> mapParams = new HashMap<>(StringUtil.parseQueryParam(strQuery, LmsConst.PARAM_DELIM));
-        return bookService.searchBooks(strQuery);
+    @GetMapping("/search")
+    public ResponseEntity<?> searchBooks(@RequestParam(name="q") String keyword) {
+        return bookService.searchBooks(keyword);
     }
 }

@@ -1,24 +1,23 @@
 package com.swe.lms.book.api.service.impl;
 
 import com.swe.lms.book.api.dto.BookDTO;
+import com.swe.lms.book.api.feign.IAdminFeignClient;
 import com.swe.lms.book.api.service.IBookService;
 import com.swe.lms.book.api.util.ResponseUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 @Service("BookService")
 public class BookServiceImpl implements IBookService {
-    @Override
-    public ResponseEntity<?> searchBooks(Map<String, Object> mapParams) {
-        return null;
-    }
+    @Autowired
+    private IAdminFeignClient adminFeignClient;
 
     @Override
-    public ResponseEntity<?> searchBooks(String mapParams) {
-        return ResponseUtil.createOK(null);
+    public ResponseEntity<?> searchBooks(String keyword) {
+        return adminFeignClient.searchBooks(keyword);
     }
 
     @Override

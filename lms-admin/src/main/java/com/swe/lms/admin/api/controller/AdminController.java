@@ -88,6 +88,7 @@ public class AdminController {
     }
 
     @GetMapping("/books/search")
+    @NoToken
     public ResponseEntity<?> searchBooks(@RequestParam(name="q") String keyword) {
         return bookService.searchBooks(keyword);
     }

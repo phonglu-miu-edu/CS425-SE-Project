@@ -59,20 +59,22 @@ public class InitializeDataService {
 
         // Initialize Book Data
         Book book1 = Book.builder().title("Effective Java").isbn("1000").authors("Joshua Bloch").numOfCopies(5).build();
-        Book book2 = Book.builder().title("Core Java").isbn("1001").authors("Cay S.Horstmann").numOfCopies(10).build();
-        Book book3 = Book.builder().title("Core Java").isbn("1002").authors("Herbert Schildt").numOfCopies(8).build();
+        Book book2 = Book.builder().title("Introduction to Java").isbn("1001").authors("Y Daniel Liang").numOfCopies(10).build();
+        Book book3 = Book.builder().title("Modern Java In Action").isbn("1002").authors("Raoul-Gabriel Urma, Mario Fusco, Alan Mycroft").numOfCopies(8).build();
+        Book book4 = Book.builder().title("Core Java").isbn("1002").authors("Cay Horstmann").numOfCopies(8).build();
 
-        Book book4 = Book.builder().title("C# and .NET").isbn("1003").authors("Christian Nagel").numOfCopies(6).build();
-        Book book5 = Book.builder().title("Pro C# 10 with .NET 6").isbn("1004").authors("Andrew Troelsen, Phil Japikse").numOfCopies(7).build();
-        Book book6 = Book.builder().title(".NET Component").isbn("1005").authors("Juval Lowy").numOfCopies(9).build();
+        Book book5 = Book.builder().title("C# and .NET").isbn("1003").authors("Christian Nagel").numOfCopies(6).build();
+        Book book6 = Book.builder().title("Pro C# 10 with .NET 6").isbn("1004").authors("Andrew Troelsen, Phil Japikse").numOfCopies(7).build();
+        Book book7 = Book.builder().title(".NET Component").isbn("1005").authors("Juval Lowy").numOfCopies(9).build();
 
         initBook(bookCategory1, book1);
         initBook(bookCategory1, book2);
         initBook(bookCategory1, book3);
+        initBook(bookCategory1, book4);
 
-        initBook(bookCategory2, book4);
         initBook(bookCategory2, book5);
         initBook(bookCategory2, book6);
+        initBook(bookCategory2, book7);
 
         Config config1 = Config.builder().itemName("Number of days is free to borrow").itemValue("30").build();
         Config config2 = Config.builder().itemName("Fine for overdue (per day)").itemValue("5").build();
