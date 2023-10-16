@@ -22,5 +22,6 @@ public class BookDTO
     private Integer numOfCopies;
 
     private Integer bookCategoryId;
+
     private boolean available;
 }

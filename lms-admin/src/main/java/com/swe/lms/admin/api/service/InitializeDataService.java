@@ -60,13 +60,13 @@ public class InitializeDataService {
         bookCategoryRepository.save(bookCategory2);
 
         // Initialize Book Data
-        Book book1 = Book.builder().title("Effective Java").isbn("1000").authors("Joshua Bloch").numOfCopies(5).bookCategoryId(1).build();
-        Book book2 = Book.builder().title("Core Java").isbn("1001").authors("Cay S.Horstmann").numOfCopies(10).bookCategoryId(1).build();
-        Book book3 = Book.builder().title("Core Java").isbn("1002").authors("Herbert Schildt").numOfCopies(8).bookCategoryId(1).build();
+        Book book1 = Book.builder().title("Effective Java").isbn("1000").authors("Joshua Bloch").numOfCopies(5).bookCategoryId(1).available(true).build();
+        Book book2 = Book.builder().title("Core Java").isbn("1001").authors("Cay S.Horstmann").numOfCopies(10).bookCategoryId(1).available(true).build();
+        Book book3 = Book.builder().title("Core Java").isbn("1002").authors("Herbert Schildt").numOfCopies(8).bookCategoryId(1).available(true).build();
 
-        Book book4 = Book.builder().title("C# and .NET").isbn("1003").authors("Christian Nagel").numOfCopies(6).bookCategoryId(2).build();
-        Book book5 = Book.builder().title("Pro C# 10 with .NET 6").isbn("1004").authors("Andrew Troelsen, Phil Japikse").numOfCopies(7).bookCategoryId(2).build();
-        Book book6 = Book.builder().title(".NET Component").isbn("1005").authors("Juval Lowy").bookCategoryId(2).numOfCopies(9).build();
+        Book book4 = Book.builder().title("C# and .NET").isbn("1003").authors("Christian Nagel").numOfCopies(6).bookCategoryId(2).available(true).build();
+        Book book5 = Book.builder().title("Pro C# 10 with .NET 6").isbn("1004").authors("Andrew Troelsen, Phil Japikse").numOfCopies(7).bookCategoryId(2).available(true).build();
+        Book book6 = Book.builder().title(".NET Component").isbn("1005").authors("Juval Lowy").bookCategoryId(2).numOfCopies(9).available(true).build();
 
         bookRepository.save(book1);
         bookRepository.save(book2);
