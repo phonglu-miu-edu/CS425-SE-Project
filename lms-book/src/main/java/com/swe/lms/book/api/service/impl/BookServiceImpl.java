@@ -1,7 +1,5 @@
 package com.swe.lms.book.api.service.impl;
 
-import com.swe.lms.admin.api.adapter.BookAdapter;
-
 import com.swe.lms.book.api.dto.BookDTO;
 import com.swe.lms.book.api.model.Book;
 import com.swe.lms.book.api.repository.BookRepository;
@@ -14,11 +12,16 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service("BookService")
 public class BookServiceImpl implements IBookService {
     @Autowired
     private IAdminFeignClient adminFeignClient;
+
+    @Autowired
+    private BookRepository bookRepository;
 
     @Override
     public ResponseEntity<?> searchBooks(String keyword) {

@@ -31,7 +31,7 @@ public class BookController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<?> searchBooks(@RequestParam(name="q") String keyword) {
+    public ResponseEntity<?> searchBooks(@RequestParam(required = false, name="q") String keyword) {
         return bookService.searchBooks(keyword);
     }
 }
