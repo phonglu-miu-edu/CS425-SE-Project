@@ -9,6 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface BookCategoryRepository extends JpaRepository<BookCategory, Integer> {
-    List<BookCategory> findByCategoryNameContaining(String categoryName);
+    List<BookCategory> findByCategoryNameLikeIgnoreCaseOrDescriptionLikeIgnoreCase(String categoryName, String description);
     Optional<BookCategory> findById(Integer id);
 }

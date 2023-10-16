@@ -8,13 +8,13 @@ import com.swe.lms.admin.api.repository.BookCategoryRepository;
 import com.swe.lms.admin.api.repository.BookRepository;
 import com.swe.lms.admin.api.service.IBookCategoryService;
 import com.swe.lms.admin.api.util.ResponseUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -70,8 +70,13 @@ public class BookCategoryServiceImpl implements IBookCategoryService {
     }
 
     @Override
-    public ResponseEntity<?> searchBookCategories(Map<String, Object> mapParams) {
-        List<BookCategory> bookCategories = bookCategoryRepository.findAll();
+    public ResponseEntity<?> searchBookCategories(String keyword) {
+        List<BookCategory> bookCategories;
+        if (StringUtils.isBlank(keyword))
+            bookCategories = bookCategoryRepository.findAll();
+        else {
+            bookCategories = bookCategoryRepository.findByCategoryNameLikeIgnoreCaseOrDescriptionLikeIgnoreCase(keyword, keyword);
+        }
         List<BookCategoryDTO> bookCategoryDTOs = new ArrayList<>();
         if (null != bookCategories && bookCategories.size() > 0) {
             bookCategoryDTOs = bookCategories.stream().map(bookCategory -> BookCategoryAdapter.convertToBookCategoryDTO(bookCategory)).collect(Collectors.toList());

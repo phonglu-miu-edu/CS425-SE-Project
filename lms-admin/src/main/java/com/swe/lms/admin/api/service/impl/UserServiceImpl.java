@@ -1,11 +1,8 @@
 package com.swe.lms.admin.api.service.impl;
 
-import com.swe.lms.admin.api.adapter.BookAdapter;
 import com.swe.lms.admin.api.adapter.UserAdapter;
 import com.swe.lms.admin.api.constant.UserStatus;
-import com.swe.lms.admin.api.dto.BookDTO;
 import com.swe.lms.admin.api.dto.UserDTO;
-import com.swe.lms.admin.api.model.Book;
 import com.swe.lms.admin.api.model.User;
 import com.swe.lms.admin.api.repository.UserRepository;
 import com.swe.lms.admin.api.service.IUserService;
@@ -20,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -93,8 +89,13 @@ public class UserServiceImpl implements IUserService  {
     }
 
     @Override
-    public ResponseEntity<?> searchUsers(Map<String, Object> mapParams) {
-        List<User> users = userRepository.findAll();
+    public ResponseEntity<?> searchUsers(String keyword) {
+        List<User> users;
+        if (StringUtils.isBlank(keyword)) {
+            users = userRepository.findAll();
+        } else {
+            users = userRepository.findByUserNameLikeIgnoreCaseOrFirstNameLikeIgnoreCaseOrLastNameLikeIgnoreCaseOrEmailLikeIgnoreCaseOrPhoneNumberLikeIgnoreCaseOrAddressLikeIgnoreCaseOrRoleCdLikeIgnoreCaseOrStatusLikeIgnoreCase(keyword, keyword, keyword, keyword, keyword, keyword, keyword, keyword);
+        }
         List<UserDTO> userDTOs = new ArrayList<>();
         if (null != users && users.size() > 0) {
             userDTOs = users.stream().map(user -> UserAdapter.convertToUserDTO(user)).collect(Collectors.toList());

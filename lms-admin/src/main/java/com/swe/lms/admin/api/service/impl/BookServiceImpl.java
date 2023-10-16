@@ -2,22 +2,19 @@ package com.swe.lms.admin.api.service.impl;
 
 import com.swe.lms.admin.api.adapter.BookAdapter;
 import com.swe.lms.admin.api.constant.HTTPConst;
-import com.swe.lms.admin.api.constant.LmsConst;
 import com.swe.lms.admin.api.dto.BookDTO;
-import com.swe.lms.admin.api.dto.UserDTO;
 import com.swe.lms.admin.api.model.Book;
 import com.swe.lms.admin.api.repository.BookRepository;
 import com.swe.lms.admin.api.service.IBookService;
 import com.swe.lms.admin.api.util.ResponseUtil;
-import com.swe.lms.admin.api.util.StringUtil;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
 
-import javax.annotation.PostConstruct;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service("BookService")
@@ -65,8 +62,13 @@ public class BookServiceImpl implements IBookService {
     }
 
     @Override
-    public ResponseEntity<?> searchBooks(Map<String, Object> mapParams) {
-        List<Book> books = bookRepository.findAll();
+    public ResponseEntity<?> searchBooks(String keyword) {
+        List<Book> books;
+        if (StringUtils.isBlank(keyword)) {
+            books = bookRepository.findAll();
+        } else {
+            books = bookRepository.findByTitleLikeIgnoreCaseOrIsbnLikeOrAuthorsLikeIgnoreCase(keyword, keyword, keyword);
+        }
         List<BookDTO> bookDTOs = new ArrayList<>();
         if (null != books && books.size() > 0) {
             bookDTOs = books.stream().map(book -> BookAdapter.convertToBookDTO(book)).collect(Collectors.toList());

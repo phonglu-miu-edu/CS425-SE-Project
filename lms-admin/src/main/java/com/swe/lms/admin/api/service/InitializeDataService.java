@@ -1,14 +1,9 @@
 package com.swe.lms.admin.api.service;
 
+import com.swe.lms.admin.api.constant.BookStatus;
 import com.swe.lms.admin.api.constant.UserStatus;
-import com.swe.lms.admin.api.model.Book;
-import com.swe.lms.admin.api.model.BookCategory;
-import com.swe.lms.admin.api.model.Config;
-import com.swe.lms.admin.api.model.User;
-import com.swe.lms.admin.api.repository.BookCategoryRepository;
-import com.swe.lms.admin.api.repository.BookRepository;
-import com.swe.lms.admin.api.repository.ConfigRepository;
-import com.swe.lms.admin.api.repository.UserRepository;
+import com.swe.lms.admin.api.model.*;
+import com.swe.lms.admin.api.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +22,9 @@ public class InitializeDataService {
 
     @Autowired
     private ConfigRepository configRepository;
+
+    @Autowired
+    private BookCopyRepository bookCopyRepository;
 
     @PostConstruct
     public void initializeData() {
@@ -56,25 +54,25 @@ public class InitializeDataService {
         // Initialize BookCategory Data
         BookCategory bookCategory1 = BookCategory.builder().categoryName("Java").description("Java technology related books").build();
         BookCategory bookCategory2 = BookCategory.builder().categoryName(".NET").description(".NET technology related books").build();
-        bookCategoryRepository.save(bookCategory1);
-        bookCategoryRepository.save(bookCategory2);
+        bookCategory1 = bookCategoryRepository.save(bookCategory1);
+        bookCategory2 = bookCategoryRepository.save(bookCategory2);
 
         // Initialize Book Data
-        Book book1 = Book.builder().title("Effective Java").isbn("1000").authors("Joshua Bloch").numOfCopies(5).bookCategoryId(1).available(true).build();
-        Book book2 = Book.builder().title("Core Java").isbn("1001").authors("Cay S.Horstmann").numOfCopies(10).bookCategoryId(1).available(true).build();
-        Book book3 = Book.builder().title("Core Java").isbn("1002").authors("Herbert Schildt").numOfCopies(8).bookCategoryId(1).available(true).build();
+        Book book1 = Book.builder().title("Effective Java").isbn("1000").authors("Joshua Bloch").numOfCopies(5).available(true).build();
+        Book book2 = Book.builder().title("Core Java").isbn("1001").authors("Cay S.Horstmann").numOfCopies(10).available(true).build();
+        Book book3 = Book.builder().title("Core Java").isbn("1002").authors("Herbert Schildt").numOfCopies(8).available(true).build();
 
-        Book book4 = Book.builder().title("C# and .NET").isbn("1003").authors("Christian Nagel").numOfCopies(6).bookCategoryId(2).available(true).build();
-        Book book5 = Book.builder().title("Pro C# 10 with .NET 6").isbn("1004").authors("Andrew Troelsen, Phil Japikse").numOfCopies(7).bookCategoryId(2).available(true).build();
-        Book book6 = Book.builder().title(".NET Component").isbn("1005").authors("Juval Lowy").bookCategoryId(2).numOfCopies(9).available(true).build();
+        Book book4 = Book.builder().title("C# and .NET").isbn("1003").authors("Christian Nagel").numOfCopies(6).available(true).build();
+        Book book5 = Book.builder().title("Pro C# 10 with .NET 6").isbn("1004").authors("Andrew Troelsen, Phil Japikse").numOfCopies(7).available(true).build();
+        Book book6 = Book.builder().title(".NET Component").isbn("1005").authors("Juval Lowy").numOfCopies(9).available(true).build();
 
-        bookRepository.save(book1);
-        bookRepository.save(book2);
-        bookRepository.save(book3);
+        initBook(bookCategory1, book1);
+        initBook(bookCategory1, book2);
+        initBook(bookCategory1, book3);
 
-        bookRepository.save(book4);
-        bookRepository.save(book5);
-        bookRepository.save(book6);
+        initBook(bookCategory2, book4);
+        initBook(bookCategory2, book5);
+        initBook(bookCategory2, book6);
 
         Config config1 = Config.builder().itemName("Number of days is free to borrow").itemValue("30").build();
         Config config2 = Config.builder().itemName("Fine for overdue (per day)").itemValue("5").build();
@@ -91,5 +89,18 @@ public class InitializeDataService {
         configRepository.save(config5);
         configRepository.save(config6);
         configRepository.save(config7);
+    }
+
+    private void initBook(BookCategory bookCategory, Book book) {
+        book.setBookCategoryId(bookCategory.getId());
+        book = bookRepository.save(book);
+        int bookId = book.getId();
+        int numOfCopies = book.getNumOfCopies();
+
+        for (int i=1; i<=numOfCopies; i++) {
+            BookCopyId bookCopyId = BookCopyId.builder().bookId(bookId).seq(i).build();
+            BookCopy bookCopy = BookCopy.builder().copyId(bookCopyId).status(BookStatus.AVAILABLE.getValue()).statusDetail("New").build();
+            bookCopyRepository.save(bookCopy);
+        }
     }
 }

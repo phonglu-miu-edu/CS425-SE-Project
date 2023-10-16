@@ -1,24 +1,14 @@
 package com.swe.lms.admin.api.controller;
 
 import com.swe.lms.admin.api.aop.NoToken;
-import com.swe.lms.admin.api.constant.LmsConst;
-import com.swe.lms.admin.api.dto.BookCategoryDTO;
-import com.swe.lms.admin.api.dto.BookDTO;
-import com.swe.lms.admin.api.dto.ConfigDTO;
-import com.swe.lms.admin.api.dto.UserDTO;
-import com.swe.lms.admin.api.service.IBookCategoryService;
-import com.swe.lms.admin.api.service.IBookService;
-import com.swe.lms.admin.api.service.IConfigService;
-import com.swe.lms.admin.api.service.IUserService;
-import com.swe.lms.admin.api.util.StringUtil;
+import com.swe.lms.admin.api.dto.*;
+import com.swe.lms.admin.api.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RefreshScope
@@ -36,6 +26,9 @@ public class AdminController {
 
     @Autowired
     private IConfigService configService;
+
+    @Autowired
+    private IBookCopyService bookCopyService;
 
     //-------------- Users ----------------------
 
@@ -67,9 +60,8 @@ public class AdminController {
     }
 
     @GetMapping("/users/search")
-    public ResponseEntity<?> searchUsers(@RequestParam(name="q") String strQuery) {
-        Map<String, Object> mapParams = new HashMap<>(StringUtil.parseQueryParam(strQuery, LmsConst.PARAM_DELIM));
-        return userService.searchUsers(mapParams);
+    public ResponseEntity<?> searchUsers(@RequestParam(name="q") String keyword) {
+        return userService.searchUsers(keyword);
     }
 
     //-------------- Books ----------------------
@@ -96,9 +88,8 @@ public class AdminController {
     }
 
     @GetMapping("/books/search")
-    public ResponseEntity<?> searchBooks(@RequestParam(name="q") String strQuery) {
-        Map<String, Object> mapParams = new HashMap<>(StringUtil.parseQueryParam(strQuery, LmsConst.PARAM_DELIM));
-        return bookService.searchBooks(mapParams);
+    public ResponseEntity<?> searchBooks(@RequestParam(name="q") String keyword) {
+        return bookService.searchBooks(keyword);
     }
 
     //-------------- Book Categories ----------------------
@@ -125,17 +116,35 @@ public class AdminController {
     }
 
     @GetMapping("/book_categories/search")
-    public ResponseEntity<?> searchBookCategories(@RequestParam(name="q") String categoryName) {
-        Map<String, Object> mapParams = new HashMap<>(StringUtil.parseQueryParam(categoryName, LmsConst.PARAM_DELIM));
-        return bookCategoryService.searchBookCategories(mapParams);
+    public ResponseEntity<?> searchBookCategories(@RequestParam(name="q") String keyword) {
+        return bookCategoryService.searchBookCategories(keyword);
     }
 
+    //-------------- Configuration ----------------------
     @GetMapping("/configs")
     public ResponseEntity<?> getConfigs() {
         return configService.getConfigs();
     }
+
     @PutMapping("/configs")
     public ResponseEntity<?> updateConfigs(@RequestBody List<ConfigDTO> configDTOs) {
         return configService.updateConfigs(configDTOs);
+    }
+
+    //-------------- Book Copy ----------------------
+
+    @PostMapping("/book_copies")
+    public ResponseEntity<?> addBookCopies(@RequestBody BookDTO bookDTO) {
+        return bookCopyService.addBookCopies(bookDTO);
+    }
+
+    @PutMapping("/book_copies")
+    public ResponseEntity<?> updateBookCopies(@RequestBody BookCopyDTO bookCopyDTO) {
+        return bookCopyService.updateBookCopy(bookCopyDTO);
+    }
+
+    @GetMapping("/book_copies/{bookId}")
+    public ResponseEntity<?> getBookCopies(@PathVariable(name="bookId") int bookId) {
+        return bookCopyService.getBookCopies(bookId);
     }
 }

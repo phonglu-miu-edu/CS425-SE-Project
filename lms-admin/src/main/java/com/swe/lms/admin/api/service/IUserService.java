@@ -2,7 +2,6 @@ package com.swe.lms.admin.api.service;
 
 import com.swe.lms.admin.api.dto.UserDTO;
 import org.springframework.http.ResponseEntity;
-import java.util.Map;
 
 public interface IUserService {
 
@@ -16,5 +15,5 @@ public interface IUserService {
 
     ResponseEntity<?> getLoginUser(UserDTO userDTO);
 
-    ResponseEntity<?> searchUsers(Map<String, Object> mapParams);
+    ResponseEntity<?> searchUsers(String keyword);
 }
