@@ -50,14 +50,7 @@ public class BookServiceUnitTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError());
     }
-//    @Test
-//    public void TestBookCopiesPostWithBody() throws Exception {
-//        List<Integer> bookId = new ArrayList<Integer>(Arrays.asList(1,2,3));
-//        mockMvc.perform(MockMvcRequestBuilders
-//                .post("/lms/book/checkout/")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(this.objectMapper.writeValueAsString(checkoutRecordDTO))).andExpect(status().isOk());
-//    }
+
     @Test
     public void TestBookCopiesPutWithBody() throws Exception {
 
