@@ -1,20 +1,22 @@
 import Home from 'components/Home/Home';
 import PageNotFound from 'components/PageNotFound/PageNotFound';
-import { PrivateAnyRoute, PrivateAdminRoute } from 'components/PrivateRoute';
+import { PrivateAdminRoute, PrivateAnyRoute, PrivateLibrarianRoute } from 'components/PrivateRoute';
 import { Property } from 'components/Property/Property';
 import PropertyDetail from 'components/PropertyDetail/PropertyDetail';
 import React from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import './App.css';
 import PropertySearchList from './components/PropertyList/PropertySearchList';
-import FavoriteProperty from "./components/FavoriteProperty/FavoriteProperty";
-import Login from "./components/Login/Login";
-import User from "./components/User/User";
-import Book from "./components/Book/Book";
-import BookCopy from "./components/BookCopy/BookCopy";
-import Category from "./components/Category/Category";
-import Config from "./components/Config/Config";
-import Profile from "./components/Profile/Profile";
+import FavoriteProperty from './components/FavoriteProperty/FavoriteProperty';
+import Login from './components/Login/Login';
+import User from './components/User/User';
+import Book from './components/Book/Book';
+import BookCopy from './components/BookCopy/BookCopy';
+import Category from './components/Category/Category';
+import Config from './components/Config/Config';
+import Profile from './components/Profile/Profile';
+import CheckOut from './components/CheckOut/CheckOut';
+import CheckIn from './components/CheckIn/CheckIn';
 
 function AppRouter() {
     let location = useLocation();
@@ -58,6 +60,16 @@ function AppRouter() {
                     <PrivateAdminRoute>
                         <User />
                     </PrivateAdminRoute>
+                } />
+                <Route path="/checkout" element={
+                    <PrivateLibrarianRoute>
+                        <CheckOut />
+                    </PrivateLibrarianRoute>
+                } />
+                <Route path="/checkin" element={
+                    <PrivateLibrarianRoute>
+                        <CheckIn />
+                    </PrivateLibrarianRoute>
                 } />
                 <Route path="*" element={<PageNotFound />} />
             </Routes>

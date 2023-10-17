@@ -88,10 +88,10 @@ const Header = () => {
                                         {role === "Librarian" && (
                                             <>
                                                 <li>
-                                                    <Link to="/checkout">Checkout</Link>
+                                                    <Link to="/checkout">CheckOut</Link>
                                                 </li>
                                                 <li>
-                                                    <Link to="/return">Return</Link>
+                                                    <Link to="/checkin">CheckIn</Link>
                                                 </li>
                                             </>
                                         )}

@@ -19,7 +19,7 @@ export const getAllConfigs = createAsyncThunk(
 
 //#endregion
 
-//#region Checkout
+//#region CheckIn
 
 export const deleteBook = createAsyncThunk(
     'books/delete',
@@ -58,7 +58,7 @@ export const getBook = createAsyncThunk(
 
 //#endregion
 
-//#region Checkout Copy
+//#region CheckIn Copy
 
 export const getAllBookCopies = createAsyncThunk(
     'bookCopies/getAll',

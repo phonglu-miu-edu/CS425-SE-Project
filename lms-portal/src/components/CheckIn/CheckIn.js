@@ -16,7 +16,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { SnackbarCustom } from 'components/SnackbarCustom/SnackbarCustom';
 
-const Checkout = () => {
+const CheckIn = () => {
     const [isEdit, setIsEdit] = useState(false);
     const [list, setList] = useState([]);
     const [categories, setCategories] = useState([]);
@@ -267,4 +267,4 @@ const Checkout = () => {
     </div>;
 };
 
-export default Checkout;
+export default CheckIn;
