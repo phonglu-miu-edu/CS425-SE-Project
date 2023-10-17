@@ -83,6 +83,7 @@ public class AdminController {
     }
 
     @GetMapping("/books/{bookId}")
+    @NoToken
     public ResponseEntity<?> getBook(@PathVariable(name="bookId") int bookId) {
         return bookService.getBook(bookId);
     }

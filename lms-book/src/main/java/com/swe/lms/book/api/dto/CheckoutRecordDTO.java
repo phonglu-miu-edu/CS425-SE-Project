@@ -14,9 +14,11 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 public class CheckoutRecordDTO {
+    private Integer id;
+
     private Integer bookId;
 
-    private Integer userI;
+    private Integer userId;
 
     private String seq;
 
