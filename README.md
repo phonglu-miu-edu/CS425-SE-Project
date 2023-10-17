@@ -1,7 +1,7 @@
 # CS425-SE
 
 
-## Backend deployement ports:
+## Backend deployment ports:
  - ### Gateway (Proxy): 8080
  - ### Eureka Server (Server Registry): 8761
  - ### Configuration Server: 8088
@@ -574,7 +574,18 @@
       - Body:
 ```
 [
-   1,2
+   {
+       "userId": 2,
+       "bookId": 3,
+       "checkoutDate": "2023-09-17",
+       "seq": 1,
+   },
+   {
+       "userId": 2,
+       "bookId": 4,
+       "checkoutDate": "2023-09-17",
+       "seq": 2,
+   }
 ]
 ```
     - Response:
@@ -583,10 +594,18 @@
     "status_code": 200,
     "data": [
         {
-            // To be defined    
+           "id": 9,
+           "userId": 2,
+           "bookId": 3,
+           "checkoutDate": "2023-09-17",
+           "seq": 1,
         },
         {
-            // To be defined
+           "id": 9,
+           "userId": 2,
+           "bookId": 4,
+           "checkoutDate": "2023-09-17",
+           "seq": 1,
         }
     ]
  }
@@ -597,7 +616,20 @@
      - Body
 ```
 [
-   1,2
+   {
+       "id": 9,
+       "userId": 2,
+       "bookId": 4,
+       "checkoutDate": "2023-09-17",
+       "seq": 1,
+   },
+   {
+      "id": 9,
+       "userId": 2,
+       "bookId": 4,
+       "checkoutDate": "2023-09-17",
+       "seq": 1,
+   }
 ]
 ```
     - Response:
@@ -606,10 +638,20 @@
     "status_code": 200,
     "data": [
         {
-            // To be defined    
+           "id": 9,
+           "userId": 2,
+           "bookId": 4,
+           "seq": 1,
+           "checkoutDate": "2023-09-17",
+           "checkinDate": "2023-10-01" 
         },
         {
-            // To be defined
+           "id": 10,
+           "userId": 3,
+           "bookId": 2,
+           "seq": 5,
+           "checkoutDate": "2023-09-17",
+           "checkinDate": "2023-10-01" 
         }
     ]
  }
@@ -624,10 +666,18 @@
     "status_code": 200,
     "data": [
         {
-            // To be defined    
+           "id": 9,
+           "userId": 2,
+           "bookId": 4,
+           "seq": 1,
+           "checkoutDate": "2023-10-17"  
         },
         {
-            // To be defined
+           "id": 10,
+           "userId": 3,
+           "bookId": 2,
+           "seq": 5,
+           "checkoutDate": "2023-10-18"  
         }
     ]
  }
@@ -659,23 +709,32 @@
       - Body
 ```
 {
-   "abc": ""
+     "id": 1,
+     "userName": "bao",
+     "roleCd": "User",
+     "firstName": "Bao Quoc",
+     "lastName": "Nguyen",
+     "password": "123",
+     "email": "baonguyen@miu.edu"
+     "phoneNumber": "6418196666",
+     "address": "13120 Chellen Dr, Dallas, TX 12345, US"
 }
 ```
       - Response:
 ```
 {
    "status_code": 200,
-   "data": [
-      {
-         "id": 7,
-         "title": "Effective Java",
-         "isbn": "1000",
-         "authors": "Joshua Bloch",
-         "numOfCopies": 5,
-         "bookCategoryId": 5
-      }
-   ]
+   "data": {
+         "id": 1,
+         "userName": "bao",
+         "roleCd": "Admin",
+         "firstName": "Bao Quoc",
+         "lastName": "Nguyen",
+         "password": "123",
+         "email": "baonguyen@miu.edu"
+         "phoneNumber": "6418196666",
+         "address": "13120 Chellen Dr, Dallas, TX 12345, US"
+   }
 }
 ```
    - #### 4.2 Get student Information
@@ -686,16 +745,17 @@
 ```
 {
     "status_code": 200,
-    "data": [
-        {
-            "id": 7,
-            "title": "Effective Java",
-            "isbn": "1000",
-            "authors": "Joshua Bloch",
-            "numOfCopies": 5,
-            "bookCategoryId": 5
-        }
-    ]
+    "data": {
+         "id": 1,
+         "userName": "bao",
+         "roleCd": "Admin",
+         "firstName": "Bao Quoc",
+         "lastName": "Nguyen",
+         "password": "123",
+         "email": "baonguyen@miu.edu"
+         "phoneNumber": "6418196666",
+         "address": "13120 Chellen Dr, Dallas, TX 12345, US"
+    }
 }
 ```
    - #### 4.3 Update student information
@@ -705,22 +765,31 @@
      - Body:
 ```
 {
+     "userName": "bao",
+     "roleCd": "Admin",
+     "firstName": "Bao Quoc",
+     "lastName": "Nguyen",
+     "password": "123",
+     "email": "baonguyen@miu.edu"
+     "phoneNumber": "6418196666",
+     "address": "13120 Chellen Dr, Dallas, TX 12345, US"
 }
 ```
      - Response:
 ```
 {
     "status_code": 200,
-    "data": [
-        {
-            "id": 7,
-            "title": "Effective Java",
-            "isbn": "1000",
-            "authors": "Joshua Bloch",
-            "numOfCopies": 5,
-            "bookCategoryId": 5
-        }
-    ]
+    "data": {
+         "id": 1,
+         "userName": "bao",
+         "roleCd": "Admin",
+         "firstName": "Bao Quoc",
+         "lastName": "Nguyen",
+         "password": "123",
+         "email": "baonguyen@miu.edu"
+         "phoneNumber": "6418196666",
+         "address": "13120 Chellen Dr, Dallas, TX 12345, US"
+    }
 }
 ```
    - #### 4.4 Get checkout records
@@ -732,13 +801,18 @@
     "status_code": 200,
     "data": [
         {
-            "bookId": 7,
+            "id: 1,
             "userId": 2,
+            "bookId": 7,
             "seq": 3,
-            "title": "Effective Java",
-            "isbn": "1000",
-            "authors": "Joshua Bloch",
-            "borrowDate": "10/18/2013 09:10:14"
+            "checkoutDate": "2023-10-17"
+        },
+        {
+            "id: 2,
+            "bookId": 8,
+            "userId": 2,
+            "seq": 1,
+            "checkoutDate": "2023-10-17"
         }
     ]
 }
