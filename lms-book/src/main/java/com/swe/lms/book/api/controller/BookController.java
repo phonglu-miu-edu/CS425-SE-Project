@@ -1,16 +1,13 @@
 package com.swe.lms.book.api.controller;
 
-
-import com.swe.lms.book.api.constant.LmsConst;
-import com.swe.lms.book.api.dto.BookDTO;
+import com.swe.lms.book.api.dto.CheckoutRecordDTO;
 import com.swe.lms.book.api.service.IBookService;
-import com.swe.lms.book.api.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
 
 
 @RestController
@@ -21,13 +18,13 @@ public class BookController {
     private IBookService bookService;
 
     @PostMapping("/checkin")
-    public ResponseEntity<?> checkin(@RequestBody List<Integer> bookIds) {
-        return bookService.checkin(bookIds);
+    public ResponseEntity<?> checkin(@RequestBody List<CheckoutRecordDTO> checkoutRecordDTOs) {
+        return bookService.checkin(checkoutRecordDTOs);
     }
 
     @PostMapping("/checkout")
-    public ResponseEntity<?> checkout(@RequestBody List<Integer> bookIds) {
-        return bookService.checkout(bookIds);
+    public ResponseEntity<?> checkout(@RequestBody List<CheckoutRecordDTO> checkoutRecordDTOs) {
+        return bookService.checkout(checkoutRecordDTOs);
     }
 
     @GetMapping("/checkout/records/{userId}")

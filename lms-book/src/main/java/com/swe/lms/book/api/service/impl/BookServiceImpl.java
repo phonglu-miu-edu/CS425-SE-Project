@@ -1,10 +1,13 @@
 package com.swe.lms.book.api.service.impl;
 
-import com.swe.lms.auth.api.constant.DTOConst;
-import com.swe.lms.auth.api.constant.HTTPConst;
-import com.swe.lms.book.api.dto.BookDTO;
+import com.swe.lms.book.api.adapter.CheckoutRecordAdapter;
+import com.swe.lms.book.api.constant.BookStatus;
+import com.swe.lms.book.api.constant.LmsConst;
+import com.swe.lms.book.api.dto.BookCopyDTO;
+import com.swe.lms.book.api.dto.BookCopyIdDTO;
+import com.swe.lms.book.api.dto.CheckoutRecordDTO;
+import com.swe.lms.book.api.dto.ConfigDTO;
 import com.swe.lms.book.api.feign.IAdminFeignClient;
-import com.swe.lms.book.api.model.Book;
 import com.swe.lms.book.api.model.CheckoutRecord;
 import com.swe.lms.book.api.repository.CheckoutRepository;
 import com.swe.lms.book.api.service.IBookService;
@@ -14,7 +17,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service("BookService")
@@ -27,62 +33,56 @@ public class BookServiceImpl implements IBookService {
 
     @Override
     public ResponseEntity<?> searchBooks(String keyword) {
-//        ResponseEntity<?> response = adminFeignClient.searchBooks(keyword);
-//        if (response.getStatusCodeValue() != HttpStatus.OK.value()) {
-//            return ResponseUtil.createUnauthorize("Book not found.");
-//        }
-//        String value = response.getBody().toString();
-        return ResponseUtil.createOK(null, String.format("Search result"));
+        return adminFeignClient.searchBooks(keyword);
     }
 
     @Override
-    public ResponseEntity<?> checkin(List<Integer> bookIds) {
-        List<BookDTO> booksCheckin = new ArrayList<BookDTO>();
-        for(Integer id : bookIds){
-            ResponseEntity<Book> response = (ResponseEntity<Book>) adminFeignClient.getBook(id);
-            if (response.getStatusCodeValue() != HttpStatus.OK.value()) {
-                return ResponseUtil.createUnauthorize("Book not found.");
-            }
+    public ResponseEntity<?> checkin(List<CheckoutRecordDTO> checkoutRecordDTOs) {
+        checkoutRecordDTOs.forEach(record -> {
+            record.setCheckinDate(LocalDate.now());
+            checkoutRepository.save(CheckoutRecordAdapter.convertToCheckoutRecord(record));
 
-//            Map<BookDTO, Object> mapValue = (Map<BookDTO, Object>)response.getBody();
-//            String roleCd = mapValue.get(DTOConst.ROLE_CD).toString();
+            // Update Book Copy Status
+            BookCopyIdDTO copyIdDTO = BookCopyIdDTO.builder().bookId(record.getBookId()).seq(record.getSeq()).build();
+            BookCopyDTO bookCopyDTO = BookCopyDTO.builder().copyId(copyIdDTO)
+                    .status(BookStatus.AVAILABLE.getValue()).statusDetail("Returned").build();
+            adminFeignClient.updateBookCopies(bookCopyDTO);
+        });
+        return ResponseUtil.createOK("Checkin successfully.");
+    }
 
-            //remove from checkout records
-//            BookDTO book = mapValue.get();
-//            List<CheckoutRecord> checkoutRecord = checkoutRepository.findByTitleContaining(book.getTitle());
-//            checkoutRepository.deleteAll(checkoutRecord);
+    @Override
+    public ResponseEntity<?> checkout(List<CheckoutRecordDTO> checkoutRecordDTOs) {
+        ResponseEntity<List<ConfigDTO>> adminConfigResponse = adminFeignClient.getConfigs();
+        if (adminConfigResponse.getStatusCodeValue() != HttpStatus.OK.value()) {
+            return ResponseUtil.createInternalServerError("Retrieved configuration failed");
         }
-        return ResponseUtil.createOK( booksCheckin,"Checkin successfully !");
-    }
+        List<ConfigDTO> configDTOs = adminConfigResponse.getBody();
+        int allowableNumOfBooks = Integer.parseInt(configDTOs.stream().filter(cfg -> cfg.getItemName().equals(LmsConst.MAX_BORROWABLE_BOOKS)).collect(Collectors.toList()).get(0).getItemValue());
+        int currentBorrowedBook = checkoutRepository.countByUserIdAndCheckinDateIsNull(checkoutRecordDTOs.get(0).getUserId());
+        if (checkoutRecordDTOs.size() > allowableNumOfBooks - currentBorrowedBook) {
+            return ResponseUtil.createBadRequest(String.format("You can only borrowed %d book(s).", (allowableNumOfBooks - currentBorrowedBook)));
+        }
+        checkoutRecordDTOs.forEach(record -> {
+            record.setCheckoutDate(LocalDate.now());
+            CheckoutRecord checkoutRecord = checkoutRepository.save(CheckoutRecordAdapter.convertToCheckoutRecord(record));
+            record.setId(checkoutRecord.getId());
 
-    @Override
-    public ResponseEntity<?> checkout(List<Integer> bookId) {
-        List<BookDTO> booksCheckin = new ArrayList<BookDTO>();
-        for(Integer id : bookId){
-            ResponseEntity<?> response = adminFeignClient.getBook(id);
-            if (response.getStatusCodeValue() != HttpStatus.OK.value()) {
-                return ResponseUtil.createUnauthorize("Book not found.");
-            }
-            BookDTO book = (BookDTO) response.getBody();
-            CheckoutRecord checkoutRecord = CheckoutRecord.builder()
-                            .bookId(book.getId())
-                            .authors(book.getAuthors())
-                            .borrowDate(new Date())
-                            .isbn(book.getIsbn())
-                            .title(book.getTitle())
-                            .build();
-                booksCheckin.add(book);
-                checkoutRepository.save(checkoutRecord);
-            }
-        return ResponseUtil.createOK( booksCheckin,"Checkout successfully !");
+            BookCopyIdDTO copyIdDTO = BookCopyIdDTO.builder().bookId(record.getBookId()).seq(record.getSeq()).build();
+            BookCopyDTO bookCopyDTO = BookCopyDTO.builder().copyId(copyIdDTO)
+                                                           .status(BookStatus.BORROWED.getValue()).statusDetail("Newly borrowed").build();
+            adminFeignClient.updateBookCopies(bookCopyDTO);
+        });
+        return ResponseUtil.createOK(checkoutRecordDTOs, "Checkout successfully.");
     }
 
     @Override
     public ResponseEntity<?> getCheckoutRecords(Integer userId) {
-        Optional<CheckoutRecord> checkoutRecord = checkoutRepository.findById(userId);
-        if (checkoutRecord.isPresent()) {
-            return ResponseUtil.createOK(checkoutRecord);
+        List<CheckoutRecord> checkoutRecords = checkoutRepository.findByUserIdAndCheckinDateIsNull(userId);
+        if (null != checkoutRecords && checkoutRecords.size() > 0) {
+            List<CheckoutRecordDTO> checkoutRecordDTOs = checkoutRecords.stream().map(record -> CheckoutRecordAdapter.convertToCheckoutRecordDTO(record)).collect(Collectors.toList());
+            return ResponseUtil.createOK(checkoutRecordDTOs);
         }
-        return ResponseUtil.createNotFound(String.format("Book Category ID [%d] is not found", userId));
+        return ResponseUtil.createOK(new ArrayList<>());
     }
 }

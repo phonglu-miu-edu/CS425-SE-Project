@@ -5,28 +5,25 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class CheckoutRecordDTO {
+
     private Integer id;
 
     private Integer bookId;
 
     private Integer userId;
 
-    private String seq;
+    private int seq;
 
     private String title;
 
-    private String isbn;
+    private LocalDate checkinDate;
 
-    private String authors;
-
-    private Date borrowDate;
+    private LocalDate checkoutDate;
 }
