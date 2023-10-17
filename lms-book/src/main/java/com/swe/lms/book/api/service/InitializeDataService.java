@@ -2,17 +2,22 @@ package com.swe.lms.book.api.service;
 
 
 import com.swe.lms.book.api.model.Book;
+import com.swe.lms.book.api.model.CheckoutRecord;
 import com.swe.lms.book.api.repository.BookRepository;
-import com.swe.lms.book.api.service.impl.BookServiceImpl;
+import com.swe.lms.book.api.repository.CheckoutRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.Date;
 
 @Service("InitDataService")
 public class InitializeDataService {
     @Autowired
     private BookRepository bookRepository;
+
+    @Autowired
+    private CheckoutRepository checkoutRepository;
 
     @PostConstruct
     public void initializeData() {
@@ -32,5 +37,15 @@ public class InitializeDataService {
         bookRepository.save(book4);
         bookRepository.save(book5);
         bookRepository.save(book6);
+
+        CheckoutRecord checkoutRecord = CheckoutRecord.builder()
+                .bookId(book1.getId())
+                .authors(book1.getAuthors())
+                .borrowDate(new Date())
+                .isbn(book1.getIsbn())
+                .title(book1.getTitle())
+                .build();
+        checkoutRepository.save(checkoutRecord);
+
     }
 }

@@ -5,23 +5,26 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
+
+@Entity
+@Table(name="CheckoutRecord")
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class CheckoutRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+    @NotNull
     private Integer bookId;
     @NotNull
-    private Integer userI;
+    private Integer userId;
     @NotBlank
     private String seq;
     @NotBlank
