@@ -11,6 +11,7 @@ import FavoriteProperty from "./components/FavoriteProperty/FavoriteProperty";
 import Login from "./components/Login/Login";
 import User from "./components/User/User";
 import Book from "./components/Book/Book";
+import BookCopy from "./components/BookCopy/BookCopy";
 import Category from "./components/Category/Category";
 import Config from "./components/Config/Config";
 import Profile from "./components/Profile/Profile";
@@ -36,6 +37,11 @@ function AppRouter() {
                 <Route path="/book" element={
                     <PrivateAdminRoute>
                         <Book />
+                    </PrivateAdminRoute>
+                } />
+                <Route path="/bookCopy" element={
+                    <PrivateAdminRoute>
+                        <BookCopy />
                     </PrivateAdminRoute>
                 } />
                 <Route path="/category" element={
