@@ -1,13 +1,8 @@
 import Home from 'components/Home/Home';
 import PageNotFound from 'components/PageNotFound/PageNotFound';
-import {
-    PrivateAdminRoute,
-    PrivateAnyRoute,
-    PrivateLibrarianRoute,
-    PrivateStudentRoute
-} from 'components/PrivateRoute';
+import {PrivateAdminRoute, PrivateAnyRoute, PrivateLibrarianRoute, PrivateStudentRoute} from 'components/PrivateRoute';
 import React from 'react';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import {Route, Routes, useLocation} from 'react-router-dom';
 import './App.css';
 import Login from './components/Login/Login';
 import User from './components/User/User';

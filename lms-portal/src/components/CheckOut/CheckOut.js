@@ -14,6 +14,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { SnackbarCustom } from 'components/SnackbarCustom/SnackbarCustom';
 import './CheckOut.scss';
+import { getBook } from 'services/AdminService';
 
 const CheckOut = () => {
     const [isEdit, setIsEdit] = useState(false);
@@ -37,23 +38,33 @@ const CheckOut = () => {
 
     const onSubmit = () => {
         if (bookId && bookCopySeq) {
-            if (id) {
-                const item = checkOutQueue.find(c => c.id === id);
+            dispatch(getBook(bookId))
+                .then(res => {
+                    if (res.payload && res.payload.status_code == 200) {
+                        const book = res.payload.data;
 
-                item.bookId = bookId;
-                item.bookCopySeq = bookCopySeq;
-            } else {
-                const autoId = checkOutQueue.length + 1;
-                checkOutQueue.push({
-                    id: autoId,
-                    bookId,
-                    bookCopySeq
+                        if (book) {
+                            if (id) {
+                                const item = checkOutQueue.find(c => c.id === id);
+
+                                item.bookId = bookId;
+                                item.bookTitle = book.title;
+                                item.bookCopySeq = bookCopySeq;
+                            } else {
+                                const autoId = checkOutQueue.length + 1;
+                                checkOutQueue.push({
+                                    id: autoId,
+                                    bookId,
+                                    bookTitle: book.title,
+                                    bookCopySeq
+                                });
+                            }
+
+                            setCheckOutQueue([...checkOutQueue]);
+                            resetForm();
+                        }
+                    }
                 });
-            }
-
-            setCheckOutQueue([...checkOutQueue]);
-
-            resetForm();
         }
     };
 
@@ -171,7 +182,7 @@ const CheckOut = () => {
                         <Table stickyHeader sx={{minWidth: 650}} aria-label="simple table">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>Book id</TableCell>
+                                    <TableCell>Book title</TableCell>
                                     <TableCell>Book copy seq</TableCell>
                                     <TableCell>&nbsp;</TableCell>
                                 </TableRow>
@@ -181,7 +192,7 @@ const CheckOut = () => {
                                     key={row.id}
                                     sx={{'&:last-child td, &:last-child th': {border: 0}}}
                                 >
-                                    <TableCell component="th" scope="row">{row.bookId}</TableCell>
+                                    <TableCell component="th" scope="row">{row.bookTitle}</TableCell>
                                     <TableCell>{row.bookCopySeq}</TableCell>
                                     <TableCell>
                                         <ActionIcon icon={<EditIcon onClick={() => onEditClick(row.id)} />} />
