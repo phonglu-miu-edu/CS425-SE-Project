@@ -78,6 +78,9 @@ const Header = () => {
                                                     <Link to="/book">Books</Link>
                                                 </li>
                                                 <li>
+                                                    <Link to="/bookCopy">Book Copies</Link>
+                                                </li>
+                                                <li>
                                                     <Link to="/config">Configuration</Link>
                                                 </li>
                                             </>
@@ -85,17 +88,17 @@ const Header = () => {
                                         {role === "Librarian" && (
                                             <>
                                                 <li>
-                                                    <Link to="/checkout">Checkout</Link>
+                                                    <Link to="/checkout">CheckOut</Link>
                                                 </li>
                                                 <li>
-                                                    <Link to="/return">Return</Link>
+                                                    <Link to="/checkin">CheckIn</Link>
                                                 </li>
                                             </>
                                         )}
-                                        {role === "Profile" && (
+                                        {role === "User" && (
                                             <>
                                                 <li>
-                                                    <Link to="/my_book">My books</Link>
+                                                    <Link to="/myBook">My books</Link>
                                                 </li>
                                             </>
                                         )}

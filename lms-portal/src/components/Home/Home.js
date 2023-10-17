@@ -2,7 +2,6 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import './Home.scss';
-import SearchWidget from '../SearchWidget/SearchWidget';
 
 const Home = () => {
     let settings = {
@@ -21,9 +20,6 @@ const Home = () => {
                     <img className="pic" src="/slider-2.jpg" alt="slider-2" />
                 </div>
             </Slider>
-            <div className="widget">
-                <SearchWidget />
-            </div>
         </div>
     );
 };

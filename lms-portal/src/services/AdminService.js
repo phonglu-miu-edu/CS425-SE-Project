@@ -1,6 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "./AxiosService";
 
+//#region Configuration
+
 export const editAllConfigs = createAsyncThunk(
     'configs/edit',
     async (configs) => {
@@ -14,6 +16,10 @@ export const getAllConfigs = createAsyncThunk(
         const result = await axiosInstance.adminService.get(`/lms/admin/configs`, {withCredentials: true});
         return result.data;
     });
+
+//#endregion
+
+//#region MyBook
 
 export const deleteBook = createAsyncThunk(
     'books/delete',
@@ -50,6 +56,47 @@ export const getBook = createAsyncThunk(
         return result.data;
     });
 
+//#endregion
+
+//#region MyBook Copy
+
+export const getAllBookCopies = createAsyncThunk(
+    'bookCopies/getAll',
+    (searchText) => {
+        // const result = await axiosInstance.adminService.get(`/lms/admin/bookCopies/search?q=${searchText}`, {withCredentials: true});
+        return {
+            status_code: 200,
+            data: [{
+                id: 1,
+                status: "Available",
+                statusDetail: "Available"
+            }, {
+                id: 2,
+                status: "Available",
+                statusDetail: "Available"
+            }, {
+                id: 3,
+                status: "Borrowed",
+                statusDetail: "Borrowed"
+            }, {
+                id: 4,
+                status: "Deleted",
+                statusDetail: "Deleted"
+            }]
+        }
+    });
+
+export const getBookCopies = createAsyncThunk(
+    'bookCopies/get',
+    async (id) => {
+        const result = await axiosInstance.adminService.get(`/lms/admin/bookCopies/${id}`, {withCredentials: true});
+        return result.data;
+    });
+
+//#endregion
+
+//#region Category
+
 export const deleteCategory = createAsyncThunk(
     'categories/delete',
     async (id) => {
@@ -85,6 +132,10 @@ export const getCategory = createAsyncThunk(
         return result.data;
     });
 
+//#endregion
+
+//#region User
+
 export const deleteUser = createAsyncThunk(
     'users/delete',
     async (id) => {
@@ -119,3 +170,5 @@ export const getUser = createAsyncThunk(
         const result = await axiosInstance.adminService.get(`/lms/admin/users/${id}`, {withCredentials: true});
         return result.data;
     });
+
+//#endregion

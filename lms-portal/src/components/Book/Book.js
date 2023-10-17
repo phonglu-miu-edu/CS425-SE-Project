@@ -16,7 +16,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { SnackbarCustom } from 'components/SnackbarCustom/SnackbarCustom';
 
-const Profile = () => {
+const Book = () => {
     const [isEdit, setIsEdit] = useState(false);
     const [list, setList] = useState([]);
     const [categories, setCategories] = useState([]);
@@ -148,123 +148,124 @@ const Profile = () => {
         return category ? category.categoryName : '';
     }
 
-    return <div className="container">
-        <h3>Book Management</h3>
-        <div className="row">
-            <div className="col-md-3">
-                <Card variant="outlined">
-                    <form className="form">
-                        <div className="row">
-                            <div className="col-md-12">
-                                <FormControl fullWidth className="form-control-field">
-                                    <TextField
-                                        disabled={isEdit}
-                                        label="Title" type="search"
-                                        onChange={onTitleChange}
-                                        value={title}
-                                        fullWidth />
-                                </FormControl>
+    return (
+        <div className="container">
+            <h3>Book Management</h3>
+            <div className="row">
+                <div className="col-md-3">
+                    <Card variant="outlined">
+                        <form className="form">
+                            <div className="row">
+                                <div className="col-md-12">
+                                    <FormControl fullWidth className="form-control-field">
+                                        <TextField
+                                            label="Title" type="search"
+                                            onChange={onTitleChange}
+                                            value={title}
+                                            fullWidth />
+                                    </FormControl>
+                                </div>
                             </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-md-6">
-                                <FormControl fullWidth className="form-control-field">
-                                    <TextField
-                                        label="Isbn" type="search"
-                                        onChange={onIsbnChange}
-                                        value={isbn}
-                                        fullWidth />
-                                </FormControl>
+                            <div className="row">
+                                <div className="col-md-6">
+                                    <FormControl fullWidth className="form-control-field">
+                                        <TextField
+                                            label="Isbn" type="search"
+                                            onChange={onIsbnChange}
+                                            value={isbn}
+                                            fullWidth />
+                                    </FormControl>
+                                </div>
+                                <div className="col-md-6">
+                                    <FormControl fullWidth className="form-control-field">
+                                        <InputLabel id="categoryLabel">Category</InputLabel>
+                                        <Select
+                                            labelId="categoryLabel"
+                                            value={bookCategoryId}
+                                            label="Category"
+                                            onChange={onCategoryChange}>
+                                            {categories.map(category => <MenuItem
+                                                value={category.id}>{category.categoryName}</MenuItem>)}
+                                        </Select>
+                                    </FormControl>
+                                </div>
                             </div>
-                            <div className="col-md-6">
-                                <FormControl fullWidth className="form-control-field">
-                                    <InputLabel id="categoryLabel">Category</InputLabel>
-                                    <Select
-                                        labelId="categoryLabel"
-                                        value={bookCategoryId}
-                                        label="Category"
-                                        onChange={onCategoryChange}>
-                                        {categories.map(category => <MenuItem
-                                            value={category.id}>{category.categoryName}</MenuItem>)}
-                                    </Select>
-                                </FormControl>
+                            <div className="row">
+                                <div className="col-md-12">
+                                    <FormControl fullWidth className="form-control-field">
+                                        <TextField
+                                            label="Author" type="search"
+                                            onChange={onAuthorsChange}
+                                            value={authors}
+                                            fullWidth />
+                                    </FormControl>
+                                </div>
                             </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-md-12">
-                                <FormControl fullWidth className="form-control-field">
-                                    <TextField
-                                        label="Author" type="search"
-                                        onChange={onAuthorsChange}
-                                        value={authors}
-                                        fullWidth />
-                                </FormControl>
+                            <div className="row">
+                                <div className="col-md-12">
+                                    <Grid container justifyContent="center">
+                                        {!isEdit &&
+                                            <Button variant="contained" color="primary" onClick={onSubmit}>Add</Button>}
+                                        {isEdit && (
+                                            <>
+                                                <Button variant="contained" color="primary" onClick={onSubmit}
+                                                        style={{marginRight: '10px'}}>Update</Button>
+                                                <Button onClick={resetForm}>Cancel</Button>
+                                            </>
+                                        )}
+                                    </Grid>
+                                </div>
                             </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-md-12">
-                                <Grid container justifyContent="center">
-                                    {!isEdit &&
-                                        <Button variant="contained" color="primary" onClick={onSubmit}>Add</Button>}
-                                    {isEdit && (
-                                        <>
-                                            <Button variant="contained" color="primary" onClick={onSubmit}
-                                                    style={{marginRight: '10px'}}>Update</Button>
-                                            <Button onClick={resetForm}>Cancel</Button>
-                                        </>
-                                    )}
-                                </Grid>
-                            </div>
-                        </div>
-                    </form>
-                </Card>
-            </div>
-            <div className="col-md-9">
-                <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', paddingBottom: '10px'}}>
-                    <FormLabel style={{paddingRight: '10px', minWidth: '80px'}}>Search</FormLabel>
-                    <TextField fullWidth value={searchText} onChange={onSearchTextChange} />
+                        </form>
+                    </Card>
                 </div>
-                <TableContainer component={Paper}>
-                    <Table stickyHeader sx={{minWidth: 650}} aria-label="simple table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Title</TableCell>
-                                <TableCell>Isbn</TableCell>
-                                <TableCell>Authors</TableCell>
-                                <TableCell>Number of copies</TableCell>
-                                <TableCell>Book category</TableCell>
-                                <TableCell>&nbsp;</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {list.map(row => <TableRow
-                                key={row.id}
-                                sx={{'&:last-child td, &:last-child th': {border: 0}}}
-                            >
-                                <TableCell component="th" scope="row">{row.title}</TableCell>
-                                <TableCell>{row.isbn}</TableCell>
-                                <TableCell>{row.authors}</TableCell>
-                                <TableCell>{row.numOfCopies}</TableCell>
-                                <TableCell>{getBookCategoryName(row.bookCategoryId)}</TableCell>
-                                <TableCell>
-                                    <ActionIcon icon={<EditIcon onClick={() => onEditClick(row.id)} />} />
-                                    <ActionIcon icon={<CancelIcon onClick={() => onDeleteClick(row)} />} />
-                                </TableCell>
-                            </TableRow>)}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+                <div className="col-md-9">
+                    <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', paddingBottom: '10px'}}>
+                        <FormLabel style={{paddingRight: '10px', minWidth: '80px'}}>Search</FormLabel>
+                        <TextField fullWidth value={searchText} onChange={onSearchTextChange} />
+                    </div>
+                    <TableContainer component={Paper}>
+                        <Table stickyHeader sx={{minWidth: 650}} aria-label="simple table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Title</TableCell>
+                                    <TableCell>Isbn</TableCell>
+                                    <TableCell>Authors</TableCell>
+                                    <TableCell>Number of copies</TableCell>
+                                    <TableCell>Book category</TableCell>
+                                    <TableCell>&nbsp;</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {list.map(row => <TableRow
+                                    key={row.id}
+                                    sx={{'&:last-child td, &:last-child th': {border: 0}}}
+                                >
+                                    <TableCell component="th" scope="row">{row.title}</TableCell>
+                                    <TableCell>{row.isbn}</TableCell>
+                                    <TableCell>{row.authors}</TableCell>
+                                    <TableCell>{row.numOfCopies}</TableCell>
+                                    <TableCell>{getBookCategoryName(row.bookCategoryId)}</TableCell>
+                                    <TableCell>
+                                        <ActionIcon icon={<EditIcon onClick={() => onEditClick(row.id)} />} />
+                                        <ActionIcon icon={<CancelIcon onClick={() => onDeleteClick(row)} />} />
+                                    </TableCell>
+                                </TableRow>)}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </div>
             </div>
+            <SnackbarCustom
+                vertical="top"
+                horizontal="right"
+                open={openAlert}
+                autoHideDuration={2000}
+                severity="success"
+                closed={() => setOpenAlert(!openAlert)}
+            >{alertContent}</SnackbarCustom>
         </div>
-        <SnackbarCustom
-            vertical="top"
-            horizontal="right"
-            open={openAlert}
-            autoHideDuration={2000}
-            severity="success"
-            closed={() => setOpenAlert(!openAlert)}
-        >{alertContent}</SnackbarCustom>
-    </div>;
+    );
 };
 
-export default Profile;
+export default Book;

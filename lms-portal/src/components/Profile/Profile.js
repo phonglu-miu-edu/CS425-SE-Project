@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { createUser, editUser, getUser } from 'services/AdminService';
 import { SnackbarCustom } from 'components/SnackbarCustom/SnackbarCustom';
 
-export default function Profile({currentUser}) {
+const Profile = ({currentUser}) => {
     const [id, setId] = useState('');
     const [username, setUsername] = useState('');
     const [role, setRole] = useState('User');
@@ -209,4 +209,6 @@ export default function Profile({currentUser}) {
             >{alertContent}</SnackbarCustom>
         </div>
     );
-}
+};
+
+export default Profile;
