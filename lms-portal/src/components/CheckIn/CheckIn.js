@@ -32,20 +32,20 @@ const CheckIn = () => {
         if (studentId) {
             setCheckInQueue([{
                 id: 1,
-                bookId: "Available",
-                bookCopySeq: "Available"
+                bookId: "1",
+                bookCopySeq: "ABCD"
             }, {
                 id: 2,
-                bookId: "Available",
-                bookCopySeq: "Available"
+                bookId: "2",
+                bookCopySeq: "EFGH"
             }, {
                 id: 3,
-                bookId: "Borrowed",
-                bookCopySeq: "Borrowed"
+                bookId: "3",
+                bookCopySeq: "IJKL"
             }, {
                 id: 4,
-                bookId: "Deleted",
-                bookCopySeq: "Deleted"
+                bookId: "4",
+                bookCopySeq: "MNOP"
             }]);
         }
     }

@@ -21,9 +21,9 @@ const Home = () => {
                     <img className="pic" src="/slider-2.jpg" alt="slider-2" />
                 </div>
             </Slider>
-            <div className="widget">
-                <SearchWidget />
-            </div>
+            {/*<div className="widget">*/}
+            {/*    <SearchWidget />*/}
+            {/*</div>*/}
         </div>
     );
 };
