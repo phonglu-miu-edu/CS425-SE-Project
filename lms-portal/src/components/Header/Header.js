@@ -95,10 +95,10 @@ const Header = () => {
                                                 </li>
                                             </>
                                         )}
-                                        {role === "Profile" && (
+                                        {role === "User" && (
                                             <>
                                                 <li>
-                                                    <Link to="/my_book">My books</Link>
+                                                    <Link to="/myBook">My books</Link>
                                                 </li>
                                             </>
                                         )}

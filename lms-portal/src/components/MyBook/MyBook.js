@@ -13,15 +13,12 @@ import ActionIcon from 'components/ActionIcon/ActionIcon';
 import EditIcon from '@mui/icons-material/Edit';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { SnackbarCustom } from 'components/SnackbarCustom/SnackbarCustom';
-import './CheckOut.scss';
+import './MyBook.scss';
 
-const CheckOut = () => {
+const MyBook = () => {
     const [isEdit, setIsEdit] = useState(false);
-    const [checkOutQueue, setCheckOutQueue] = useState([]);
+    const [checkInQueue, setCheckInQueue] = useState([]);
     const [studentId, setStudentId] = useState('');
-    const [id, setId] = useState('');
-    const [bookId, setBookId] = useState('');
-    const [bookCopySeq, setBookCopySeq] = useState('');
     const dispatch = useDispatch();
     const [alertContent, setAlertContent] = useState('');
     const [openAlert, setOpenAlert] = useState(false);
@@ -31,69 +28,54 @@ const CheckOut = () => {
 
     const onStudentIdChange = e => setStudentId(e.target.value);
 
-    const onBookIdChange = e => setBookId(e.target.value);
-
-    const onBookCopySeqChange = e => setBookCopySeq(e.target.value);
+    const onQueryClick = () => {
+        if (studentId) {
+            setCheckInQueue([{
+                id: 1,
+                bookId: "Available",
+                bookCopySeq: "Available"
+            }, {
+                id: 2,
+                bookId: "Available",
+                bookCopySeq: "Available"
+            }, {
+                id: 3,
+                bookId: "Borrowed",
+                bookCopySeq: "Borrowed"
+            }, {
+                id: 4,
+                bookId: "Deleted",
+                bookCopySeq: "Deleted"
+            }]);
+        }
+    }
 
     const onSubmit = () => {
-        if (bookId && bookCopySeq) {
-            if (id) {
-                const item = checkOutQueue.find(c => c.id === id);
-
-                item.bookId = bookId;
-                item.bookCopySeq = bookCopySeq;
-            } else {
-                const autoId = checkOutQueue.length + 1;
-                checkOutQueue.push({
-                    id: autoId,
-                    bookId,
-                    bookCopySeq
-                });
-            }
-
-            setCheckOutQueue([...checkOutQueue]);
-
-            resetForm();
-        }
-    };
-
-    const onFinalSubmit = () => {
-        if (studentId && checkOutQueue.length > 0) {
-            setAlertContent(`CheckOut completed`);
+        if (studentId) {
+            setAlertContent(`CheckIn completed`);
             setOpenAlert(true);
 
-            resetForm();
             setStudentId('');
-            setCheckOutQueue([]);
+            setCheckInQueue([]);
         }
     };
 
     const onEditClick = id => {
-        const item = checkOutQueue.find(c => c.id === id);
+        const item = checkInQueue.find(c => c.id === id);
 
         if (item) {
             setIsEdit(true);
-            setId(item.id);
-            setBookId(item.bookId);
-            setBookCopySeq(item.bookCopySeq);
         }
     };
 
     const onDeleteClick = id => {
-        let tmp = checkOutQueue.filter(c => c.id !== id);
-        setCheckOutQueue([...tmp]);
-    };
-
-    const resetForm = () => {
-        setIsEdit(false);
-        setId('');
-        setBookId('');
-        setBookCopySeq('');
+        let tmp = checkInQueue.filter(c => c.id !== id);
+        setCheckInQueue([...tmp]);
     };
 
     return (
-        <div className="container checkOut">
-            <h3>CheckOut</h3>
+        <div className="container checkIn">
+            <h3>CheckIn</h3>
             <div className="row">
                 <div className="col-md-3">
                     <Card variant="outlined">
@@ -111,45 +93,11 @@ const CheckOut = () => {
                                     </FormControl>
                                 </div>
                             </div>
-                        </form>
-                    </Card>
-                    <hr />
-                    <Card variant="outlined">
-                        <form className="form">
-                            <div className="row">
-                                <div className="col-md-12">
-                                    <FormControl fullWidth className="form-control-field">
-                                        <TextField
-                                            label="Book id" type="search"
-                                            onChange={onBookIdChange}
-                                            value={bookId}
-                                            fullWidth />
-                                    </FormControl>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="col-md-12">
-                                    <FormControl fullWidth className="form-control-field">
-                                        <TextField
-                                            label="Book copy seq" type="search"
-                                            onChange={onBookCopySeqChange}
-                                            value={bookCopySeq}
-                                            fullWidth />
-                                    </FormControl>
-                                </div>
-                            </div>
                             <div className="row">
                                 <div className="col-md-12">
                                     <Grid container justifyContent="center">
-                                        {!isEdit &&
-                                            <Button variant="contained" color="primary" onClick={onSubmit}>Add</Button>}
-                                        {isEdit && (
-                                            <>
-                                                <Button variant="contained" color="primary" onClick={onSubmit}
-                                                        style={{marginRight: '10px'}}>Update</Button>
-                                                <Button onClick={resetForm}>Cancel</Button>
-                                            </>
-                                        )}
+                                        <Button variant="contained" color="primary"
+                                            onClick={onQueryClick}>Query</Button>
                                     </Grid>
                                 </div>
                             </div>
@@ -160,7 +108,7 @@ const CheckOut = () => {
                             <div className="col-md-12">
                                 <Grid container justifyContent="center">
                                     <Button variant="contained" color="primary"
-                                            onClick={onFinalSubmit}>CheckOut</Button>
+                                            onClick={onSubmit}>CheckIn</Button>
                                 </Grid>
                             </div>
                         </div>
@@ -177,7 +125,7 @@ const CheckOut = () => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {checkOutQueue.map(row => <TableRow
+                                {checkInQueue.map(row => <TableRow
                                     key={row.id}
                                     sx={{'&:last-child td, &:last-child th': {border: 0}}}
                                 >
@@ -205,4 +153,4 @@ const CheckOut = () => {
     );
 };
 
-export default CheckOut;
+export default MyBook;

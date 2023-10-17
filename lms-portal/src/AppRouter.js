@@ -1,6 +1,11 @@
 import Home from 'components/Home/Home';
 import PageNotFound from 'components/PageNotFound/PageNotFound';
-import { PrivateAdminRoute, PrivateAnyRoute, PrivateLibrarianRoute } from 'components/PrivateRoute';
+import {
+    PrivateAdminRoute,
+    PrivateAnyRoute,
+    PrivateLibrarianRoute,
+    PrivateStudentRoute
+} from 'components/PrivateRoute';
 import { Property } from 'components/Property/Property';
 import PropertyDetail from 'components/PropertyDetail/PropertyDetail';
 import React from 'react';
@@ -17,6 +22,7 @@ import Config from './components/Config/Config';
 import Profile from './components/Profile/Profile';
 import CheckOut from './components/CheckOut/CheckOut';
 import CheckIn from './components/CheckIn/CheckIn';
+import MyBook from './components/MyBook/MyBook';
 
 function AppRouter() {
     let location = useLocation();
@@ -70,6 +76,11 @@ function AppRouter() {
                     <PrivateLibrarianRoute>
                         <CheckIn />
                     </PrivateLibrarianRoute>
+                } />
+                <Route path="/myBook" element={
+                    <PrivateStudentRoute>
+                        <MyBook />
+                    </PrivateStudentRoute>
                 } />
                 <Route path="*" element={<PageNotFound />} />
             </Routes>
