@@ -38,7 +38,7 @@ const CheckOut = () => {
     const onBookCopySeqChange = e => setBookCopySeq(e.target.value);
 
     const onSubmit = () => {
-        if (studentId && bookId && bookCopySeq) {
+        if (bookId && bookCopySeq) {
             if (id) {
                 const item = checkOutQueue.find(c => c.id === id);
 
@@ -48,7 +48,6 @@ const CheckOut = () => {
                 const autoId = checkOutQueue.length + 1;
                 checkOutQueue.push({
                     id: autoId,
-                    studentId,
                     bookId,
                     bookCopySeq
                 });
@@ -61,7 +60,14 @@ const CheckOut = () => {
     };
 
     const onFinalSubmit = () => {
+        if (studentId && checkOutQueue.length > 0) {
+            setAlertContent(`Checkout completed`);
+            setOpenAlert(true);
 
+            resetForm();
+            setStudentId('');
+            setCheckOutQueue([]);
+        }
     };
 
     const onEditClick = id => {
