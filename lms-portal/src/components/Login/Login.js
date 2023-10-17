@@ -21,8 +21,8 @@ export default function Login() {
 
     const [_, setCookie] = useCookies([Constants.COOKIE.LMS_DATA]);
     const nav = useNavigate();
-    const [username, setUsername] = useState('andy');
-    const [password, setPassword] = useState('123');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
     const [alertContent, setAlertContent] = useState('');
     const [openAlert, setOpenAlert] = useState(false);
     const dispatch = useDispatch();
