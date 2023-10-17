@@ -46,10 +46,10 @@ public class InitializeDataService {
                 .address("126 Chellen Dr, Dallas, TX 73456, US")
                 .status(UserStatus.ACTIVE.getValue()).numOfOverdues(0).build();
 
-        userRepository.save(user1);
-        userRepository.save(user2);
-        userRepository.save(user3);
-        userRepository.save(user4);
+//        userRepository.save(user1);
+//        userRepository.save(user2);
+//        userRepository.save(user3);
+//        userRepository.save(user4);
 
         // Initialize BookCategory Data
         BookCategory bookCategory1 = BookCategory.builder().categoryName("Java").description("Java technology related books").build();

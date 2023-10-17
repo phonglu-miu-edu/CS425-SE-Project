@@ -5,12 +5,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Entity
 public class BookDTO
 {
+    @Id
     private Integer id;
 
     private String title;
@@ -24,4 +29,5 @@ public class BookDTO
     private Integer bookCategoryId;
 
     private boolean available;
+
 }
