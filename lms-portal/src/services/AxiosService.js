@@ -9,9 +9,14 @@ const authService = axios.create({
     baseURL: Constants.AUTH_URL
 });
 
+const bookService = axios.create({
+    baseURL: Constants.BOOK_URL
+});
+
 const axiosInstance = {
     adminService,
-    authService
+    authService,
+    bookService
 };
 
 export default axiosInstance;

@@ -15,6 +15,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import { SnackbarCustom } from 'components/SnackbarCustom/SnackbarCustom';
 import './CheckOut.scss';
 import { getBook } from 'services/AdminService';
+import { checkOut } from 'services/BookService';
 
 const CheckOut = () => {
     const [isEdit, setIsEdit] = useState(false);
@@ -47,16 +48,17 @@ const CheckOut = () => {
                             if (id) {
                                 const item = checkOutQueue.find(c => c.id === id);
 
-                                item.bookId = bookId;
-                                item.bookTitle = book.title;
-                                item.bookCopySeq = bookCopySeq;
+                                item.bookId = parseInt(bookId);
+                                item.title = book.title;
+                                item.seq = parseInt(bookCopySeq);
                             } else {
                                 const autoId = checkOutQueue.length + 1;
                                 checkOutQueue.push({
                                     id: autoId,
-                                    bookId,
-                                    bookTitle: book.title,
-                                    bookCopySeq
+                                    bookId: parseInt(bookId),
+                                    userId: parseInt(studentId),
+                                    title: book.title,
+                                    seq: parseInt(bookCopySeq)
                                 });
                             }
 
@@ -69,13 +71,20 @@ const CheckOut = () => {
     };
 
     const onFinalSubmit = () => {
-        if (studentId && checkOutQueue.length > 0) {
-            setAlertContent(`CheckOut completed`);
-            setOpenAlert(true);
+        if (checkOutQueue.length > 0) {
+            dispatch(checkOut(checkOutQueue))
+                .then(res => {
+                    if (res.payload && res.payload.status_code == 200) {
+                        console.log(res.payload.data);
 
-            resetForm();
-            setStudentId('');
-            setCheckOutQueue([]);
+                        setAlertContent(`CheckOut completed`);
+                        setOpenAlert(true);
+
+                        resetForm();
+                        setStudentId('');
+                        setCheckOutQueue([]);
+                    }
+                })
         }
     };
 
@@ -142,7 +151,7 @@ const CheckOut = () => {
                                 <div className="col-md-12">
                                     <FormControl fullWidth className="form-control-field">
                                         <TextField
-                                            label="Book copy seq" type="search"
+                                            label="Book copy seq" type="number"
                                             onChange={onBookCopySeqChange}
                                             value={bookCopySeq}
                                             fullWidth />
@@ -192,8 +201,8 @@ const CheckOut = () => {
                                     key={row.id}
                                     sx={{'&:last-child td, &:last-child th': {border: 0}}}
                                 >
-                                    <TableCell component="th" scope="row">{row.bookTitle}</TableCell>
-                                    <TableCell>{row.bookCopySeq}</TableCell>
+                                    <TableCell component="th" scope="row">{row.title}</TableCell>
+                                    <TableCell>{row.seq}</TableCell>
                                     <TableCell>
                                         <ActionIcon icon={<EditIcon onClick={() => onEditClick(row.id)} />} />
                                         <ActionIcon icon={<CancelIcon onClick={() => onDeleteClick(row.id)} />} />
