@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @RunWith(MockitoJUnitRunner.class)
-public class BookCategoryServiceUnitTest <T>{
+public class BookCategoryServiceUnitTest{
     private MockMvc mockMvc;
     ObjectMapper objectMapper = new ObjectMapper();
     ObjectWriter objectWriter = objectMapper.writer();
