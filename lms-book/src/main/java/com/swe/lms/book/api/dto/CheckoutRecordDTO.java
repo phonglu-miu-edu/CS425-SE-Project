@@ -21,8 +21,6 @@ public class CheckoutRecordDTO {
 
     private int seq;
 
-    private String title;
-
     private LocalDate checkinDate;
 
     private LocalDate checkoutDate;
