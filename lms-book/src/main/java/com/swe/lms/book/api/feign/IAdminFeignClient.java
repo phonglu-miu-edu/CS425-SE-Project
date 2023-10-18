@@ -8,16 +8,16 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient(value="AdminService",url="http://localhost:8083/lms/admin")
+@FeignClient(value="AdminService")
 public interface IAdminFeignClient {
     @GetMapping(value = "/lms/admin/books/search")
     ResponseEntity<?> searchBooks(@RequestParam(name="q") String keyword);
 
-    @GetMapping(value = "/lsm/admin/books/{bookId}")
+    @GetMapping(value = "/lms/admin/books/{bookId}")
     ResponseEntity<?> getBook(@PathVariable(name="bookId") int bookId);
-    @GetMapping(value = "/lsm/admin/configs")
+    @GetMapping(value = "/lms/admin/configs")
     ResponseEntity<List<ConfigDTO>> getConfigs();
 
-    @PutMapping("/lsm/admin/book_copies")
+    @PutMapping("/lms/admin/book_copies")
     ResponseEntity<?> updateBookCopies(@RequestBody BookCopyDTO bookCopyDTO);
 }
