@@ -3,10 +3,8 @@ package com.swe.lms.admin.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.swe.lms.admin.api.controller.AdminController;
-import com.swe.lms.admin.api.dto.ConfigDTO;
 import com.swe.lms.admin.api.model.Book;
-import com.swe.lms.admin.api.service.IBookService;
-import com.swe.lms.admin.api.service.IConfigService;
+import com.swe.lms.admin.api.service.IBookCopyService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,18 +20,19 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ConfigUnitTest {
+public class BookCopyServiceUnitTest {
     private MockMvc mockMvc;
 
     ObjectMapper objectMapper = new ObjectMapper();
     ObjectWriter objectWriter = objectMapper.writer();
-
-    ConfigDTO configDTO = new ConfigDTO(10, "Number of days is free to borrow","30");
     @Mock
-    private IConfigService configService;
-
+    private IBookCopyService bookCopyService;
     @InjectMocks
     private AdminController adminController;
+
+    Book bookDTO1 = new Book(1, "title","isbn","authors",1,1,true);
+    Book bookDTO2 = new Book(1, "title2","isbn","authors",1,1,true);
+    Book bookDTO3 = new Book(1, "title3","isbn","authors",1,1,true);
 
     @Before
     public void setUp(){
@@ -43,14 +42,32 @@ public class ConfigUnitTest {
     @Test
     public void TestUnauthorized() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                        .post("/lms/admin/configs")
+                        .get("/lms/admin/book_copies")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError());
     }
     @Test
-    public void getAllRecords_configsGet() throws Exception {
+    public void TestBookCopiesPostWithBody() throws Exception {
+
         mockMvc.perform(MockMvcRequestBuilders
-                .get("/lms/admin/configs/")
-                .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+                .post("/lms/admin/book_copies/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(this.objectMapper.writeValueAsString(bookDTO1))).andExpect(status().isOk());
+    }
+    @Test
+    public void TestBookCopiesPutWithBody() throws Exception {
+
+        mockMvc.perform(MockMvcRequestBuilders
+                .put("/lms/admin/book_copies/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(this.objectMapper.writeValueAsString(bookDTO2))).andExpect(status().isOk());
+    }
+    @Test
+    public void TestBookCopiesGet() throws Exception {
+
+        mockMvc.perform(MockMvcRequestBuilders
+                .get("/lms/admin/book_copies/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(this.objectMapper.writeValueAsString(bookDTO3))).andExpect(status().isOk());
     }
 }

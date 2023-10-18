@@ -4,7 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.swe.lms.admin.api.controller.AdminController;
 import com.swe.lms.admin.api.model.Book;
+import com.swe.lms.admin.api.repository.BookRepository;
 import com.swe.lms.admin.api.service.IBookCopyService;
+import com.swe.lms.admin.api.service.IBookService;
+import com.swe.lms.admin.api.service.impl.BookServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,14 +21,21 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @RunWith(MockitoJUnitRunner.class)
-public class BookCopyUnitTest {
+public class BookServiceUnitTest {
     private MockMvc mockMvc;
 
     ObjectMapper objectMapper = new ObjectMapper();
     ObjectWriter objectWriter = objectMapper.writer();
     @Mock
     private IBookCopyService bookCopyService;
+    @Mock
+    private IBookService bookService;
+    @Mock
+    private BookServiceImpl bookServiceImpl;
+    @Mock
+    private BookRepository bookRepository;
     @InjectMocks
     private AdminController adminController;
 
@@ -69,4 +79,5 @@ public class BookCopyUnitTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(this.objectMapper.writeValueAsString(bookDTO3))).andExpect(status().isOk());
     }
+
 }

@@ -4,8 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.swe.lms.admin.api.controller.AdminController;
 import com.swe.lms.admin.api.dto.ConfigDTO;
-import com.swe.lms.admin.api.model.Book;
-import com.swe.lms.admin.api.service.IBookService;
 import com.swe.lms.admin.api.service.IConfigService;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +20,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ConfigUnitTest {
+public class ConfigServiceUnitTest {
     private MockMvc mockMvc;
 
     ObjectMapper objectMapper = new ObjectMapper();

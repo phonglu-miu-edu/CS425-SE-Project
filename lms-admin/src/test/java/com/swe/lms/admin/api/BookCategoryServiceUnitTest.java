@@ -4,36 +4,37 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.swe.lms.admin.api.controller.AdminController;
 import com.swe.lms.admin.api.dto.BookCategoryDTO;
-import com.swe.lms.admin.api.dto.ConfigDTO;
+import com.swe.lms.admin.api.repository.BookCategoryRepository;
 import com.swe.lms.admin.api.service.IBookCategoryService;
-import com.swe.lms.admin.api.util.ResponseUtil;
+import com.swe.lms.admin.api.service.impl.BookServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 @RunWith(MockitoJUnitRunner.class)
-public class BookCategoryServiceUnitTest {
+public class BookCategoryServiceUnitTest <T>{
     private MockMvc mockMvc;
     ObjectMapper objectMapper = new ObjectMapper();
     ObjectWriter objectWriter = objectMapper.writer();
 
     @Mock
     private IBookCategoryService bookCategoryService;
+    @Mock
+    private BookCategoryRepository bookCategoryRepository;
+
+    @Mock
+    private BookServiceImpl bookServiceImpl;
 
     @InjectMocks
     private AdminController adminController;
@@ -51,7 +52,7 @@ public class BookCategoryServiceUnitTest {
         mockMvc.perform(MockMvcRequestBuilders
                 .get("/lms/admin/book_categories")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(this.objectMapper.writeValueAsString(configDTO)))
+                .content(String.valueOf(configDTO)))
                 .andExpect(status().isMethodNotAllowed());
     }
     @Test
@@ -62,20 +63,7 @@ public class BookCategoryServiceUnitTest {
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/lms/admin/book_categories/1")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(this.objectMapper.writeValueAsString(requestBody)))
-                .andExpect(status().isOk());
-    }
-    @Test
-    public void getAllRecords_NoSuccess13() throws Exception {
-        BookCategoryDTO configDTO = new BookCategoryDTO(10, "Number of days is free to borrow","30");
-        ResponseEntity<?> response = ResponseUtil.createOK(configDTO);
-//        Mockito.when(bookCategoryService.insertBookCategory(configDTO)).thenReturn(response.getStatusCode());
-        String requestBody = objectMapper.writeValueAsString(configDTO);
-
-        mockMvc.perform(MockMvcRequestBuilders
-                        .get("/lms/admin/book_categories/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(this.objectMapper.writeValueAsString(requestBody)))
+                        .content(requestBody))
                 .andExpect(status().isOk());
     }
 }
