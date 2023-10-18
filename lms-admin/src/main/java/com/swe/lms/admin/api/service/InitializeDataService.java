@@ -35,21 +35,22 @@ public class InitializeDataService {
                 .address("123 Chellen Dr, Dallas, TX 73456, US")
                 .status(UserStatus.ACTIVE.getValue()).numOfOverdues(0).build();
         User user2 = User.builder().userName("phong").firstName("Tai Phong").lastName("Lu").roleCd("Admin")
-                .password("123").email("phonglu@miu.edu").phoneNumber("6418192229")
+                .password("123").email("phong@miu.edu").phoneNumber("6418192229")
                 .address("124 Chellen Dr, Dallas, TX 73456, US")
                 .status(UserStatus.ACTIVE.getValue()).numOfOverdues(0).build();
         User user3 = User.builder().userName("john").firstName("John").lastName("Smith").roleCd("Librarian")
-                .password("123").email("baonguyen@miu.edu").phoneNumber("6418193339")
-                .address("125 Chellen Dr, Dallas, TX 73456, US").build();
+                .password("123").email("john@miu.edu").phoneNumber("6418193339")
+                .address("125 Chellen Dr, Dallas, TX 73456, US")
+                .status(UserStatus.ACTIVE.getValue()).numOfOverdues(0).build();
         User user4 = User.builder().userName("andy").firstName("Andy").lastName("Nguyen").roleCd("User")
-                .password("123").email("baonguyen@miu.edu").phoneNumber("6418194449")
-                .address("126 Chellen Dr, Dallas, TX 73456, US")
+                .password("123").email("andy@miu.edu").phoneNumber("6418194449")
+                .address("126 Chellen Dr, Dallas, TX 73456, US").numOfOverdues(0)
                 .status(UserStatus.ACTIVE.getValue()).numOfOverdues(0).build();
 
-//        userRepository.save(user1);
-//        userRepository.save(user2);
-//        userRepository.save(user3);
-//        userRepository.save(user4);
+        userRepository.save(user1);
+        userRepository.save(user2);
+        userRepository.save(user3);
+        userRepository.save(user4);
 
         // Initialize BookCategory Data
         BookCategory bookCategory1 = BookCategory.builder().categoryName("Java").description("Java technology related books").build();
