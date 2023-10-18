@@ -32,21 +32,14 @@ const CheckIn = () => {
         if (studentId) {
             setCheckInQueue([{
                 id: 1,
-                bookId: "1",
-                bookCopySeq: "ABCD"
-            }, {
-                id: 2,
-                bookId: "2",
-                bookCopySeq: "EFGH"
-            }, {
-                id: 3,
-                bookId: "3",
-                bookCopySeq: "IJKL"
-            }, {
-                id: 4,
-                bookId: "4",
-                bookCopySeq: "MNOP"
-            }]);
+                bookId: "Effective Java",
+                bookCopySeq: "1"
+            },
+                {
+                    id: 1,
+                    bookId: "Modern Java In Action",
+                    bookCopySeq: "2"
+                }]);
         }
     }
 
@@ -119,7 +112,7 @@ const CheckIn = () => {
                         <Table stickyHeader sx={{minWidth: 650}} aria-label="simple table">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>Book id</TableCell>
+                                    <TableCell>Book Title </TableCell>
                                     <TableCell>Book copy seq</TableCell>
                                     <TableCell>&nbsp;</TableCell>
                                 </TableRow>

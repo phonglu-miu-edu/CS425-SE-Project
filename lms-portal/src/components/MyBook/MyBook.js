@@ -19,20 +19,12 @@ const MyBook = () => {
     useEffect(() => {
         setCheckInQueue([{
             id: 1,
-            bookTitle: 'Book 1',
-            bookCopySeq: 'ABCD'
+            bookTitle: "Effective Java",
+            bookCopySeq: "1"
         }, {
             id: 2,
-            bookTitle: 'Book 2',
-            bookCopySeq: 'EFGH'
-        }, {
-            id: 3,
-            bookTitle: 'Book 3',
-            bookCopySeq: 'IJKL'
-        }, {
-            id: 4,
-            bookTitle: 'Book 4',
-            bookCopySeq: 'MNOP'
+            bookTitle: "Modern Java In Action",
+            bookCopySeq: "2"
         }]);
     }, []);
 
